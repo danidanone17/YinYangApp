@@ -1,4 +1,6 @@
-package com.example.yinjangapp;
+package com.example.yinyangapp;
+
+import com.example.yinyangapp.R;
 
 import android.os.Bundle;
 import android.app.Activity;

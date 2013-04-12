@@ -1,2 +1,2 @@
-YinJangApp
+YinYangApp
 ==========
