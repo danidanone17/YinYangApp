@@ -2,7 +2,7 @@ package com.example.yinyangapp;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
+import android.view.*;
 
 public class UserProfileActivity extends Activity {
 
@@ -18,5 +18,14 @@ public class UserProfileActivity extends Activity {
 		getMenuInflater().inflate(R.menu.user_profile, menu);
 		return true;
 	}
+	
+	public void favoriteQuestionsView(View view){}
+	public void reputationView(View view){}
+	public void answersView(View view){}
+	public void questionsView(View view){}
+	public void tagsView(View view){}
+	public void badgesView(View view){}
+	public void activitiesView(View view){}
+
 
 }
