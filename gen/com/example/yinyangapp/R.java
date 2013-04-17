@@ -28,7 +28,23 @@ public final class R {
         public static final int ic_user2=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f080000;
+        public static final int action_settings=0x7f080010;
+        public static final int answer_content=0x7f08000c;
+        public static final int answer_score=0x7f08000a;
+        public static final int answer_user_name=0x7f08000e;
+        public static final int answer_user_score=0x7f08000f;
+        public static final int answered_at=0x7f08000d;
+        public static final int asked_at=0x7f080005;
+        public static final int down_vote_answer=0x7f08000b;
+        public static final int down_vote_question=0x7f080003;
+        public static final int nr_of_answers=0x7f080008;
+        public static final int question_content=0x7f080004;
+        public static final int question_score=0x7f080002;
+        public static final int question_title=0x7f080000;
+        public static final int question_user_name=0x7f080006;
+        public static final int question_user_score=0x7f080007;
+        public static final int up_vote_answer=0x7f080009;
+        public static final int up_vote_question=0x7f080001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -41,23 +57,15 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
-        /**  image content needed  
-         */
-        public static final int button_downvote=0x7f050007;
-        /**  image content needed  
-         */
-        public static final int button_upvote=0x7f050006;
+        public static final int button_add=0x7f050009;
+        public static final int button_tag1=0x7f050004;
+        public static final int button_tag2=0x7f050005;
+        public static final int button_tag3=0x7f050006;
+        public static final int enter_answer=0x7f050008;
         public static final int hello_world=0x7f050002;
-        /**  dynamic text contents needed  
-         */
-        public static final int nr_of_votes=0x7f050008;
-        /**  dynamic text contents needed  
-         */
-        public static final int question_contents=0x7f050005;
-        /**  dynamic text contents needed  
-         */
-        public static final int question_title=0x7f050004;
+        public static final int nr_of_answers=0x7f050007;
         public static final int title_activity_question=0x7f050003;
+        public static final int your_answer=0x7f05000a;
     }
     public static final class style {
         /** 

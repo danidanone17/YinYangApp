@@ -10,12 +10,15 @@
 	android:orientation="vertical">
 
     <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/question_title" />
+    	android:id="@+id/question_title"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textStyle="bold"
+	    android:textSize="16dp" />
+	        
     <!-- Horizontal - Vote buttons - Contents of Question - User info -->
     <LinearLayout
-	    android:layout_width="wrap_content"
+	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingLeft="0dp"
 	    android:paddingRight="0dp"
@@ -23,45 +26,261 @@
 	
     <!-- Vote buttons -->    	
         <LinearLayout
-		    android:layout_width="wrap_content"
+		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
+		    android:layout_weight="0.1"
 		    android:paddingLeft="0dp"
 		    android:paddingRight="0dp"
-		    android:orientation="vertical">	    
-						<ImageButton 
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:src="@drawable/ic_uparrow"/> 
+		    android:orientation="vertical"
+		    android:gravity="left">	    
+			
+			<ImageButton
+				android:id="@+id/up_vote_question"
+			    android:layout_width="wrap_content"
+			    android:layout_height="0dp"
+			    android:layout_weight="1"
+			    android:src="@drawable/ic_uparrow"
+			    android:onClick="upVoteQuestion" /> 
 						
-						<TextView
-					        android:layout_width="wrap_content"
-					        android:layout_height="wrap_content"
-					        android:text="@string/nr_of_votes"/>	
-					    
-					    <ImageButton 
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:src="@drawable/ic_downarrow"/>
-		</LinearLayout>
-		<TextView
+			<TextView
+				android:id="@+id/question_score"
 		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="2"	
-		    	android:text="@string/question_contents" />				       
-    	<LinearLayout
-		    android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:textSize="10dp"
+		        android:layout_gravity="center" />	
+					    
+		    <ImageButton
+				android:id="@+id/down_vote_question"
+			    android:layout_width="wrap_content"
+			    android:layout_height="0dp"
+			    android:layout_weight="1"
+			    android:src="@drawable/ic_downarrow"
+			    android:onClick="downVoteQuestion"/>
+			    
+		</LinearLayout>
+		<LinearLayout
+		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
+		    android:layout_weight="0.6"
 		    android:paddingLeft="0dp"
 		    android:paddingRight="0dp"
-		    android:orientation="vertical">
+		    android:orientation="vertical"
+		    android:gravity="center">
+		    
+			<TextView
+				android:id="@+id/question_content"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_weight="0.9"
+		    	android:layout_gravity="left" />
+		    	
+		    <LinearLayout
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_weight="0.1"
+		   	 	android:paddingLeft="0dp"
+		    	android:paddingRight="0dp"
+		    	android:orientation="horizontal">
+		    	
+		    	<Button 
+		    		android:layout_width="0dp"
+    				android:layout_height="wrap_content"
+    				android:layout_weight="1"
+    				android:text="@string/button_tag1"
+    				android:textSize="10dp" />
+    				
+    			<Button 
+		    		android:layout_width="0dp"
+    				android:layout_height="wrap_content"
+    				android:layout_weight="1"
+    				android:text="@string/button_tag2"
+    				android:textSize="10dp" />
+    				
+    			<Button 
+		    		android:layout_width="0dp"
+    				android:layout_height="wrap_content"
+    				android:layout_weight="1"
+    				android:text="@string/button_tag3"
+    				android:textSize="10dp" />
+
+		    </LinearLayout>		
+		</LinearLayout>			       
+    	<LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.1"
+		    android:paddingLeft="0dp"
+		    android:paddingRight="0dp"
+		    android:orientation="vertical"
+		    android:gravity="right">
+			
+			<TextView
+				android:id="@+id/asked_at"
+		        android:layout_width="wrap_content"
+				android:layout_height="0dp"
+				android:layout_weight="0.7"
+		    	android:layout_gravity="left"
+		    	android:textSize="10dp" />
+			
 			<ImageButton 
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:src="@drawable/ic_user2"/>
-    	    
-		
+				android:layout_width="wrap_content"
+				android:layout_height="0dp"
+				android:layout_weight="0.7"
+				android:src="@drawable/ic_user2" />
+				
+			<TextView
+				android:id="@+id/question_user_name"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+				android:layout_weight="0.7"
+		    	android:layout_gravity="left"
+		    	android:textSize="10dp" />	
+		    	
+		    <TextView
+		    	android:id="@+id/question_user_score"
+		        android:layout_width="wrap_content"
+				android:layout_height="0dp"
+				android:layout_weight="0.7"	
+		    	android:layout_gravity="left"
+		    	android:textSize="10dp" />	
 		</LinearLayout>
     </LinearLayout>
+    
+    <TextView
+    	android:id="@+id/nr_of_answers"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/nr_of_answers" 
+		android:textStyle="bold"
+		android:textSize="16dp" />
+	
+	<!-- Horizontal - Vote buttons - Contents of answer - User info -->
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="0dp"
+	    android:paddingRight="0dp"
+	    android:orientation="horizontal">
+	
+    <!-- Vote buttons -->    	
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.1"
+		    android:paddingLeft="0dp"
+		    android:paddingRight="0dp"
+		    android:orientation="vertical"
+		    android:gravity="left">	    
+						
+			<ImageButton 
+				android:id="@+id/up_vote_answer"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_uparrow"		    
+			    android:onClick="upVoteAnswer" />
+						
+			<TextView
+				android:id="@+id/answer_score"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="10dp"
+				android:layout_gravity="center" />	
+					    
+			<ImageButton 
+				android:id="@+id/down_vote_answer"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_downarrow"
+				android:onClick="downVoteAnswer" />
+				
+		</LinearLayout>
+		<LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.6"
+		    android:paddingLeft="0dp"
+		    android:paddingRight="0dp"
+		    android:orientation="vertical"
+		    android:gravity="center">
+		    
+			<TextView
+				android:id="@+id/answer_content"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_weight="0.9"
+		    	android:layout_gravity="left" />
+		</LinearLayout>	
+				       
+    	<LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.1"
+		    android:paddingLeft="0dp"
+		    android:paddingRight="0dp"
+		    android:orientation="vertical"
+		    android:gravity="right">
+			
+			<TextView
+				android:id="@+id/answered_at"
+		        android:layout_width="wrap_content"
+				android:layout_height="0dp"
+				android:layout_weight="0.7"
+		    	android:layout_gravity="left"
+		    	android:textSize="10dp" />
+			
+			<ImageButton 
+				android:layout_width="wrap_content"
+				android:layout_height="0dp"
+				android:layout_weight="0.7"
+				android:src="@drawable/ic_user2" />
+				
+			<TextView
+				android:id="@+id/answer_user_name"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+				android:layout_weight="0.7"
+		    	android:layout_gravity="left"
+		    	android:textSize="10dp" />	
+		    	
+		    <TextView
+		   		android:id="@+id/answer_user_score"
+		        android:layout_width="wrap_content"
+				android:layout_height="0dp"
+				android:layout_weight="0.7"
+		    	android:layout_gravity="left"
+		    	android:textSize="10dp" />	
+		</LinearLayout>
+    </LinearLayout>
+	
+	 <TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/your_answer" 
+		android:textStyle="bold"
+		android:textSize="16dp" />
+	
+	<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingLeft="0dp"
+		    android:paddingRight="0dp"
+		    android:orientation="horizontal"
+		    android:gravity="bottom">
+		    
+		    <EditText
+    			android:layout_width="0dp"
+    			android:layout_height="wrap_content"
+    			android:layout_weight="0.8"
+    			android:hint="@string/enter_answer"
+    			android:inputType="text" />
+    			
+    		<Button 
+		    		android:layout_width="0dp"
+    				android:layout_height="wrap_content"
+    				android:layout_weight="0.2"
+    				android:text="@string/button_add"
+    				android:textSize="10dp" />
+		    
+	</LinearLayout>	
 </LinearLayout>
