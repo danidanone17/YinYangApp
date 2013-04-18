@@ -26,5 +26,10 @@
             android:text="@string/search_command"
             android:textSize="20sp" 
             android:layout_gravity="center_horizontal"/>
-
+	
+	<TextView
+		android:id="@+id/searchResults"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text=""/>
 </GridLayout>
