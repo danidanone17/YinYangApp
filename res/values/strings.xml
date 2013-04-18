@@ -16,9 +16,25 @@
     <string name="user_picture_description">User picture</string>
     <string name="button_favorite_question">Favorites</string>
 	<string name="button_questions">Questions</string>
-	<string name="button_answers">Answers</string>
+	<string name="button_answers">Answers</string>  
 	<string name="button_tags">Tags</string>
 	<string name="button_reputation">Reputation</string>
 	<string name="button_badges">Badges</string>
 	<string name="button_activities">Activities</string>
+	<string name="user_name_label">User name: </string>
+	<string name="user_name">Ana</string>
+	<string name="website_label">Website: </string>
+	<string name="website">www.google.com</string>
+	<string name="location_label">Location: </string>
+	<string name="location">Sweden</string>
+	<string name="age_label">Age: </string>
+	<string name="age">23</string>
+	<string name="membership_duration_label">Member for: </string>
+	<string name="membership_duration">4 months</string>
+	<string name="last_seen_label">Last seen: </string>
+	<string name="last_seen">5 minutes</string>
+	<string name="profile_views_label">Profile views: </string>
+	<string name="profile_views">2</string>
+	<string name="user_description_label">User description: </string>
+	<string name="user_description">Some descriprion here</string>
 </resources>
