@@ -4,6 +4,22 @@ import android.database.Cursor;
 
 public class User extends DatabaseType {
 
+	public static final String TABLE_NAME = "users";
+	
+	public static final String KEY_ID = "id";
+	public static final String KEY_REPUTATION = "reputation";
+	public static final String KEY_CREATION_DATE = "creation_date";
+	public static final String KEY_DISPLAY_NAME = "display_name";
+	public static final String KEY_EMAIL_HASH = "email_hash";
+	public static final String KEY_LAST_ACCESS_DATE = "last_access_date";
+	public static final String KEY_WEBSITE_URL = "website_url";
+	public static final String KEY_LOCATION = "location";
+	public static final String KEY_AGE = "age";
+	public static final String KEY_ABOUT_ME = "about_me";
+	public static final String KEY_VIEWS = "views";
+	public static final String KEY_UP_VOTES = "up_votes";
+	public static final String KEY_DOWN_VOTES = "down_votes";
+	
 	private int id;
 	private int reputation;
 	private String creationDate;
@@ -24,19 +40,19 @@ public class User extends DatabaseType {
 	
 	public User(Cursor cursor){
 		super(cursor);
-		this.setId(cursor.getInt(0));
-		this.setReputation(cursor.getInt(1));
-		this.setCreationDate(cursor.getString(2));
-		this.setDisplayName(cursor.getString(3));
-		this.setEmailHash(cursor.getString(4));
-		this.setLastAccessDate(cursor.getString(5));
-		this.setWebsiteUrl(cursor.getString(6));
-		this.setLocation(cursor.getString(7));
-		this.setAge(cursor.getInt(8));
-		this.setAboutMe(cursor.getString(9));
-		this.setViews(cursor.getInt(10));
-		this.setUpVotes(cursor.getInt(11));
-		this.setDownVotes(cursor.getInt(12));
+		this.setId(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)));
+		this.setReputation(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_REPUTATION)));
+		this.setCreationDate(cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATION_DATE)));
+		this.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(KEY_DISPLAY_NAME)));
+		this.setEmailHash(cursor.getString(cursor.getColumnIndexOrThrow(KEY_EMAIL_HASH)));
+		this.setLastAccessDate(cursor.getString(cursor.getColumnIndexOrThrow(KEY_LAST_ACCESS_DATE)));
+		this.setWebsiteUrl(cursor.getString(cursor.getColumnIndexOrThrow(KEY_WEBSITE_URL)));
+		this.setLocation(cursor.getString(cursor.getColumnIndexOrThrow(KEY_LOCATION)));
+		this.setAge(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_AGE)));
+		this.setAboutMe(cursor.getString(cursor.getColumnIndexOrThrow(KEY_ABOUT_ME)));
+		this.setViews(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_VIEWS)));
+		this.setUpVotes(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_VOTES)));
+		this.setDownVotes(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_DOWN_VOTES)));
 	}
 	
 	public void setId(int id) {
@@ -122,3 +138,4 @@ public class User extends DatabaseType {
 	}
 	
 }
+

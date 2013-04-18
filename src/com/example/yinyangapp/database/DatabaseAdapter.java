@@ -2,6 +2,9 @@ package com.example.yinyangapp.database;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.example.yinyangapp.databaseentities.Comment;
 import com.example.yinyangapp.databaseentities.DatabaseType;
@@ -18,7 +21,7 @@ import android.util.Log;
 public class DatabaseAdapter 
 {
     protected static final String TAG = "DataAdapter";
-
+    
     private final Context mContext;
     private SQLiteDatabase mDb;
     private SoData mDbHelper;
@@ -63,17 +66,6 @@ public class DatabaseAdapter
     {
         mDbHelper.close();
     }
-
-    
-    private ArrayList<User> cursorToUsers(Cursor cursor) {
-    	 ArrayList<User> users = new ArrayList<User>();
-    	 if ( cursor != null)
-         { while (cursor.moveToNext()) {
-        	 User user = new User(cursor);
-	         users.add(user);	}
-         }
-    	 return users;
-     }
     
     private ArrayList<DatabaseType> cursorToArrayList(Cursor cursor)
     {
@@ -140,10 +132,25 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
+     public ArrayList<DatabaseType> getDataByCriteria(String tableName, HashMap<String, String> criteria)
+     {
+    	 String where = " WHERE ";
+    	 Iterator<Entry<String,String>> iterator = criteria.entrySet().iterator();
+    	 while (iterator.hasNext()) {
+    		 Entry<String,String> criterion = iterator.next();
+    		 where+= criterion.getKey()+" LIKE '%"+criterion.getValue()+"%'";
+    		 if (iterator.hasNext()) {where+= " and ";}
+    	 }
+    	 String sqlQuery = "SELECT * FROM " + tableName + where;
+    	 Log.e("", "SQL QUERY : " + sqlQuery);
+    	 Cursor cursor = this.getCursor(sqlQuery);
+         return cursorToArrayList(cursor);
+     }
+     
      public User getUser(int id)
      {
-         Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+    	 Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='"+id+"')");
+         return (User) cursorToArrayList(cursor).get(0);
      }
      
      public ArrayList<DatabaseType> getComments()
@@ -152,10 +159,11 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
-     public User getComment(int id)
+     public Comment getComment(int id)
      {
+    	 
          Cursor cursor = this.getCursor("SELECT * FROM comments WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+         return (Comment) cursorToArrayList(cursor).get(0);
      }
      
      public ArrayList<DatabaseType> getPosts()
@@ -164,10 +172,10 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
-     public User getPost(int id)
+     public Post getPost(int id)
      {
          Cursor cursor = this.getCursor("SELECT * FROM posts WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+         return (Post) cursorToArrayList(cursor).get(0);
      }
      
      public ArrayList<DatabaseType> getVotes()
@@ -176,9 +184,10 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
-     public User getVote(int id)
+     public Vote getVote(int id)
      {
          Cursor cursor = this.getCursor("SELECT * FROM votes WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+         return (Vote) cursorToArrayList(cursor).get(0);
      }
+
 }

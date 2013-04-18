@@ -4,6 +4,30 @@ import android.database.Cursor;
 
 public class Post extends DatabaseType {
 
+	public static final String TABLE_NAME = "posts";
+	
+	public static final String KEY_ID = "id";
+	public static final String KEY_POST_TYPE_ID = "post_type_id";
+	public static final String KEY_PARENT_ID = "parent_id";
+	public static final String KEY_ACCEPTED_ANSWER_ID = "accepted_answer_id";
+	public static final String KEY_CREATION_DATE = "creation_date";
+	public static final String KEY_SCORE = "score";
+	public static final String KEY_VIEW_COUNT = "view_count";
+	public static final String KEY_BODY = "body";
+	public static final String KEY_OWNER_USER_ID = "owner_user_id";
+	public static final String KEY_LAST_EDITOR_USER_ID = "last_editor_user_id";
+	public static final String KEY_LAST_EDITOR_DISPLAY_NAME = "last_editor_display_name";
+	public static final String KEY_LAST_EDIT_DATE = "last_edit_date";
+	public static final String KEY_LAST_ACTIVITY_DATE = "last_activity_date";
+	public static final String KEY_COMMUNITY_OWNED_DATE = "community_owned_date";
+	public static final String KEY_CLOSED_DATE = "closed_date";
+	public static final String KEY_TITLE = "title";
+	public static final String KEY_TAGS = "tags";
+	public static final String KEY_ANSWER_COUNT = "answer_count";
+	public static final String KEY_COMMENT_COUNT = "comment_count";
+	public static final String KEY_FAVORITE_COUNT = "favorite_count";
+	
+	
 	private int id;
 	private int postTypeId;
 	private int parentId;
@@ -27,26 +51,26 @@ public class Post extends DatabaseType {
 	
 	public Post(Cursor cursor){
 		super(cursor);
-		this.id=cursor.getInt(0);
-		this.postTypeId=cursor.getInt(1);
-		this.parentId=cursor.getInt(2);
-		this.acceptedAnswerId=cursor.getInt(3);
-		this.creationDate=cursor.getString(4);
-		this.score=cursor.getInt(5);
-		this.viewCount=cursor.getInt(6);
-		this.body=cursor.getString(7);
-		this.ownerUserId=cursor.getInt(8);
-		this.lastEditorUserId=cursor.getInt(9);
-		this.lastEditorDisplayName=cursor.getString(10);
-		this.lastEditDate=cursor.getString(11);
-		this.lastActivityDate=cursor.getString(12);
-		this.communityOwnedDate=cursor.getString(13);
-		this.closedDate=cursor.getString(14);
-		this.title=cursor.getString(15);
-		this.tags=cursor.getString(16);
-		this.answerCount=cursor.getInt(17);
-		this.commentCount=cursor.getInt(18);
-		this.favoriteCount=cursor.getInt(19);
+		this.id=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
+		this.postTypeId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POST_TYPE_ID));
+		this.parentId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_PARENT_ID));
+		this.acceptedAnswerId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ACCEPTED_ANSWER_ID));
+		this.creationDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATION_DATE));
+		this.score=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCORE));
+		this.viewCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_VIEW_COUNT));
+		this.body=cursor.getString(cursor.getColumnIndexOrThrow(KEY_BODY));
+		this.ownerUserId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_OWNER_USER_ID));
+		this.lastEditorUserId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_LAST_EDITOR_USER_ID));
+		this.lastEditorDisplayName=cursor.getString(cursor.getColumnIndexOrThrow(KEY_LAST_EDITOR_DISPLAY_NAME));
+		this.lastEditDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_LAST_EDIT_DATE));
+		this.lastActivityDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_LAST_ACTIVITY_DATE));
+		this.communityOwnedDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_COMMUNITY_OWNED_DATE));
+		this.closedDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_CLOSED_DATE));
+		this.title=cursor.getString(cursor.getColumnIndexOrThrow(KEY_TITLE));
+		this.tags=cursor.getString(cursor.getColumnIndexOrThrow(KEY_TAGS));
+		this.answerCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ANSWER_COUNT));
+		this.commentCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_COMMENT_COUNT));
+		this.favoriteCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_FAVORITE_COUNT));
 	}
 
 	@Override

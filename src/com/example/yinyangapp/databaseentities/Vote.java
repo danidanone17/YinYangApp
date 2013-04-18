@@ -3,7 +3,14 @@ package com.example.yinyangapp.databaseentities;
 import android.database.Cursor;
 
 public class Vote extends DatabaseType {
+	
+	public static final String TABLE_NAME = "votes";
 
+	public static final String KEY_ID = "id";
+	public static final String KEY_POST_ID = "post_id";
+	public static final String KEY_VOTE_TYPE_ID = "vote_type_id";
+	public static final String KEY_CREATION_DATE = "creation_date";
+	
 	private int id;
 	private int postId;
 	private int voteTypeId;
@@ -11,10 +18,10 @@ public class Vote extends DatabaseType {
 	
 	public Vote(Cursor cursor) {
 		super(cursor);
-		this.id = cursor.getInt(0);
-		this.postId = cursor.getInt(1);
-		this.voteTypeId = cursor.getInt(2);
-		this.creationDate = cursor.getString(3);
+		this.id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
+		this.postId = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POST_ID));
+		this.voteTypeId = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_VOTE_TYPE_ID));
+		this.creationDate = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATION_DATE));
 	}
 
 	@Override
