@@ -4,6 +4,8 @@ import android.database.Cursor;
 
 public class User extends DatabaseType {
 
+	public static final String TABLE_NAME = "users";
+	
 	public static final String KEY_ID = "id";
 	public static final String KEY_REPUTATION = "reputation";
 	public static final String KEY_CREATION_DATE = "creation_date";

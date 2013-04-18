@@ -4,6 +4,8 @@ import android.database.Cursor;
 
 public class Comment extends DatabaseType {
 
+	public static final String TABLE_NAME = "comments";
+	
 	public static final String KEY_ID = "id";
 	public static final String KEY_POST_ID = "post_id";
 	public static final String KEY_SCORE = "score";

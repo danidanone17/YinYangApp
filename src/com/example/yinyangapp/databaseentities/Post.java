@@ -4,6 +4,7 @@ import android.database.Cursor;
 
 public class Post extends DatabaseType {
 
+	public static final String TABLE_NAME = "posts";
 	
 	public static final String KEY_ID = "id";
 	public static final String KEY_POST_TYPE_ID = "post_type_id";
