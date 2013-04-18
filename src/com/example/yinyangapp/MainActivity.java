@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		mDbHelper.createDatabase();      
 		mDbHelper.open();
 
-		ArrayList<DatabaseType> users = mDbHelper.getComments();
+		ArrayList<DatabaseType> users = mDbHelper.getVotes();
 		TextView text01 = (TextView) findViewById(R.id.text01);
 		String text="";
 		for(DatabaseType u : users) {

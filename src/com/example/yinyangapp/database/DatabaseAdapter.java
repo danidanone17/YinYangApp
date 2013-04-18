@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 import com.example.yinyangapp.databaseentities.Comment;
 import com.example.yinyangapp.databaseentities.DatabaseType;
+import com.example.yinyangapp.databaseentities.Post;
 import com.example.yinyangapp.databaseentities.User;
+import com.example.yinyangapp.databaseentities.Vote;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -100,10 +102,18 @@ public class DatabaseAdapter
     			
 				// posts table has 20 fields
     			case 20:
+    				while (cursor.moveToNext()) {
+    					Post post = new Post(cursor);
+    			        list.add(post);
+    				}
     				break;
 				
 				// votes table has 4 fields
     			case 4:
+    				while (cursor.moveToNext()) {
+    					Vote vote = new Vote(cursor);
+    			        list.add(vote);
+    				}
     				break;
     				
     			}
@@ -145,6 +155,30 @@ public class DatabaseAdapter
      public User getComment(int id)
      {
          Cursor cursor = this.getCursor("SELECT * FROM comments WHERE (id='"+id+"')");
+         return cursorToUsers(cursor).get(0);
+     }
+     
+     public ArrayList<DatabaseType> getPosts()
+     {
+         Cursor cursor = this.getCursor("SELECT * FROM posts LIMIT 20");
+         return cursorToArrayList(cursor);
+     }
+     
+     public User getPost(int id)
+     {
+         Cursor cursor = this.getCursor("SELECT * FROM posts WHERE (id='"+id+"')");
+         return cursorToUsers(cursor).get(0);
+     }
+     
+     public ArrayList<DatabaseType> getVotes()
+     {
+         Cursor cursor = this.getCursor("SELECT * FROM votes LIMIT 20");
+         return cursorToArrayList(cursor);
+     }
+     
+     public User getVote(int id)
+     {
+         Cursor cursor = this.getCursor("SELECT * FROM votes WHERE (id='"+id+"')");
          return cursorToUsers(cursor).get(0);
      }
 }

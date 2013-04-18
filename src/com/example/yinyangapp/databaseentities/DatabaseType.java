@@ -9,8 +9,6 @@ public abstract class DatabaseType {
 	}
 	
 	@Override
-	public String toString() {
-		return "Not implemented.";
-	}
+	public abstract String toString();
 	
 }
