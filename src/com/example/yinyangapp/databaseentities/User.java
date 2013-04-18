@@ -2,7 +2,7 @@ package com.example.yinyangapp.databaseentities;
 
 import android.database.Cursor;
 
-public class User {
+public class User extends DatabaseType {
 
 	private int id;
 	private int reputation;
@@ -23,6 +23,7 @@ public class User {
 	}
 	
 	public User(Cursor cursor){
+		super(cursor);
 		this.setId(cursor.getInt(0));
 		this.setReputation(cursor.getInt(1));
 		this.setCreationDate(cursor.getString(2));

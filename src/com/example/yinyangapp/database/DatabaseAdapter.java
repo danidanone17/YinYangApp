@@ -3,6 +3,8 @@ package com.example.yinyangapp.database;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.example.yinyangapp.databaseentities.Comment;
+import com.example.yinyangapp.databaseentities.DatabaseType;
 import com.example.yinyangapp.databaseentities.User;
 
 import android.content.Context;
@@ -60,17 +62,59 @@ public class DatabaseAdapter
         mDbHelper.close();
     }
 
-     public Cursor getTestData()
-     {
-         try
-         {
-             String sql ="SELECT * FROM users";
+    
+    private ArrayList<User> cursorToUsers(Cursor cursor) {
+    	 ArrayList<User> users = new ArrayList<User>();
+    	 if ( cursor != null)
+         { while (cursor.moveToNext()) {
+        	 User user = new User(cursor);
+	         users.add(user);	}
+         }
+    	 return users;
+     }
+    
+    private ArrayList<DatabaseType> cursorToArrayList(Cursor cursor)
+    {
+    		ArrayList<DatabaseType> list = new ArrayList<DatabaseType>();
+    		if ( cursor != null ) {
 
-             Cursor mCur = mDb.rawQuery(sql, null);
-             if (mCur!=null)
-             {
-                mCur.moveToNext();
-             }
+				// returns different classes depending on the number of 
+    			// columns in the cursor
+    			switch (cursor.getColumnCount()) {
+    			
+    			// users table has 13 fields
+    			case 13:
+    				while (cursor.moveToNext()) {
+    					User user = new User(cursor);
+    			        list.add(user);
+    				}
+    				break;
+    				
+				// comments table has 6 fields
+    			case 6:
+    				while (cursor.moveToNext()) {
+    					Comment comment = new Comment(cursor);
+    			        list.add(comment);
+    				}
+    				break;
+    			
+				// posts table has 20 fields
+    			case 20:
+    				break;
+				
+				// votes table has 4 fields
+    			case 4:
+    				break;
+    				
+    			}
+     }
+     return list;
+    }
+    
+     private Cursor getCursor(String sqlString) {
+    	 try
+         {
+             Cursor mCur = mDb.rawQuery(sqlString, null);
              return mCur;
          }
          catch (SQLException mSQLException) 
@@ -80,48 +124,27 @@ public class DatabaseAdapter
          }
      }
      
-     private ArrayList<User> cursorToUsers(Cursor cursor) {
-    	 ArrayList<User> users = new ArrayList<User>();
-    	 if ( cursor != null)
-         {
-    		 while (cursor.moveToNext()) {
-    		 	User user = new User(cursor);
-	            users.add(user);
-    		 }
-         }
-    	 return users;
-     }
-     
-     public ArrayList<User> getUsers()
+     public ArrayList<DatabaseType> getUsers()
      {
-    	 ArrayList<User> users = new ArrayList<User>();
-         try
-         {
-             String sql ="SELECT * FROM users LIMIT 20";
-             Cursor mCur = mDb.rawQuery(sql, null);
-             users = cursorToUsers(mCur);
-             return users;
-         }
-         catch (SQLException mSQLException) 
-         {
-             Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-             throw mSQLException;
-         }
+         Cursor cursor = this.getCursor("SELECT * FROM users LIMIT 20");
+         return cursorToArrayList(cursor);
      }
      
      public User getUser(int id)
      {
-         try
-         {
-             String sql ="SELECT * FROM users WHERE (id='"+id+"')";
-             Cursor mCur = mDb.rawQuery(sql, null);
-             User user = cursorToUsers(mCur).get(0);
-             return user;
-         }
-         catch (SQLException mSQLException) 
-         {
-             Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-             throw mSQLException;
-         }
+         Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='"+id+"')");
+         return cursorToUsers(cursor).get(0);
+     }
+     
+     public ArrayList<DatabaseType> getComments()
+     {
+         Cursor cursor = this.getCursor("SELECT * FROM comments LIMIT 20");
+         return cursorToArrayList(cursor);
+     }
+     
+     public User getComment(int id)
+     {
+         Cursor cursor = this.getCursor("SELECT * FROM comments WHERE (id='"+id+"')");
+         return cursorToUsers(cursor).get(0);
      }
 }

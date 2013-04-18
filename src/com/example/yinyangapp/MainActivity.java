@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.example.yinyangapp.R;
 import com.example.yinyangapp.database.DatabaseAdapter;
+import com.example.yinyangapp.databaseentities.DatabaseType;
 import com.example.yinyangapp.databaseentities.User;
 
 import android.os.Bundle;
@@ -21,10 +22,10 @@ public class MainActivity extends Activity {
 		mDbHelper.createDatabase();      
 		mDbHelper.open();
 
-		ArrayList<User> users = mDbHelper.getUsers();
+		ArrayList<DatabaseType> users = mDbHelper.getComments();
 		TextView text01 = (TextView) findViewById(R.id.text01);
 		String text="";
-		for(User u : users) {
+		for(DatabaseType u : users) {
 			text+=u.toString()+" ";
 		}
 		text01.setText(text);
