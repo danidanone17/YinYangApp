@@ -1,28 +1,32 @@
 package com.example.yinyangapp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
-import android.net.ParseException;
+import com.example.yinyangapp.database.DatabaseAdapter;
+import com.example.yinyangapp.databaseentities.DatabaseType;
+import com.example.yinyangapp.databaseentities.User;
+
+//import android.net.ParseException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.*;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 public class UserProfileActivity extends Activity {
 
 	public final static String EXTRA_USERID = "com.example.YingYangApp.USERID";
 
-	private int userId;
+	private int userId = 304;
 	private int reputation = 63611;
 	private String name = "Chris Jester-Young";
-	private Date creationDate;
-	private Date lastAccessDate;
+	private String creationDate;
+	private String lastAccessDate;
 	private String website = "http://about.me/cky";
 	private String location = "Raleigh, NC";
 	private int age = 34;
@@ -55,11 +59,32 @@ public class UserProfileActivity extends Activity {
 	}
 
 	private void getDbInformation() throws java.text.ParseException {
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());        
+		mDbHelper.createDatabase();      
+		mDbHelper.open();
+		
+		User user = mDbHelper.getUser(userId);
+		
+		reputation = user.getReputation();
+		name = user.getDisplayName();
+		website = user.getWebsiteUrl();
+		location = user.getLocation();
+		age = user.getAge();
+		description = user.getAboutMe();
+		profileViews = user.getViews();
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		creationDate = sdf.parse("2008-08-01");
-		lastAccessDate = sdf.parse("2012-07-31");
-		description =  "\n\n<p>Quick links:</p>\n\n<ul>\n<li><a href=\"http://twitter.com/cky944\" rel=\"nofollow\">@cky944</a>, <a href=\"http://ckjy.tumblr.com/+\" rel=\"nofollow\">Google+</a></li>\n<li><a href=\"http://dyscour.se/ask\" rel=\"nofollow\">Ask me anything</a></li>\n<li><a href=\"http://careers.stackoverflow.com/cky\">SO Careers profile</a></li>\n<li><a href=\"http://dyscour.se/\" rel=\"nofollow\">Programming blog</a> (<a href=\"http://cky.posterous.com/\" rel=\"nofollow\">mirror</a>)</li>\n</ul>";
-	}
+		//creationDate = sdf.parse(user.getCreationDate());
+		//lastAccessDate = sdf.parse(user.getLastAccessDate());
+		creationDate = user.getCreationDate();
+		lastAccessDate = user.getLastAccessDate();
+		
+		description.replaceAll("\"", "\\\"");
+		
+		System.out.println(description);
+		
+		mDbHelper.close();
+		}
 
 	private void updateView() {
 		setReputationText();
@@ -121,16 +146,12 @@ public class UserProfileActivity extends Activity {
 		textView.setText(""+profileViews);
 	}
 	
-	private String getDateDifference(Date startDate) {
+	private String getDateDifference(String startDate) {
 		Calendar current = Calendar.getInstance();
-		Calendar creation = Calendar.getInstance();
-		creation.setTime(startDate);
-		if (current.compareTo(creation) < 0) {
-			return null;
-		}
-		int year = current.get(Calendar.YEAR) - creation.YEAR;
-		int month = current.get(Calendar.MONTH) - creation.MONTH;
-		int day = current.get(Calendar.DAY_OF_MONTH) - creation.DAY_OF_MONTH;
+		
+		int year = current.get(Calendar.YEAR) - Integer.parseInt(startDate.split("-")[0]);
+		int month = current.get(Calendar.MONTH) - Integer.parseInt(startDate.split("-")[1]);
+		int day = current.get(Calendar.DAY_OF_MONTH) - Integer.parseInt(startDate.split("-")[2]);
 		if (year > 1) {
 			if (month == 0) {
 				return year + " years";

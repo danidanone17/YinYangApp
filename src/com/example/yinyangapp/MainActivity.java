@@ -9,8 +9,8 @@ import com.example.yinyangapp.databaseentities.User;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.database.Cursor;
-import android.util.Log;
+//import android.database.Cursor;
+//import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 
