@@ -1,7 +1,7 @@
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/gridLayout1"
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent"
     android:layout_alignParentRight="true"
     android:layout_centerVertical="true"
     android:layout_marginRight="8dp" >
@@ -17,7 +17,7 @@
     <LinearLayout
         android:id="@+id/leftColumnLayout"
         android:layout_width="100dp"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" >
@@ -90,7 +90,7 @@
 
         <ImageView
             android:id="@+id/user_picture_image"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/user_picture_description"
@@ -102,7 +102,7 @@
 
         <Button
             android:id="@+id/favorite_questions_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="favoriteQuestionsView"
             android:text="@string/button_favorite_question"
@@ -110,7 +110,7 @@
 
         <Button
             android:id="@+id/questions_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="questionsView"
             android:text="@string/button_questions"
@@ -118,7 +118,7 @@
 
         <Button
             android:id="@+id/answers_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="answersView"
             android:text="@string/button_answers"
@@ -126,7 +126,7 @@
 
         <Button
             android:id="@+id/tags_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="tagsView"
             android:text="@string/button_tags"
@@ -134,7 +134,7 @@
 
         <Button
             android:id="@+id/reputation_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="reputationView"
             android:text="@string/button_reputation"
@@ -142,7 +142,7 @@
 
         <Button
             android:id="@+id/badges_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="badgesView"
             android:text="@string/button_badges"
@@ -150,7 +150,7 @@
 
         <Button
             android:id="@+id/activities_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="activitiesView"
             android:text="@string/button_activities"
@@ -161,8 +161,8 @@
 
     <LinearLayout
         android:id="@+id/rightColumnLayout"
-        android:layout_width="200dp"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" >
@@ -170,7 +170,7 @@
     	<!-- User Name -->
         <LinearLayout 
         	android:id="@+id/userNameLayout" 
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
@@ -182,6 +182,7 @@
 	
 	        <TextView
 	            android:id="@+id/userName"
+	            android:layout_gravity="right"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/user_name" />
@@ -190,7 +191,7 @@
         <!-- Website -->
         <LinearLayout 
         	android:id="@+id/websiteLayout" 
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
@@ -200,19 +201,21 @@
 	            android:layout_gravity="center"
 	            android:text="@string/website_label" />
 	
-	        <EditText
+	        <TextView
 	            android:id="@+id/website"
-	            android:inputType="textUri"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:layout_gravity="right"
 	            android:textSize="12sp"
-	            android:text="@string/website" />
+	            android:text="@string/website"
+	            android:linksClickable="true"
+	            android:autoLink="web" />
         </LinearLayout>
         
         <!-- Location -->
         <LinearLayout 
         	android:id="@+id/locationLayout" 
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
@@ -224,6 +227,7 @@
 	
 	        <TextView
 	            android:id="@+id/location"
+	            android:layout_gravity="right"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/location" />
@@ -232,7 +236,7 @@
         <!-- Age -->
         <LinearLayout 
         	android:id="@+id/ageLayout" 
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
@@ -252,7 +256,7 @@
         <!-- Membership duration -->
         <LinearLayout 
         	android:id="@+id/membershipDurationLayout" 
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
@@ -272,7 +276,7 @@
         <!-- Last seen -->
         <LinearLayout 
         	android:id="@+id/lastSeenLayout" 
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
@@ -292,7 +296,7 @@
         <!-- Profile views -->
         <LinearLayout 
         	android:id="@+id/profileViewsLayout" 
-        	android:layout_width="wrap_content"
+        	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
@@ -314,14 +318,17 @@
 	         android:layout_height="wrap_content"
 	         android:text="@string/user_description_label" />
         
-        <EditText 
+        <TextView 
         	android:id="@+id/userDescription"
-        	android:inputType="textMultiLine"
-        	android:layout_width="180dp"
-        	android:layout_height="100dp"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
         	android:text="@string/user_description"
         	android:textSize="12sp"
-        	android:gravity="fill_horizontal"	/>
+        	android:gravity="fill_horizontal"
+        	android:linksClickable="true"
+        	android:autoLink="web"
+        	android:clickable="true"
+        	android:textColorLink="@android:color/holo_red_dark"	/>
         	
     </LinearLayout>
 

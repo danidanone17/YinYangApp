@@ -1,13 +1,19 @@
 package com.example.yinyangapp;
 
-import com.example.yinyangapp.R;
 
+import com.example.yinyangapp.R;
 import android.os.Bundle;
 import android.app.Activity;
+import android.database.Cursor;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
-
+	
+	
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

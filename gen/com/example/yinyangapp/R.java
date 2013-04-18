@@ -28,26 +28,42 @@ public final class R {
         public static final int user_picture=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f080013;
-        public static final int activities_button=0x7f080011;
-        public static final int answers_button=0x7f08000d;
-        public static final int badgeLayout=0x7f080003;
-        public static final int badges_button=0x7f080010;
-        public static final int bronze_coin_image=0x7f080008;
-        public static final int favorite_questions_button=0x7f08000b;
-        public static final int gold_coin_image=0x7f080004;
-        public static final int gridLayout1=0x7f080000;
-        public static final int leftColumnLayout=0x7f080001;
-        public static final int nr_bronze_coins=0x7f080009;
-        public static final int nr_gold_coins=0x7f080005;
-        public static final int nr_silver_coins=0x7f080007;
-        public static final int questions_button=0x7f08000c;
-        public static final int reputationScore=0x7f080002;
-        public static final int reputation_button=0x7f08000f;
-        public static final int silver_coin_image=0x7f080006;
-        public static final int tags_button=0x7f08000e;
-        public static final int textView1=0x7f080012;
-        public static final int user_picture_image=0x7f08000a;
+        public static final int action_settings=0x7f080023;
+        public static final int activities_button=0x7f080012;
+        public static final int age=0x7f08001b;
+        public static final int ageLayout=0x7f08001a;
+        public static final int answers_button=0x7f08000e;
+        public static final int badgeLayout=0x7f080004;
+        public static final int badges_button=0x7f080011;
+        public static final int bronze_coin_image=0x7f080009;
+        public static final int favorite_questions_button=0x7f08000c;
+        public static final int gold_coin_image=0x7f080005;
+        public static final int gridLayout1=0x7f080001;
+        public static final int lastSeen=0x7f08001f;
+        public static final int lastSeenLayout=0x7f08001e;
+        public static final int leftColumnLayout=0x7f080002;
+        public static final int location=0x7f080019;
+        public static final int locationLayout=0x7f080018;
+        public static final int membershipDuration=0x7f08001d;
+        public static final int membershipDurationLayout=0x7f08001c;
+        public static final int nr_bronze_coins=0x7f08000a;
+        public static final int nr_gold_coins=0x7f080006;
+        public static final int nr_silver_coins=0x7f080008;
+        public static final int profileViews=0x7f080021;
+        public static final int profileViewsLayout=0x7f080020;
+        public static final int questions_button=0x7f08000d;
+        public static final int reputationScore=0x7f080003;
+        public static final int reputation_button=0x7f080010;
+        public static final int rightColumnLayout=0x7f080013;
+        public static final int silver_coin_image=0x7f080007;
+        public static final int tags_button=0x7f08000f;
+        public static final int text01=0x7f080000;
+        public static final int userDescription=0x7f080022;
+        public static final int userName=0x7f080015;
+        public static final int userNameLayout=0x7f080014;
+        public static final int user_picture_image=0x7f08000b;
+        public static final int website=0x7f080017;
+        public static final int websiteLayout=0x7f080016;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -59,6 +75,8 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
+        public static final int age=0x7f05001b;
+        public static final int age_label=0x7f05001a;
         public static final int app_name=0x7f050000;
         public static final int bronze_coin_description=0x7f05000b;
         public static final int button_activities=0x7f050013;
@@ -70,14 +88,28 @@ public final class R {
         public static final int button_tags=0x7f050010;
         public static final int gold_coin_description=0x7f050009;
         public static final int hello_world=0x7f050002;
+        public static final int last_seen=0x7f05001f;
+        public static final int last_seen_label=0x7f05001e;
+        public static final int location=0x7f050019;
+        public static final int location_label=0x7f050018;
+        public static final int membership_duration=0x7f05001d;
+        public static final int membership_duration_label=0x7f05001c;
         public static final int nr_bronze_coins=0x7f050008;
         public static final int nr_gold_coins=0x7f050006;
         public static final int nr_silver_coins=0x7f050007;
+        public static final int profile_views=0x7f050021;
+        public static final int profile_views_label=0x7f050020;
         public static final int reputation_score=0x7f050005;
         public static final int reputation_text=0x7f050004;
         public static final int silver_coin_description=0x7f05000a;
         public static final int title_activity_user_profile=0x7f050003;
+        public static final int user_description=0x7f050023;
+        public static final int user_description_label=0x7f050022;
+        public static final int user_name=0x7f050015;
+        public static final int user_name_label=0x7f050014;
         public static final int user_picture_description=0x7f05000c;
+        public static final int website=0x7f050017;
+        public static final int website_label=0x7f050016;
     }
     public static final class style {
         /** 
