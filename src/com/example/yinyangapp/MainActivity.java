@@ -1,7 +1,10 @@
 package com.example.yinyangapp;
 
+import java.util.ArrayList;
+
 import com.example.yinyangapp.R;
-import com.example.yinyangapp.database.TestAdapter;
+import com.example.yinyangapp.database.DatabaseAdapter;
+import com.example.yinyangapp.databaseentities.User;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -14,13 +17,17 @@ public class MainActivity extends Activity {
 	
 	public void testDB(){
 		
-		TestAdapter mDbHelper = new TestAdapter(getBaseContext());        
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());        
 		mDbHelper.createDatabase();      
 		mDbHelper.open();
 
-		Cursor testdata = mDbHelper.getTestData();
+		ArrayList<User> users = mDbHelper.getUsers();
 		TextView text01 = (TextView) findViewById(R.id.text01);
-		text01.setText(testdata.getString(3));
+		String text="";
+		for(User u : users) {
+			text+=u.toString()+" ";
+		}
+		text01.setText(text);
 		mDbHelper.close();
 	}
 	

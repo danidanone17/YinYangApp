@@ -1,13 +1,17 @@
 package com.example.yinyangapp.database;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import com.example.yinyangapp.databaseentities.User;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class TestAdapter 
+public class DatabaseAdapter 
 {
     protected static final String TAG = "DataAdapter";
 
@@ -15,13 +19,13 @@ public class TestAdapter
     private SQLiteDatabase mDb;
     private SoData mDbHelper;
 
-    public TestAdapter(Context context) 
+    public DatabaseAdapter(Context context) 
     {
         this.mContext = context;
         mDbHelper = new SoData(mContext);
     }
 
-    public TestAdapter createDatabase() throws SQLException 
+    public DatabaseAdapter createDatabase() throws SQLException 
     {
         try 
         {
@@ -35,7 +39,7 @@ public class TestAdapter
         return this;
     }
 
-    public TestAdapter open() throws SQLException 
+    public DatabaseAdapter open() throws SQLException 
     {
         try 
         {
@@ -68,6 +72,51 @@ public class TestAdapter
                 mCur.moveToNext();
              }
              return mCur;
+         }
+         catch (SQLException mSQLException) 
+         {
+             Log.e(TAG, "getTestData >>"+ mSQLException.toString());
+             throw mSQLException;
+         }
+     }
+     
+     private ArrayList<User> cursorToUsers(Cursor cursor) {
+    	 ArrayList<User> users = new ArrayList<User>();
+    	 if ( cursor != null)
+         {
+    		 while (cursor.moveToNext()) {
+    		 	User user = new User(cursor);
+	            users.add(user);
+    		 }
+         }
+    	 return users;
+     }
+     
+     public ArrayList<User> getUsers()
+     {
+    	 ArrayList<User> users = new ArrayList<User>();
+         try
+         {
+             String sql ="SELECT * FROM users LIMIT 20";
+             Cursor mCur = mDb.rawQuery(sql, null);
+             users = cursorToUsers(mCur);
+             return users;
+         }
+         catch (SQLException mSQLException) 
+         {
+             Log.e(TAG, "getTestData >>"+ mSQLException.toString());
+             throw mSQLException;
+         }
+     }
+     
+     public User getUser(int id)
+     {
+         try
+         {
+             String sql ="SELECT * FROM users WHERE (id='"+id+"')";
+             Cursor mCur = mDb.rawQuery(sql, null);
+             User user = cursorToUsers(mCur).get(0);
+             return user;
          }
          catch (SQLException mSQLException) 
          {
