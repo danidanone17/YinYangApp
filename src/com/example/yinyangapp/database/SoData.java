@@ -15,8 +15,8 @@ import android.util.Log;
 
 public class SoData extends SQLiteOpenHelper {
 	
-	private static String DB_PATH ="assets";
-	private static String DB_NAME = "so";
+    private static String DB_PATH = "";
+	private static String DB_NAME = "so.sqlite";
 	private SQLiteDatabase mDatabase;
 	private final Context mContext;
 
@@ -70,7 +70,7 @@ public class SoData extends SQLiteOpenHelper {
 	    //Copy the database from assets
 	    private void copyDataBase() throws IOException
 	    {
-	        InputStream mInput = mContext.getAssets().open(DB_NAME);
+	    	InputStream mInput = mContext.getAssets().open(DB_NAME);
 	        String outFileName = DB_PATH + DB_NAME;
 	        OutputStream mOutput = new FileOutputStream(outFileName);
 	        byte[] mBuffer = new byte[1024];

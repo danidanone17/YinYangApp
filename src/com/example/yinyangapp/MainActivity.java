@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
@@ -18,7 +19,9 @@ public class MainActivity extends Activity {
 		mDbHelper.open();
 
 		Cursor testdata = mDbHelper.getTestData();
-		mDbHelper.close();	
+		TextView text01 = (TextView) findViewById(R.id.text01);
+		text01.setText(testdata.getString(3));
+		mDbHelper.close();
 	}
 	
 	

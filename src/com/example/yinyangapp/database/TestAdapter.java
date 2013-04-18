@@ -60,7 +60,7 @@ public class TestAdapter
      {
          try
          {
-             String sql ="SELECT * FROM posts";
+             String sql ="SELECT * FROM users";
 
              Cursor mCur = mDb.rawQuery(sql, null);
              if (mCur!=null)
