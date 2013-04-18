@@ -18,7 +18,7 @@ import android.util.Log;
 public class DatabaseAdapter 
 {
     protected static final String TAG = "DataAdapter";
-
+    
     private final Context mContext;
     private SQLiteDatabase mDb;
     private SoData mDbHelper;
@@ -63,17 +63,6 @@ public class DatabaseAdapter
     {
         mDbHelper.close();
     }
-
-    
-    private ArrayList<User> cursorToUsers(Cursor cursor) {
-    	 ArrayList<User> users = new ArrayList<User>();
-    	 if ( cursor != null)
-         { while (cursor.moveToNext()) {
-        	 User user = new User(cursor);
-	         users.add(user);	}
-         }
-    	 return users;
-     }
     
     private ArrayList<DatabaseType> cursorToArrayList(Cursor cursor)
     {
@@ -142,8 +131,8 @@ public class DatabaseAdapter
      
      public User getUser(int id)
      {
-         Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+    	 Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='"+id+"')");
+         return (User) cursorToArrayList(cursor).get(0);
      }
      
      public ArrayList<DatabaseType> getComments()
@@ -152,10 +141,11 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
-     public User getComment(int id)
+     public Comment getComment(int id)
      {
+    	 
          Cursor cursor = this.getCursor("SELECT * FROM comments WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+         return (Comment) cursorToArrayList(cursor).get(0);
      }
      
      public ArrayList<DatabaseType> getPosts()
@@ -164,10 +154,10 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
-     public User getPost(int id)
+     public Post getPost(int id)
      {
          Cursor cursor = this.getCursor("SELECT * FROM posts WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+         return (Post) cursorToArrayList(cursor).get(0);
      }
      
      public ArrayList<DatabaseType> getVotes()
@@ -176,9 +166,9 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
-     public User getVote(int id)
+     public Vote getVote(int id)
      {
          Cursor cursor = this.getCursor("SELECT * FROM votes WHERE (id='"+id+"')");
-         return cursorToUsers(cursor).get(0);
+         return (Vote) cursorToArrayList(cursor).get(0);
      }
 }

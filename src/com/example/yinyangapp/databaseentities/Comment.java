@@ -4,6 +4,14 @@ import android.database.Cursor;
 
 public class Comment extends DatabaseType {
 
+	public static final String KEY_ID = "id";
+	public static final String KEY_POST_ID = "post_id";
+	public static final String KEY_SCORE = "score";
+	public static final String KEY_TEXT = "text";
+	public static final String KEY_CREATION_DATE = "creation_date";
+	public static final String KEY_USER_ID = "user_id";
+	
+	
 	private int id;
 	private int postId;
 	private int score;
@@ -13,12 +21,12 @@ public class Comment extends DatabaseType {
 	
 	public Comment(Cursor cursor){
 		super(cursor);
-		this.setId(cursor.getInt(0));
-		this.setPostId(cursor.getInt(1));
-		this.setScore(cursor.getInt(2));
-		this.setText(cursor.getString(3));
-		this.setCreationDate(cursor.getString(4));
-		this.setUserId(cursor.getInt(5));
+		this.setId(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)));
+		this.setPostId(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POST_ID)));
+		this.setScore(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCORE)));
+		this.setText(cursor.getString(cursor.getColumnIndexOrThrow(KEY_TEXT)));
+		this.setCreationDate(cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATION_DATE)));
+		this.setUserId(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_USER_ID)));
 	}
 	
 	public int getId() {
