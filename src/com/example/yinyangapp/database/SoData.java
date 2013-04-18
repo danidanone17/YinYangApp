@@ -1,4 +1,4 @@
-package com.example.yinyangapp;
+package com.example.yinyangapp.database;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -1,4 +1,4 @@
-package com.example.yinyangapp;
+package com.example.yinyangapp.database;
 
 import java.io.IOException;
 import android.content.Context;
