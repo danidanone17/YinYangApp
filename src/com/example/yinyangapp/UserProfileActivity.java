@@ -21,17 +21,19 @@ import android.widget.TextView;
 public class UserProfileActivity extends Activity {
 
 	public final static String EXTRA_USERID = "com.example.YingYangApp.USERID";
+	public final static String EXTRA_DB_HELPER = "com.example.YingYangApp.DBHELPER";
 
 	private int userId = 304;
-	private int reputation = 63611;
-	private String name = "Chris Jester-Young";
+	private DatabaseAdapter mDbHelper;
+	private int reputation;
+	private String name;
 	private String creationDate;
 	private String lastAccessDate;
-	private String website = "http://about.me/cky";
-	private String location = "Raleigh, NC";
-	private int age = 34;
-	private String description = "hello, my name is Klas";
-	private int profileViews = 4345;
+	private String website;
+	private String location;
+	private int age;
+	private String description;
+	private int profileViews;
 	private int downVotes;
 	private int upVotes;
 
@@ -41,6 +43,7 @@ public class UserProfileActivity extends Activity {
 		setContentView(R.layout.activity_user_profile);
 		//Intent intent = getIntent();
 		//userId = intent.getIntExtra(EXTRA_USERID, -1);
+		//mDbHelper = intent.getParcelableExtra(EXTRA_DB_HELPER);
 		try {
 			getDbInformation();
 		} catch (java.text.ParseException e) {
