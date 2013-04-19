@@ -41,8 +41,8 @@ public class UserProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_profile);
-		//Intent intent = getIntent();
-		//userId = intent.getIntExtra(EXTRA_USERID, -1);
+		Intent intent = getIntent();
+		userId = intent.getIntExtra(EXTRA_USERID, -1);
 		//mDbHelper = intent.getParcelableExtra(EXTRA_DB_HELPER);
 		try {
 			getDbInformation();
