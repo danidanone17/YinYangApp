@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.example.yinyangapp.database.DatabaseAdapter;
 import com.example.yinyangapp.databaseentities.Comment;
 import com.example.yinyangapp.databaseentities.DatabaseType;
+import com.example.yinyangapp.databaseentities.Post;
 import com.example.yinyangapp.databaseentities.User;
 
 import android.os.Bundle;
@@ -59,11 +60,11 @@ public class FreeTextSearchActivity extends Activity {
 		textSearchSplited = textSearch.split(" ");
 		for(String textSearchS : textSearchSplited){
 			//add each word to the hash to search into the text of the posts
-			hash.put(Comment.KEY_TEXT, textSearchS);
+			hash.put(Post.KEY_BODY, textSearchS);
 		}
 		//search only in questions
-		hash.put(Comment.KEY_POST_ID, "1");
-		String table = Comment.TABLE_NAME;
+		hash.put(Post.KEY_POST_TYPE_ID, "1");
+		String table = Post.TABLE_NAME;
 		
 		ArrayList<DatabaseType> posts = mDbHelper.getDataByCriteria(table, hash);
 		return posts;
