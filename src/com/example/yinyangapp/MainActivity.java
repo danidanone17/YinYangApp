@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import com.example.yinyangapp.R;
 import com.example.yinyangapp.database.DatabaseAdapter;
+import com.example.yinyangapp.database.MeanOfSearch;
+import com.example.yinyangapp.database.SearchEntity;
 import com.example.yinyangapp.databaseentities.DatabaseType;
 import com.example.yinyangapp.databaseentities.User;
 
@@ -23,11 +25,23 @@ public class MainActivity extends Activity {
 		mDbHelper.createDatabase();      
 		mDbHelper.open();
 
-		HashMap<String, String> hash = new HashMap<String, String>();
+		/*
+		old version changed 04/19/2013
 		hash.put(User.KEY_AGE, "32");
 		hash.put(User.KEY_LOCATION, "Canada");
+		*/
+		
 		String table = User.TABLE_NAME;
-		ArrayList<DatabaseType> users = mDbHelper.getDataByCriteria(table, hash);
+		
+		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
+		
+		SearchEntity searchEntity1 = new SearchEntity(User.KEY_AGE,"33",MeanOfSearch.exact);
+		SearchEntity searchEntity2 = new SearchEntity(User.KEY_LOCATION, "Canada", MeanOfSearch.contained);
+		
+		searchCriteria.add(searchEntity1);
+		searchCriteria.add(searchEntity2);
+		
+		ArrayList<DatabaseType> users = mDbHelper.getDataByCriteria(table, searchCriteria);
 		TextView text01 = (TextView) findViewById(R.id.text01);
 		String text="";
 		for(DatabaseType u : users) {

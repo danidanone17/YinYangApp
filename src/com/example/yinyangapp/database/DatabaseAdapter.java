@@ -132,6 +132,7 @@ public class DatabaseAdapter
          return cursorToArrayList(cursor);
      }
      
+     /*old version, changed 04/19/2013
      public ArrayList<DatabaseType> getDataByCriteria(String tableName, HashMap<String, String> criteria)
      {
     	 String where = " WHERE ";
@@ -141,6 +142,24 @@ public class DatabaseAdapter
     		 where+= criterion.getKey()+" LIKE '%"+criterion.getValue()+"%'";
     		 if (iterator.hasNext()) {where+= " and ";}
     	 }
+    	 String sqlQuery = "SELECT * FROM " + tableName + where;
+    	 Log.e("", "SQL QUERY : " + sqlQuery);
+    	 Cursor cursor = this.getCursor(sqlQuery);
+         return cursorToArrayList(cursor);
+     }*/
+     
+     public ArrayList<DatabaseType> getDataByCriteria(String tableName, ArrayList<SearchEntity> criteria)
+     {
+    	 String where = " WHERE ";
+    	 for (SearchEntity searchEntity : criteria) {
+			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)){
+				where += searchEntity.getKey() + " LIKE '%" + searchEntity.getValue() + "%'";
+			}
+			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)){
+				where += searchEntity.getKey() + "LIKE '" + searchEntity.getValue() + "'";
+			}
+		}
+    	 
     	 String sqlQuery = "SELECT * FROM " + tableName + where;
     	 Log.e("", "SQL QUERY : " + sqlQuery);
     	 Cursor cursor = this.getCursor(sqlQuery);
