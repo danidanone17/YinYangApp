@@ -151,13 +151,18 @@ public class DatabaseAdapter
      public ArrayList<DatabaseType> getDataByCriteria(String tableName, ArrayList<SearchEntity> criteria)
      {
     	 String where = " WHERE ";
+    	 int i = 0;
     	 for (SearchEntity searchEntity : criteria) {
+    		 if(i>0){
+    			 where += " AND ";
+    		 }
 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)){
 				where += searchEntity.getKey() + " LIKE '%" + searchEntity.getValue() + "%'";
 			}
 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)){
-				where += searchEntity.getKey() + "LIKE '" + searchEntity.getValue() + "'";
+				where += searchEntity.getKey() + " LIKE '" + searchEntity.getValue() + "'";
 			}
+			i++;
 		}
     	 
     	 String sqlQuery = "SELECT * FROM " + tableName + where;
