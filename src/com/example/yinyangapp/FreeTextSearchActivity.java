@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.yinyangapp.database.DatabaseAdapter;
@@ -58,6 +60,15 @@ public class FreeTextSearchActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void searchFreeText(View view) {
+		EditText editText = (EditText) findViewById(R.id.stringSearch);
+
+		textSearch = editText.getText().toString();
+		ArrayList<DatabaseType> postsFound = performSearch(textSearch);
+
+		testSearch(postsFound);
 	}
 
 	// for testing, append on the text view the result, each on a different line
