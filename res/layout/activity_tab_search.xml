@@ -13,12 +13,14 @@
     	android:layout_height="wrap_content"
     	android:gravity="center_horizontal">      
         <Button 
-            android:id="@+id/button1"
-            style="@style/tag_button"
-    		/>
+            android:id="@+id/button_northwest"
+            style="@style/tag_button"  
+            android:onClick="moveToCenter"          
+            />
        <Button 
-            android:id="@+id/button2"
+            android:id="@+id/button_northeast"
             style="@style/tag_button"
+            android:onClick="moveToCenter" 
     		/>
     </LinearLayout>
     
@@ -28,18 +30,20 @@
     	android:gravity="center_horizontal">
         
                 <Button 
-            android:id="@+id/button1"
+            android:id="@+id/button_west"
 			style="@style/tag_button"
+			android:onClick="moveBackwards"
 			/>
         
                 <Button 
-            android:id="@+id/button2"
+            android:id="@+id/button_center"
             style="@style/tag_button"
             />
                 
 				<Button 
-            android:id="@+id/button2"
+            android:id="@+id/button_east"
             style="@style/tag_button"
+            android:onClick="moveForwards"
             />
                         
     </LinearLayout>
@@ -50,13 +54,15 @@
     	android:gravity="center_horizontal">
         
                         <Button 
-            android:id="@+id/button1"
+            android:id="@+id/button_southwest"
             style="@style/tag_button"
+            android:onClick="moveToCenter" 
             />
         
                 <Button 
-            android:id="@+id/button2"
+            android:id="@+id/button_southeast"
             style="@style/tag_button"
+            android:onClick="moveToCenter" 
             />
     </LinearLayout>
     
