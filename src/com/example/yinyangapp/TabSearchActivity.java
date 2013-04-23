@@ -67,7 +67,7 @@ public class TabSearchActivity extends Activity {
 				toast.show();	
 			}
 			else {
-			Button button = new Button(this.getApplicationContext());
+			Button button = (Button) getLayoutInflater().inflate(R.layout.selected_tag_button, null);
 			button.setText(tag);
 			button.setTag(tag);
 			

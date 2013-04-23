@@ -8,5 +8,5 @@
     <string name="string_search">Search text</string>
     <string name="search_command">Search</string>
     <string name="title_activity_tab_search">TabSearchActivity</string>
-
+	<color name="dark_grey">#555555</color>
 </resources>
