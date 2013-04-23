@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
-import android.content.Intent;
 
-import com.example.yinyangapp.UserProfileActivity;
 import com.example.yinyangapp.database.DatabaseAdapter;
 import com.example.yinyangapp.database.MeanOfSearch;
 import com.example.yinyangapp.database.SearchEntity;
@@ -18,13 +16,7 @@ public class Controller {
 	public Controller() {
 		// TODO Auto-generated constructor stub
 	}
-/*
-	public Intent testUserProfile() {
-		Intent intent = new Intent(this, UserProfileActivity.class);
-		intent.putExtra(UserProfileActivity.EXTRA_USERID, 106);
-		return intent;
-	}
-*/
+
 	public ArrayList<DatabaseType> testSearch(Context con) {
 
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);

@@ -2,9 +2,6 @@ package com.example.yinyangapp.database;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import com.example.yinyangapp.databaseentities.Comment;
 import com.example.yinyangapp.databaseentities.DatabaseType;
@@ -115,19 +112,6 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor("SELECT * FROM users LIMIT 20");
 		return cursorToArrayList(cursor);
 	}
-
-	/*
-	 * old version, changed 04/19/2013 public ArrayList<DatabaseType>
-	 * getDataByCriteria(String tableName, HashMap<String, String> criteria) {
-	 * String where = " WHERE "; Iterator<Entry<String,String>> iterator =
-	 * criteria.entrySet().iterator(); while (iterator.hasNext()) {
-	 * Entry<String,String> criterion = iterator.next(); where+=
-	 * criterion.getKey()+" LIKE '%"+criterion.getValue()+"%'"; if
-	 * (iterator.hasNext()) {where+= " and ";} } String sqlQuery =
-	 * "SELECT * FROM " + tableName + where; Log.e("", "SQL QUERY : " +
-	 * sqlQuery); Cursor cursor = this.getCursor(sqlQuery); return
-	 * cursorToArrayList(cursor); }
-	 */
 
 	public ArrayList<DatabaseType> getDataByCriteria(String tableName,
 			ArrayList<SearchEntity> criteria) {

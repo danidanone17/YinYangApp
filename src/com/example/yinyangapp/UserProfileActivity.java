@@ -1,17 +1,11 @@
 package com.example.yinyangapp;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 
 import com.example.yinyangapp.controller.Controller;
 import com.example.yinyangapp.database.DatabaseAdapter;
-import com.example.yinyangapp.databaseentities.DatabaseType;
 import com.example.yinyangapp.databaseentities.User;
 
-//import android.net.ParseException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -44,7 +38,6 @@ public class UserProfileActivity extends Activity {
 		setContentView(R.layout.activity_user_profile);
 		Intent intent = getIntent();
 		userId = intent.getIntExtra(EXTRA_USERID, -1);
-		//mDbHelper = intent.getParcelableExtra(EXTRA_DB_HELPER);
 		mDbHelper = new DatabaseAdapter(getBaseContext());
 		controller = new Controller();
 		try {
@@ -54,7 +47,7 @@ public class UserProfileActivity extends Activity {
 			e.printStackTrace();
 		}
 		updateView();
-		
+
 	}
 
 	@Override
@@ -65,11 +58,11 @@ public class UserProfileActivity extends Activity {
 	}
 
 	private void getDbInformation() throws java.text.ParseException {
-		mDbHelper.createDatabase();      
+		mDbHelper.createDatabase();
 		mDbHelper.open();
-		
+
 		User user = mDbHelper.getUser(userId);
-		
+
 		reputation = user.getReputation();
 		name = user.getDisplayName();
 		website = user.getWebsiteUrl();
@@ -77,19 +70,17 @@ public class UserProfileActivity extends Activity {
 		age = user.getAge();
 		description = user.getAboutMe();
 		profileViews = user.getViews();
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//creationDate = sdf.parse(user.getCreationDate());
-		//lastAccessDate = sdf.parse(user.getLastAccessDate());
 		creationDate = user.getCreationDate();
 		lastAccessDate = user.getLastAccessDate();
-		
+
 		description.replaceAll("\"", "\\\"");
-		
+
 		System.out.println(description);
-		
+
 		mDbHelper.close();
-		}
+	}
 
 	private void updateView() {
 		setReputationText();
@@ -101,12 +92,12 @@ public class UserProfileActivity extends Activity {
 		setDescription();
 		setProfileViews();
 		setAge();
-		
+
 	}
 
 	private void setReputationText() {
 		TextView textView = (TextView) findViewById(R.id.reputationScore);
-		textView.setText(""+reputation);
+		textView.setText("" + reputation);
 	}
 
 	private void setUserNameText() {
@@ -119,111 +110,37 @@ public class UserProfileActivity extends Activity {
 		textView.setText(controller.getDateDifference(creationDate));
 
 	}
-	private void setLastAccessDate(){
+
+	private void setLastAccessDate() {
 		TextView textView = (TextView) findViewById(R.id.lastSeen);
 		textView.setText(controller.getDateDifference(lastAccessDate));
 	}
-	
-	private void setWebsite(){
+
+	private void setWebsite() {
 		TextView textView = (TextView) findViewById(R.id.website);
 		textView.setText(website);
 	}
-	
-	private void setLocation(){
+
+	private void setLocation() {
 		TextView textView = (TextView) findViewById(R.id.location);
 		textView.setText(location);
 	}
-	
-	private void setAge(){
-		TextView textView = (TextView) findViewById(R.id.age);
-		textView.setText(""+age);
-	}
-	
 
-	private void setDescription(){
+	private void setAge() {
+		TextView textView = (TextView) findViewById(R.id.age);
+		textView.setText("" + age);
+	}
+
+	private void setDescription() {
 		TextView textView = (TextView) findViewById(R.id.userDescription);
 		textView.setText(Html.fromHtml(description));
-		//textView.setMovementMethod(LinkMovementMethod.getInstance());
+		// textView.setMovementMethod(LinkMovementMethod.getInstance());
 	}
-	
-	private void setProfileViews(){
+
+	private void setProfileViews() {
 		TextView textView = (TextView) findViewById(R.id.profileViews);
-		textView.setText(""+profileViews);
+		textView.setText("" + profileViews);
 	}
-/*	
-	private String getDateDifference(String startDate) {
-		Calendar current = Calendar.getInstance();
-		
-		int year = current.get(Calendar.YEAR) - Integer.parseInt(startDate.split("-")[0]);
-		int month = current.get(Calendar.MONTH) - Integer.parseInt(startDate.split("-")[1]);
-		int day = current.get(Calendar.DAY_OF_MONTH) - Integer.parseInt(startDate.split("-")[2]);
-		if (year > 1) {
-			if (month == 0) {
-				return year + " years";
-			}
-			if (month > 1) {
-				return year + " years, " + month + " months";
-			}
-			if (month == 1) {
-				return year + " years, " + month + " month";
-			}
-			if (month < 0) {
-				year--;
-				month = month + 12;
-				if (year == 1) {
-					if (month > 1) {
-						return year + " year, " + month + " months";
-					} else {
-						return year + " year, " + month + " month";
-					}
-				}
-				if (year > 1) {
-					if (month > 1) {
-						return year + " years, " + month + " months";
-					} else {
-						return year + " years, " + month + " month";
-					}
-				}
-
-			}
-		}
-		if (year == 1) {
-			if (month == 0) {
-				return year + " year";
-			}
-			if (month > 1) {
-				return year + " year, " + month + " months";
-			}
-			if (month == 1) {
-				return year + " year, " + month + " month";
-			}
-			if (month < 0) {
-				month = month + 12;
-				if (month > 1) {
-					return month + " months";
-				} else {
-					return month + " month";
-				}
-			}
-		}
-		if (year == 0) {
-			if (month > 1) {
-				return month + " months";
-			} else {
-				if (day > 1) {
-					return day + "days";
-				}
-				if (day == 0) {
-					return "today";
-				} else {
-					return day + "day";
-				}
-			}
-		}
-		return null;
-	}
-
-*/	
 
 	// Do things when the buttons is pressed
 	public void favoriteQuestionsView(View view) {
@@ -246,5 +163,5 @@ public class UserProfileActivity extends Activity {
 
 	public void activitiesView(View view) {
 	}
-	
+
 }
