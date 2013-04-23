@@ -7,7 +7,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TabSearchActivity"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/layout_main" >
     <LinearLayout 
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
                 <Button 
             android:id="@+id/button_center"
             style="@style/tag_button"
+            android:onClick="selectForSearch"
             />
                 
 				<Button 
@@ -68,8 +70,28 @@
     
     <LinearLayout 
         android:layout_width="match_parent"
-    	android:layout_height="match_parent">
-        
-        
+    	android:layout_height="wrap_content"
+    	android:gravity="center_horizontal">
+                
+	    <EditText 
+	        android:id="@+id/edit_search"
+	        android:layout_width="200dp"
+	        android:layout_height="wrap_content"
+	        android:hint="Free text search"/>
+	    
+	    <Button
+            android:id="@+id/searchCommand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="searchFreeText"
+            android:text="@string/search_command"
+            android:textSize="20sp" 
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
+    
+    <com.example.yinyangapp.PredicateLayout
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:id="@+id/layout_selectedtags">
+    </com.example.yinyangapp.PredicateLayout>
 </LinearLayout>

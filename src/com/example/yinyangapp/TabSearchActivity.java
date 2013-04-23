@@ -1,5 +1,7 @@
 package com.example.yinyangapp;
 
+import java.util.ArrayList;
+
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Activity;
@@ -7,8 +9,13 @@ import android.graphics.LightingColorFilter;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 
 public class TabSearchActivity extends Activity {
+	
+	private ArrayList<String> selectedTags = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +50,34 @@ public class TabSearchActivity extends Activity {
 		
 		Button centerButton = (Button)this.findViewById(R.id.button_center);
 		centerButton.setText(text);
+	}
+	
+	public void selectForSearch(View view){
+		Button centerButton = (Button)view;		
+		addTagToSelected(centerButton.getText().toString());
+	}
+	
+	private void addTagToSelected(String tag){
+		if(!selectedTags.contains(tag)){
+			Button button = new Button(this.getApplicationContext());
+			button.setText(tag);
+			button.setTag(tag);
+			
+			PredicateLayout layout = (PredicateLayout)this.findViewById(R.id.layout_selectedtags);
+			layout.addView(button);
+			
+			selectedTags.add(tag);			
+		}
+		else{
+			removeTagFromSelected(tag);
+		}
+	}
+	
+	private void removeTagFromSelected(String tag){
+		PredicateLayout layout = (PredicateLayout)this.findViewById(R.id.layout_selectedtags);	
+		layout.removeView(layout.findViewWithTag(tag));
 		
-
+		selectedTags.remove(tag);
 	}
 
 }
