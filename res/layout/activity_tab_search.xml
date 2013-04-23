@@ -8,27 +8,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TabSearchActivity"
     android:orientation="vertical" >
-
     <LinearLayout 
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:gravity="center_horizontal">
-        
+    	android:gravity="center_horizontal">      
         <Button 
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_margin="5dp"
-    		android:text="Button1"
-    		android:background="@drawable/button"/>
-        
-                <Button 
+            style="@style/tag_button"
+    		/>
+       <Button 
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_margin="5dp"
-    		android:text="Button2"/>
-        
+            style="@style/tag_button"
+    		/>
     </LinearLayout>
     
     <LinearLayout 
@@ -38,26 +29,19 @@
         
                 <Button 
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_margin="5dp"
-    		android:text="Button1"/>
+			style="@style/tag_button"
+			/>
         
                 <Button 
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_margin="5dp"
-    		android:text="Button2"/>
+            style="@style/tag_button"
+            />
                 
-                                <Button 
+				<Button 
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_margin="5dp"
-    		android:text="Button2"/>
-                
-        
+            style="@style/tag_button"
+            />
+                        
     </LinearLayout>
     
     <LinearLayout 
@@ -67,17 +51,13 @@
         
                         <Button 
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_margin="5dp"
-    		android:text="Button1"/>
+            style="@style/tag_button"
+            />
         
                 <Button 
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_margin="5dp"
-    		android:text="Button2"/>
+            style="@style/tag_button"
+            />
     </LinearLayout>
     
     <LinearLayout 

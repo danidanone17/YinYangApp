@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <selector xmlns:android="http://schemas.android.com/apk/res/android">  
-        <item android:drawable="@drawable/on" android:state_pressed="true"></item>  
-        <item android:drawable="@drawable/off"></item>  
-    </selector>    
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+android:shape="oval" android:padding="10dp">
+<!--  <solid android:color="#AA0000"/> --> 
+<gradient android:startColor="#FFFF0000" android:endColor="#80FF00FF"
+        android:angle="270"/>
+<!--  <corners
+     android:bottomRightRadius="10dp"
+     android:bottomLeftRadius="10dp"
+  android:topLeftRadius="10dp"
+  android:topRightRadius="10dp"/>
+  
+  -->
+</shape>
