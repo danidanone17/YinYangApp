@@ -9,6 +9,7 @@ import com.example.yinyangapp.databaseentities.User;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.text.Html;
 import android.view.*;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class UserProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_profile);
+		setupActionBar();
 		Intent intent = getIntent();
 		userId = intent.getIntExtra(EXTRA_USERID, -1);
 		mDbHelper = new DatabaseAdapter(getBaseContext());
@@ -56,6 +58,30 @@ public class UserProfileActivity extends Activity {
 		getMenuInflater().inflate(R.menu.user_profile, menu);
 		return true;
 	}
+	
+	private void setupActionBar() {
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+	}
+
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// This ID represents the Home or Up button. In the case of this
+			// activity, the Up button is shown. Use NavUtils to allow users
+			// to navigate up one level in the application structure. For
+			// more details, see the Navigation pattern on Android Design:
+			//
+			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+			//
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 
 	private void getDbInformation() throws java.text.ParseException {
 		mDbHelper.createDatabase();

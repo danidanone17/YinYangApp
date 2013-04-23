@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 	// Go to the user profile view for the specified user id 106
 	public void testUserProfile(View _) {
 		Intent intent = new Intent(this, UserProfileActivity.class);
-		intent.putExtra(UserProfileActivity.EXTRA_USERID, 106);
+		intent.putExtra(UserProfileActivity.EXTRA_USERID, 62);
 		startActivity(intent);
 	}
 	
