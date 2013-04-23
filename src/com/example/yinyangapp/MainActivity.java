@@ -39,8 +39,12 @@ public class MainActivity extends Activity {
 	
 	public void freeTextSearch(View _) {
 		Intent intent = new Intent(this, FreeTextSearchActivity.class);
-		startActivity(intent);	
-		
+		startActivity(intent);
+	}
+	
+	public void showQuestionView(View _){
+		Intent intent = new Intent(this, QuestionActivity.class);
+		startActivity(intent);
 	}
 
 	@Override
@@ -55,5 +59,5 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
 }
