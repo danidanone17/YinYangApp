@@ -9,9 +9,11 @@ import android.graphics.LightingColorFilter;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class TabSearchActivity extends Activity {
 	
@@ -59,6 +61,12 @@ public class TabSearchActivity extends Activity {
 	
 	private void addTagToSelected(String tag){
 		if(!selectedTags.contains(tag)){
+			if(selectedTags.size() >= 5)
+			{
+				Toast toast = Toast.makeText(this.getApplicationContext(), "Too many tags!", Toast.LENGTH_LONG);
+				toast.show();	
+			}
+			else {
 			Button button = new Button(this.getApplicationContext());
 			button.setText(tag);
 			button.setTag(tag);
@@ -66,7 +74,8 @@ public class TabSearchActivity extends Activity {
 			PredicateLayout layout = (PredicateLayout)this.findViewById(R.id.layout_selectedtags);
 			layout.addView(button);
 			
-			selectedTags.add(tag);			
+			selectedTags.add(tag);		
+			}
 		}
 		else{
 			removeTagFromSelected(tag);
@@ -80,4 +89,12 @@ public class TabSearchActivity extends Activity {
 		selectedTags.remove(tag);
 	}
 
+	public void performSearch(View view){
+		SearchController searchController = new SearchController();
+		EditText editView = (EditText)this.findViewById(R.id.edit_search);
+		String returnedText = searchController.parseTagSearchString(selectedTags, editView.getText().toString());
+		Toast toast = Toast.makeText(this.getApplicationContext(), returnedText, Toast.LENGTH_LONG);
+		toast.show();
+	}
+	
 }

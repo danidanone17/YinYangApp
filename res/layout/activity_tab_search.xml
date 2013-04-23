@@ -53,7 +53,8 @@
     <LinearLayout 
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:gravity="center_horizontal">
+    	android:gravity="center_horizontal"
+    	android:layout_marginBottom="10dp">
         
                         <Button 
             android:id="@+id/button_southwest"
@@ -71,19 +72,22 @@
     <LinearLayout 
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:gravity="center_horizontal">
+    	android:gravity="center_horizontal"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginBottom="10dp">
                 
 	    <EditText 
 	        android:id="@+id/edit_search"
 	        android:layout_width="200dp"
 	        android:layout_height="wrap_content"
-	        android:hint="Free text search"/>
+	        android:hint="Free text search"
+	        android:singleLine="true"/>
 	    
 	    <Button
             android:id="@+id/searchCommand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="searchFreeText"
+            android:onClick="performSearch"
             android:text="@string/search_command"
             android:textSize="20sp" 
             android:layout_gravity="center_horizontal"/>
