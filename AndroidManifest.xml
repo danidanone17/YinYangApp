@@ -17,25 +17,24 @@
             android:name="com.example.yinyangapp.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
-                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.yinyangapp.FreeTextSearchActivity">
-            
+        <activity android:name="com.example.yinyangapp.TabSearchActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.yinyangapp.UserProfileActivity">
+        <activity android:name="com.example.yinyangapp.UserProfileActivity" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.example.yinyangapp.FreeTextSearchActivity"
+            android:label="@string/title_activity_tab_search" >
+        </activity>
     </application>
 
 </manifest>
