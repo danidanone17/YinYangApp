@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.example.yinyangapp.databaseentities.Comment;
@@ -12,6 +13,7 @@ import com.example.yinyangapp.databaseentities.Post;
 import com.example.yinyangapp.databaseentities.User;
 import com.example.yinyangapp.databaseentities.Vote;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -126,6 +128,18 @@ public class DatabaseAdapter
          }
      }
      
+     private void nonReturnSqlStatement(String sqlString) {
+    	 try
+         {
+             mDb.execSQL(sqlString, null);
+         }
+         catch (SQLException mSQLException) 
+         {
+             Log.e(TAG, "getTestData >>"+ mSQLException.toString());
+             throw mSQLException;
+         }
+     }
+     
      public ArrayList<DatabaseType> getUsers()
      {
          Cursor cursor = this.getCursor("SELECT * FROM users LIMIT 20");
@@ -151,19 +165,88 @@ public class DatabaseAdapter
      public ArrayList<DatabaseType> getDataByCriteria(String tableName, ArrayList<SearchEntity> criteria)
      {
     	 String where = " WHERE ";
+    	 int i = 0;
+    	 
     	 for (SearchEntity searchEntity : criteria) {
+    		 if (i > 0){
+    			 where += " AND ";
+    		 }
+    		 
 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)){
 				where += searchEntity.getKey() + " LIKE '%" + searchEntity.getValue() + "%'";
 			}
 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)){
-				where += searchEntity.getKey() + "LIKE '" + searchEntity.getValue() + "'";
+				where += searchEntity.getKey() + " LIKE '" + searchEntity.getValue() + "'";
 			}
+			i++;
 		}
     	 
     	 String sqlQuery = "SELECT * FROM " + tableName + where;
     	 Log.e("", "SQL QUERY : " + sqlQuery);
     	 Cursor cursor = this.getCursor(sqlQuery);
          return cursorToArrayList(cursor);
+     }
+     
+     public ArrayList<DatabaseType> getTable(String tableName){
+    	 String sqlMessage;
+    	 
+    	 sqlMessage = "SELECT * FROM " + tableName;
+    	
+    	 Cursor cursor = this.getCursor(sqlMessage);
+         return cursorToArrayList(cursor);
+     }
+     
+     //HashMap shall contain: key = columnName and value=columnType
+     public void createTable(String tableName, String idName, HashMap<String,String> columns){
+    	 String sqlMessage;
+    	 
+    	 sqlMessage = "CREATE TABLE " + tableName + "( ";
+    	 sqlMessage = sqlMessage + idName + " " + "int NOT NULL AUTO_INCREMENT PRIMARY KEY ";
+    	 
+    	 Iterator it = columns.entrySet().iterator();
+    	 Map.Entry pairs;
+    	 
+    	 while (it.hasNext()) {
+    	     pairs = (Map.Entry)it.next();
+    	     sqlMessage = sqlMessage + ", ";
+    		 sqlMessage = sqlMessage + pairs.getKey() + " " + pairs.getValue();
+    	 }
+    	 
+    	 sqlMessage = sqlMessage + ")";
+    	 
+    	 this.nonReturnSqlStatement(sqlMessage);
+     }
+     
+     
+     //for columnValues: key = columnName and values = columnValue
+     public void insertSql(String tableName, HashMap<String, String> columnValues){
+    	 ContentValues contentValues = new ContentValues();
+    	 
+    	 Iterator it = columnValues.entrySet().iterator();
+    	 Map.Entry pairs;
+    	 
+    	 while (it.hasNext()) {
+    	     pairs = (Map.Entry)it.next();
+    	     contentValues.put((String) pairs.getKey(),(String) pairs.getValue());
+    	 }
+  
+    	 mDb.insertOrThrow(tableName, null, contentValues);
+     }
+     
+   //for columnValues: key = columnName and values = columnValue
+     public void updateSql(String tableName, HashMap<String, String> columnValues,
+    		 String whereClause){
+    	 ContentValues contentValues = new ContentValues();
+    	 
+    	 Iterator it = columnValues.entrySet().iterator();
+    	 Map.Entry pairs;
+    	 
+    	 while (it.hasNext()) {
+    	     pairs = (Map.Entry)it.next();
+    	     contentValues.put((String) pairs.getKey(),(String) pairs.getValue());
+    	 }
+    	 
+    	 mDb.update(tableName, contentValues, whereClause, null);
      }
      
      public User getUser(int id)
@@ -190,10 +273,11 @@ public class DatabaseAdapter
          Cursor cursor = this.getCursor("SELECT * FROM posts LIMIT 20");
          return cursorToArrayList(cursor);
      }
-     //Copy to the repository when Git is updated
-     public ArrayList<DatabaseType> getColumnsFromPosts(ArrayList<String> columnNames){
+     
+     //constructs the SQL statement for getting specific columns from a table
+     public ArrayList<DatabaseType> getColumnsFromTable(String tabelName, ArrayList<String> columnNames){
     	 
-    	 String message = "SELECT";
+    	 String message = "SELECT ";
     	 int i=0;
     	 for (String columnName : columnNames) {
     		 if(i>0){
@@ -202,10 +286,79 @@ public class DatabaseAdapter
 			message += columnName;
 			i++;
 		}
-    	  message += "FROM posts";
+    	  message += "FROM " + tabelName;
     		
     	 Cursor cursor = this.getCursor(message);
     	 return cursorToArrayList(cursor);
+     }
+     
+     //constructs the SQL statement for getting specific columns from a table
+     //+ WHERE criteria for filtering
+     
+     public ArrayList<DatabaseType> getSpecificColumnsByCriteria(String tableName,
+    		 ArrayList<String> columnNames, ArrayList<SearchEntity> searchCriteria){
+    	 
+    	 String sqlMessage;
+    	 
+    	 sqlMessage = "SELECT ";
+    	 int i=0;
+    	 for (String columnName : columnNames) {
+    		 if(i>0){
+    			 sqlMessage += ", ";
+    		 }
+    		 sqlMessage += columnName;
+			i++;
+		}
+    	 sqlMessage += "FROM " + tableName;
+    	 
+    	 sqlMessage = " WHERE ";
+    	 
+    	 i = 0;
+    	 
+     	 for (SearchEntity searchEntity : searchCriteria) {
+     		 if (i > 0){
+     			sqlMessage += ", ";
+     		 }
+ 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)){
+ 				sqlMessage += searchEntity.getKey() + " LIKE '%" + searchEntity.getValue() + "%'";
+ 			}
+ 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)){
+ 				sqlMessage += searchEntity.getKey() + " LIKE '" + searchEntity.getValue() + "'";
+ 			}
+ 			i++;
+ 		}
+    	
+    	 Cursor cursor = this.getCursor(sqlMessage);
+    	 return cursorToArrayList(cursor); 
+     }
+     
+     public int getCountByCriteria(String tableName, ArrayList<SearchEntity> searchCriteria){
+    	 String sqlMessage;
+    	 
+    	 sqlMessage = "SELECT COUNT(*) FROM " + tableName;
+    	 
+    	 sqlMessage = " WHERE ";
+    	 
+    	 int i = 0;
+    	 
+     	 for (SearchEntity searchEntity : searchCriteria) {
+     		if (i > 0){
+     			sqlMessage += ", ";
+     		 }
+     		
+ 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)){
+ 				sqlMessage += searchEntity.getKey() + " LIKE '%" + searchEntity.getValue() + "%'";
+ 			}
+ 			if(searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)){
+ 				sqlMessage += searchEntity.getKey() + " LIKE '" + searchEntity.getValue() + "'";
+ 			} 
+ 			
+ 			i++;
+ 		}
+    	
+    	 Cursor cursor = this.getCursor(sqlMessage);
+    	 cursor.moveToFirst();
+    	 return cursor.getInt(0);
      }
      
      public Post getPost(int id)
