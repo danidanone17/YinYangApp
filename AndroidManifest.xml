@@ -26,6 +26,17 @@
             android:name="com.example.yinyangapp.UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
         </activity>
+        <activity
+            android:name="com.example.yinyangapp.FreeTextSearchActivity"
+            android:label="@string/title_activity_free_text_search"
+            android:parentActivityName="com.example.yinyangapp.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.yinyangapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -34,6 +34,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/holo_purple"	 />
+    
+    <Button 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/FreeTextSearch"
+        android:onClick="FreeTextSearch"/>
 
 
 </LinearLayout>
