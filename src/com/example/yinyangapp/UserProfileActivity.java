@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.example.yinyangapp.controller.Controller;
 import com.example.yinyangapp.database.DatabaseAdapter;
 import com.example.yinyangapp.databaseentities.DatabaseType;
 import com.example.yinyangapp.databaseentities.User;
@@ -35,6 +36,7 @@ public class UserProfileActivity extends Activity {
 	private int profileViews;
 	private int downVotes;
 	private int upVotes;
+	private Controller controller;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class UserProfileActivity extends Activity {
 		Intent intent = getIntent();
 		userId = intent.getIntExtra(EXTRA_USERID, -1);
 		//mDbHelper = intent.getParcelableExtra(EXTRA_DB_HELPER);
+		mDbHelper = new DatabaseAdapter(getBaseContext());
+		controller = new Controller();
 		try {
 			getDbInformation();
 		} catch (java.text.ParseException e) {
@@ -61,7 +65,6 @@ public class UserProfileActivity extends Activity {
 	}
 
 	private void getDbInformation() throws java.text.ParseException {
-		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());        
 		mDbHelper.createDatabase();      
 		mDbHelper.open();
 		
@@ -113,12 +116,12 @@ public class UserProfileActivity extends Activity {
 
 	private void setCreationDateText() {
 		TextView textView = (TextView) findViewById(R.id.membershipDuration);
-		textView.setText(getDateDifference(creationDate));
+		textView.setText(controller.getDateDifference(creationDate));
 
 	}
 	private void setLastAccessDate(){
 		TextView textView = (TextView) findViewById(R.id.lastSeen);
-		textView.setText(getDateDifference(lastAccessDate));
+		textView.setText(controller.getDateDifference(lastAccessDate));
 	}
 	
 	private void setWebsite(){
@@ -147,7 +150,7 @@ public class UserProfileActivity extends Activity {
 		TextView textView = (TextView) findViewById(R.id.profileViews);
 		textView.setText(""+profileViews);
 	}
-	
+/*	
 	private String getDateDifference(String startDate) {
 		Calendar current = Calendar.getInstance();
 		
@@ -220,7 +223,7 @@ public class UserProfileActivity extends Activity {
 		return null;
 	}
 
-	
+*/	
 
 	// Do things when the buttons is pressed
 	public void favoriteQuestionsView(View view) {

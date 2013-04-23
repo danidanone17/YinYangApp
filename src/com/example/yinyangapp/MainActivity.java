@@ -8,12 +8,14 @@ import com.example.yinyangapp.databaseentities.*;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	public void test(){
+	public void testSearch(View view){
 		Controller controller = new Controller();
 		ArrayList<DatabaseType> users = controller.testSearch(this);
 		TextView text01 = (TextView) findViewById(R.id.text01);
@@ -25,16 +27,17 @@ public class MainActivity extends Activity {
 		text01.setText(text);
 	}
 	
-	private void testUserProfile(){
-		Controller controller = new Controller();
-		controller.testUserProfile(this);
+	
+	public void testUserProfile(View view){
+		Intent intent = new Intent(this, UserProfileActivity.class);
+		intent.putExtra(UserProfileActivity.EXTRA_USERID, 106);
+		startActivity(intent);
 	}
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        test();
     }
 
 

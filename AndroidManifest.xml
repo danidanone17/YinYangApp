@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.yinyangapp.UserProfile"
+            android:name="com.example.yinyangapp.UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
         </activity>
     </application>

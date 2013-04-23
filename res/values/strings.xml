@@ -36,4 +36,8 @@
 	<string name="profile_views">2</string>
 	<string name="user_description_label">User description: </string>
 	<string name="user_description">Some descriprion here</string>
+	<string name="TestUserProfile">Test the user profile view</string>
+	<string name="TestSearch">Test to get information from the database</string>
+	<string name="TestText">Test the different functionality</string>
+	<string name="TestQuestioinView">Test the question view</string>
 </resources>
