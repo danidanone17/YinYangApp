@@ -190,6 +190,23 @@ public class DatabaseAdapter
          Cursor cursor = this.getCursor("SELECT * FROM posts LIMIT 20");
          return cursorToArrayList(cursor);
      }
+     //Copy to the repository when Git is updated
+     public ArrayList<DatabaseType> getColumnsFromPosts(ArrayList<String> columnNames){
+    	 
+    	 String message = "SELECT";
+    	 int i=0;
+    	 for (String columnName : columnNames) {
+    		 if(i>0){
+    			 message += ", ";
+    		 }
+			message += columnName;
+			i++;
+		}
+    	  message += "FROM posts";
+    		
+    	 Cursor cursor = this.getCursor(message);
+    	 return cursorToArrayList(cursor);
+     }
      
      public Post getPost(int id)
      {
