@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
 	
 	public void test(){
 		Controller controller = new Controller();
-		ArrayList<DatabaseType> users = controller.testSearch(getBaseContext());
+		ArrayList<DatabaseType> users = controller.testSearch(this);
 		TextView text01 = (TextView) findViewById(R.id.text01);
 		String text="";
 		for(DatabaseType u : users) {
@@ -23,6 +23,11 @@ public class MainActivity extends Activity {
 			text+=user.getDisplayName()+"\n";
 		}
 		text01.setText(text);
+	}
+	
+	private void testUserProfile(){
+		Controller controller = new Controller();
+		controller.testUserProfile(this);
 	}
 	
     @Override
