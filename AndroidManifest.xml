@@ -5,13 +5,13 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher" 
-        android:label="@string/app_name" 
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.yinyangapp.MainActivity"
@@ -21,6 +21,21 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.yinyangapp.UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.yinyangapp.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.yinyangapp.FreeTextSearchActivity"
+            android:label="@string/title_activity_free_text_search"
+            android:parentActivityName="com.example.yinyangapp.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.yinyangapp.MainActivity" />
         </activity>
     </application>
 
