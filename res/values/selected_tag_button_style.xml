@@ -3,7 +3,6 @@
 	<style name="selected_tag_buttons" >
 	    <item name="android:layout_width">wrap_content</item>
 	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:layout_margin">5pt</item>
 	    <item name="android:padding">5pt</item>
 	    <item name="android:background">@color/dark_grey</item>
 	    <item name="android:textColor">@android:color/white</item>
