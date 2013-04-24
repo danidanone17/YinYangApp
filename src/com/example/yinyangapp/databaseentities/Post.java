@@ -75,7 +75,7 @@ public class Post extends DatabaseType {
 
 	@Override
 	public String toString() {
-		return this.id + " " + this.title + " " + this.score;
+		return this.id + " " + this.title + " " + this.score + this.tags;
 	}
 
 	public int getPostTypeId() {

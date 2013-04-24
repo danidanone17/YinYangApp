@@ -7,7 +7,7 @@ import com.example.yinyangapp.database.DatabaseAdapter;
 
 public class MapTags extends DatabaseType{
 	
-public static final String TABLE_NAME = "mapping-tags";
+public static final String TABLE_NAME = "mapping_tags";
 	
 	public static final String KEY_ID = "id";
 	public static final String KEY_TAG1 = "tag1";
