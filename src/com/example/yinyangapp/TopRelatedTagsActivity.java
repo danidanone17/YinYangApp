@@ -43,7 +43,7 @@ public class TopRelatedTagsActivity extends Activity {
 		
 		System.out.println("toString(result): " + tag.toString());
 		
-		TextView textView = (TextView) findViewById(R.id.textView);
+		TextView textView = (TextView) findViewById(R.id.textView1);
 
 		String text="";
 		for(DatabaseType u : tag) {
@@ -52,7 +52,7 @@ public class TopRelatedTagsActivity extends Activity {
 			MapTags tagObj = (MapTags) u;
 			text+="TAG1:" + tagObj.getTag1() + ", TAG2: " + tagObj.getTag2() + ", COUNT: " + tagObj.getCountAppearance() + "\n";
 		}
-		textView.append(text);
+		textView.setText("Test what was imported (us38): " + text);
 	}
 	
 	public void displayRelatedTags(){
@@ -63,12 +63,12 @@ public class TopRelatedTagsActivity extends Activity {
 		Controller controller = new Controller();
 		ArrayList<String> tags = controller.testGetTopRelatedTags(getBaseContext());
 		
-		TextView textView = (TextView) findViewById(R.id.textView);
+		TextView textView = (TextView) findViewById(R.id.textView2);
 		String text="";
 		for(String tag : tags) {
 			text+="TAG:" + tag + "\n";
 		}
-		textView.setText(text);
+		textView.setText("Display Related Tags (us39): " + text);
 	}
 	
 	public void displayPostsSearchedByTags(){
@@ -79,12 +79,12 @@ public class TopRelatedTagsActivity extends Activity {
 		Controller controller = new Controller();
 		ArrayList<Post> posts = controller.testGetPostsByTags(getBaseContext());
 		
-		TextView textView = (TextView) findViewById(R.id.textView);
+		TextView textView = (TextView) findViewById(R.id.textView3);
 		String text="";
 		for(Post post : posts) {
 			text+="Post ---- title:" + post.getTitle() + "\n";
 		}
-		textView.append(text);
+		textView.setText("Display Posts Searched by Tag Combination (us1): " + text);
 	}
 
 	@Override

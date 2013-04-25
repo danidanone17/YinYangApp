@@ -45,7 +45,7 @@
 	<string name="string_search">Search text</string>
 	<string name="search_command">Search</string>
 	<string name="FreeTextSearch">Free text search</string>
-	<string name="TestSearchTopTags">Test to gest top related tags</string>
+	<string name="TestSearchTopTags">Test top related tags</string>
 	<string name="title_activity_top_related_tags">TopRelatedTagsActivity</string>
 
 </resources>
