@@ -40,5 +40,11 @@
         android:layout_height="wrap_content"
         android:onClick="freeTextSearch"
         android:text="@string/FreeTextSearch" />
+    
+        <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="tagSearch"
+        android:text="@string/TagSearch" />
 
 </LinearLayout>
