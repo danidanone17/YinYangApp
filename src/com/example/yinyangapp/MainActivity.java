@@ -42,6 +42,11 @@ public class MainActivity extends Activity {
 		startActivity(intent);	
 		
 	}
+	
+	public void tagSearch(View _) {
+		Intent intent = new Intent(this, TabSearchActivity.class);
+		startActivity(intent);		
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
