@@ -28,6 +28,12 @@
         android:layout_height="wrap_content"
         android:onClick="testSearch"
         android:text="@string/TestSearch" />
+    
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testSearchTopTags"
+        android:text="@string/TestSearchTopTags" />
 
     <TextView
         android:id="@+id/text01"

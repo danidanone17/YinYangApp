@@ -53,6 +53,12 @@ public class MainActivity extends Activity {
 		
 		mDbHelper.close();*/
 	}
+	
+	//called when clicked Test Search Top Tags
+	public void testSearchTopTags(View view){
+		Intent intent = new Intent(this, TopRelatedTagsActivity.class);
+		startActivity(intent);
+	}
 
 	// Called when you click the testSearch-Button
 	// Displays a test search performed in the Controller

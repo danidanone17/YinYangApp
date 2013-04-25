@@ -2,6 +2,7 @@
 package com.example.yinyangapp.database;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -457,5 +458,23 @@ public class DatabaseAdapter {
 		sqlMessage = "DELETE FROM " + tableName;
 
 		mDb.execSQL(sqlMessage);
+	}
+	
+	//get 4 top related tags
+	public ArrayList<Tag> getTopRelatedTags(String referenceTag){
+		String sqlMessage;
+		ArrayList<Tag> relatedTags = new ArrayList<Tag>();
+		
+		sqlMessage = "SELECT * FROM " + MapTags.TABLE_NAME + " WHERE TAG1 LIKE '" + referenceTag + "' " +
+				"OR TAG2 LIKE '" + referenceTag + "' ORDER BY " + MapTags.KEY_COUNT_APPEARANCE + " DESC LIMIT 4";
+		
+		Cursor cursor = this.getCursor(sqlMessage);
+		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor);
+		
+		for (DatabaseType tagDBType : tagsDBType) {
+			relatedTags.add((Tag) tagDBType); 
+		}
+		
+		return relatedTags;
 	}
 }

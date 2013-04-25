@@ -154,6 +154,20 @@ public void testUpdate(Context con){
 	
 }
 
+public ArrayList<Tag> testGetTopRelatedTags (Context con){
+	DatabaseAdapter mDbHelper = new DatabaseAdapter(con);        
+	mDbHelper.createDatabase();      
+	mDbHelper.open();
+	
+	String referenceTag;
+	ArrayList<Tag> relatedTags;
+	
+	referenceTag = "php";
+	relatedTags = mDbHelper.getTopRelatedTags(referenceTag);
+	
+	return relatedTags;
+}
+
 public void testInsertTags(Context con){
 	
 	DatabaseAdapter mDbHelper = new DatabaseAdapter(con);        
