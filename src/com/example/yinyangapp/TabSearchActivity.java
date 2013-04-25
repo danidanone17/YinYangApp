@@ -122,6 +122,7 @@ public class TabSearchActivity extends Activity {
 			else {
 				// create tag button to add to tags selected for search
 				Button button = (Button) getLayoutInflater().inflate(R.layout.selected_tag_button, null);
+				//Button button = new Button(this.getApplicationContext());
 				button.setText(tag);
 				button.setTag(tag);
 				button.setOnClickListener(new View.OnClickListener() {
