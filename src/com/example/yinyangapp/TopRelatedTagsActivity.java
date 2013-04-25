@@ -53,6 +53,8 @@ public class TopRelatedTagsActivity extends Activity {
 			text+="TAG1:" + tagObj.getTag1() + ", TAG2: " + tagObj.getTag2() + ", COUNT: " + tagObj.getCountAppearance() + "\n";
 		}
 		textView.setText("Test what was imported (us38): " + text);
+		
+		mDbHelper.close();
 	}
 	
 	public void displayRelatedTags(){
@@ -69,6 +71,8 @@ public class TopRelatedTagsActivity extends Activity {
 			text+="TAG:" + tag + "\n";
 		}
 		textView.setText("Display Related Tags (us39): " + text);
+		
+		mDbHelper.close();
 	}
 	
 	public void displayPostsSearchedByTags(){
@@ -85,6 +89,8 @@ public class TopRelatedTagsActivity extends Activity {
 			text+="Post ---- title:" + post.getTitle() + "\n";
 		}
 		textView.setText("Display Posts Searched by Tag Combination (us1): " + text);
+		
+		mDbHelper.close();
 	}
 
 	@Override
