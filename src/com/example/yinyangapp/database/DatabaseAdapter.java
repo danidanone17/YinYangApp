@@ -330,49 +330,6 @@ public class DatabaseAdapter {
 		return cursorToArrayList(cursor);
 	}
 
-	// constructs the SQL statement for getting specific columns from a table
-	// + WHERE criteria for filtering
-
-	public ArrayList<DatabaseType> getSpecificColumnsByCriteria(
-			String tableName, ArrayList<String> columnNames,
-			ArrayList<SearchEntity> searchCriteria) {
-
-		String sqlMessage;
-
-		sqlMessage = "SELECT ";
-		int i = 0;
-		for (String columnName : columnNames) {
-			if (i > 0) {
-				sqlMessage += ", ";
-			}
-			sqlMessage += " " + columnName + " ";
-			i++;
-		}
-		sqlMessage += " FROM " + tableName;
-
-		sqlMessage = " WHERE ";
-
-		i = 0;
-
-		for (SearchEntity searchEntity : searchCriteria) {
-			if (i > 0) {
-				sqlMessage += ", ";
-			}
-			if (searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)) {
-				sqlMessage += searchEntity.getKey() + " LIKE '%"
-						+ searchEntity.getValue() + "%'";
-			}
-			if (searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)) {
-				sqlMessage += searchEntity.getKey() + " LIKE '"
-						+ searchEntity.getValue() + "'";
-			}
-			i++;
-		}
-
-		Cursor cursor = this.getCursor(sqlMessage);
-		return cursorToArrayList(cursor);
-	}
-
 	public int getCountByCriteria(String tableName,
 			ArrayList<SearchEntity> searchCriteria) {
 		String sqlMessage;
