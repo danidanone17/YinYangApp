@@ -460,21 +460,62 @@ public class DatabaseAdapter {
 		mDb.execSQL(sqlMessage);
 	}
 	
-	//get 4 top related tags
-	public ArrayList<Tag> getTopRelatedTags(String referenceTag){
+	//get 4 top related tags to a reference tag --- User Story 39
+	public ArrayList<String> getTopRelatedTags(String referenceTag){
 		String sqlMessage;
-		ArrayList<Tag> relatedTags = new ArrayList<Tag>();
+		MapTags relatedMapTag;
+		ArrayList<String> relatedTags = new ArrayList<String>();
 		
 		sqlMessage = "SELECT * FROM " + MapTags.TABLE_NAME + " WHERE TAG1 LIKE '" + referenceTag + "' " +
 				"OR TAG2 LIKE '" + referenceTag + "' ORDER BY " + MapTags.KEY_COUNT_APPEARANCE + " DESC LIMIT 4";
+
+		try{
+		Cursor cursor = this.getCursor(sqlMessage);
+		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor);
+		
+		
+		for (DatabaseType tagDBType : tagsDBType) {
+			relatedMapTag = (MapTags) tagDBType; 
+			
+			if(referenceTag.equals(relatedMapTag.getTag2())){
+				relatedTags.add(relatedMapTag.getTag1());
+			}
+			else{
+				relatedTags.add(relatedMapTag.getTag2());
+			}
+		}
+		
+		return relatedTags;
+		}catch(Exception e){
+			System.out.println("ERROR IN GETTING THE RELATED TAGS --- SQL: " + sqlMessage + ", ERROR: "+ e.getLocalizedMessage());
+		}
+		return null;
+	}
+	
+	//get Posts by tag or tag combination -- User Story 1
+	public ArrayList<Post> getPostsByTags(ArrayList<String> tags){
+		ArrayList<Post> posts = new ArrayList<Post>();
+		String sqlMessage;
+		int i=0;
+		
+		sqlMessage = "SELECT * FROM " + Post.TABLE_NAME + " WHERE ";
+		
+		for (String tag : tags) {
+			if (i>0){
+				sqlMessage += " AND ";
+			}
+			sqlMessage += Post.KEY_TAGS + " LIKE '%" + tag + "%'";
+			i++;
+		}
 		
 		Cursor cursor = this.getCursor(sqlMessage);
 		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor);
 		
 		for (DatabaseType tagDBType : tagsDBType) {
-			relatedTags.add((Tag) tagDBType); 
+			posts.add((Post) tagDBType); 
 		}
 		
-		return relatedTags;
+		return posts;
 	}
+	
 }

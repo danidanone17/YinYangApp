@@ -154,18 +154,33 @@ public void testUpdate(Context con){
 	
 }
 
-public ArrayList<Tag> testGetTopRelatedTags (Context con){
+public ArrayList<String> testGetTopRelatedTags (Context con){
 	DatabaseAdapter mDbHelper = new DatabaseAdapter(con);        
 	mDbHelper.createDatabase();      
 	mDbHelper.open();
 	
 	String referenceTag;
-	ArrayList<Tag> relatedTags;
+	ArrayList<String> relatedTags;
 	
 	referenceTag = "php";
 	relatedTags = mDbHelper.getTopRelatedTags(referenceTag);
 	
 	return relatedTags;
+}
+
+public ArrayList<Post> testGetPostsByTags(Context con){
+	DatabaseAdapter mDbHelper = new DatabaseAdapter(con);        
+	mDbHelper.createDatabase();      
+	mDbHelper.open();
+	
+	ArrayList<String> referenceTags = new ArrayList<String>();
+	ArrayList<Post> posts;
+	
+	referenceTags.add("php");
+	referenceTags.add("mysql");
+	posts = mDbHelper.getPostsByTags(referenceTags);
+	
+	return posts;
 }
 
 public void testInsertTags(Context con){

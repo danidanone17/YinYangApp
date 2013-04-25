@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.example.yinyangapp.controller.Controller;
 import com.example.yinyangapp.database.DatabaseAdapter;
 import com.example.yinyangapp.databaseentities.DatabaseType;
+import com.example.yinyangapp.databaseentities.MapTags;
+import com.example.yinyangapp.databaseentities.Post;
 import com.example.yinyangapp.databaseentities.Tag;
 
 import android.os.Bundle;
@@ -24,28 +26,75 @@ public class TopRelatedTagsActivity extends Activity {
 		mDbHelper.close();
 	}
 	
+	public void testWhatWasInserted(){
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());     
+		mDbHelper.createDatabase();      
+		mDbHelper.open();
+		//mDbHelper.emptyTable(MapTags.TABLE_NAME);
+		//mDbHelper.emptyTable(Tag.TABLE_NAME);
+		
+		Controller controller = new Controller();
+
+		
+		//controller.testInsertTags(getBaseContext());
+		
+		ArrayList<DatabaseType> tag = controller.testSearch(getBaseContext());
+		//ArrayList<DatabaseType> tag = controller.testSearchTags(getBaseContext());
+		
+		System.out.println("toString(result): " + tag.toString());
+		
+		TextView textView = (TextView) findViewById(R.id.textView);
+
+		String text="";
+		for(DatabaseType u : tag) {
+			//Tag tagObj = (Tag) u;
+			//text+="TAG:" + tagObj.getTag() + "\n";
+			MapTags tagObj = (MapTags) u;
+			text+="TAG1:" + tagObj.getTag1() + ", TAG2: " + tagObj.getTag2() + ", COUNT: " + tagObj.getCountAppearance() + "\n";
+		}
+		textView.append(text);
+	}
+	
 	public void displayRelatedTags(){
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());     
 		mDbHelper.createDatabase();      
 		mDbHelper.open();
 		
 		Controller controller = new Controller();
-		ArrayList<Tag> tags = controller.testGetTopRelatedTags(getBaseContext());
+		ArrayList<String> tags = controller.testGetTopRelatedTags(getBaseContext());
 		
 		TextView textView = (TextView) findViewById(R.id.textView);
 		String text="";
-		for(Tag tag : tags) {
-			text+="TAG:" + tag.getTag() + "\n";
+		for(String tag : tags) {
+			text+="TAG:" + tag + "\n";
 		}
 		textView.setText(text);
+	}
+	
+	public void displayPostsSearchedByTags(){
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());     
+		mDbHelper.createDatabase();      
+		mDbHelper.open();
+		
+		Controller controller = new Controller();
+		ArrayList<Post> posts = controller.testGetPostsByTags(getBaseContext());
+		
+		TextView textView = (TextView) findViewById(R.id.textView);
+		String text="";
+		for(Post post : posts) {
+			text+="Post ---- title:" + post.getTitle() + "\n";
+		}
+		textView.append(text);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_top_related_tags);
-		//displayRelatedTags();
-		testInsertTagMapping();
+		displayRelatedTags();
+		//testInsertTagMapping();
+		testWhatWasInserted();
+		displayPostsSearchedByTags();
 	}
 
 	@Override
