@@ -34,14 +34,20 @@ public class TagMapping {
 
 		mDbHelper.createTable(tableName, idColumn, columns);
 	}
-
+	
+	//create, fill mapping_tags and tags tables
 	public static void insertTagMaaping(DatabaseAdapter mDbHelper) {
 
 		// create mapping tag table + tag table
-		// createEmptyMappingTable(mDbHelper);
-		// System.out.println("CreatedEmptyMappingTable");
-		// createTagsTable(mDbHelper);
-		// System.out.println("CreatedEmptyTagsTable");
+		try{
+		 /*createEmptyMappingTable(mDbHelper);
+		 System.out.println("CreatedEmptyMappingTable");
+		 createTagsTable(mDbHelper);
+		 System.out.println("CreatedEmptyTagsTable");*/}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		 
 
 		mDbHelper.emptyTable(MapTags.TABLE_NAME);
 		System.out.println("EmptiedMapTagsTable");
@@ -60,6 +66,7 @@ public class TagMapping {
 		 * Get the first and the last index of POSTS table and loop through the
 		 * table
 		 */
+		 
 		int postTableFirstId = mDbHelper
 				.getFirstIndexFromPostsWithTagsNotNull();
 		int postTableLastId = mDbHelper.getLastIndexFromPostsWithTagsNotNull();
@@ -75,6 +82,7 @@ public class TagMapping {
 			 * Get the id for the next post which does not have the column TAGS
 			 * empty (NULL) and put it in postTableFirstId
 			 */
+			 
 			try {
 				postTableFirstId = mDbHelper
 						.getNextPostIdWithTagNotNull(postTableFirstId);
@@ -99,6 +107,7 @@ public class TagMapping {
 					 * we take the tags 2 by 2 and search in the mapping table
 					 * to see if we have inserted the combination already
 					 */
+					 
 					for (int i = 0; i < tags.length; i++) {
 						tags[i] = tags[i].substring(1, tags[i].length());
 					}
@@ -107,6 +116,7 @@ public class TagMapping {
 						for (int j = 1; j < tags.length; j++) {
 							if (!tags[i].isEmpty() && tags[i] != ""
 									&& !tags[j].isEmpty() && tags[j] != "") {
+								
 								/*
 								 * we search tag1 = current_tag1 and tag2 =
 								 * current_tag2, as well as tag1 = current_tag2
@@ -114,6 +124,7 @@ public class TagMapping {
 								 * not inserted, we insert it now. If it is, we
 								 * loop again
 								 */
+								 
 
 								searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
 								searchInMappingTableCriteria2 = new ArrayList<SearchEntity>();
@@ -176,10 +187,13 @@ public class TagMapping {
 					 * If the result is not found, the tag is
 					 * inserted into the tag table If not, go to the next step
 					 */
+					 
 					for (int i = 0; i < tags.length; i++) {
+						
 						/*
 						 * SEARCH IN THE DB see if tag has already been inserted
 						 */
+						 
 
 						searchInTagsTableCriteria = new ArrayList<SearchEntity>();
 
@@ -213,6 +227,7 @@ public class TagMapping {
 	 * two tags appear together in a row in the posts table (tag column) and add
 	 * it to the countAppearance field in mapping_table
 	 */
+	 
 	public static void insertCount(DatabaseAdapter mDbHelper) {
 		int countAppearance;
 

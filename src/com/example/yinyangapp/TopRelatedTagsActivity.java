@@ -14,6 +14,16 @@ import android.widget.TextView;
 
 public class TopRelatedTagsActivity extends Activity {
 	
+	public void testInsertTagMapping(){
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());     
+		mDbHelper.createDatabase();      
+		mDbHelper.open();
+		
+		TagMapping.insertTagMaaping(mDbHelper);
+		
+		mDbHelper.close();
+	}
+	
 	public void displayRelatedTags(){
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());     
 		mDbHelper.createDatabase();      
@@ -34,7 +44,8 @@ public class TopRelatedTagsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_top_related_tags);
-		displayRelatedTags();
+		//displayRelatedTags();
+		testInsertTagMapping();
 	}
 
 	@Override
