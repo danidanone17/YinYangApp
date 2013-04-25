@@ -466,8 +466,8 @@ public class DatabaseAdapter {
 		MapTags relatedMapTag;
 		ArrayList<String> relatedTags = new ArrayList<String>();
 		
-		sqlMessage = "SELECT * FROM " + MapTags.TABLE_NAME + " WHERE TAG1 LIKE '" + referenceTag + "' " +
-				"OR TAG2 LIKE '" + referenceTag + "' ORDER BY " + MapTags.KEY_COUNT_APPEARANCE + " DESC LIMIT 4";
+		sqlMessage = "SELECT * FROM " + MapTags.TABLE_NAME + " WHERE (TAG1 LIKE '" + referenceTag + "' " +
+				"OR TAG2 LIKE '" + referenceTag + "') AND TAG1 NOT LIKE TAG2 ORDER BY " + MapTags.KEY_COUNT_APPEARANCE + " DESC LIMIT 4";
 
 		try{
 		Cursor cursor = this.getCursor(sqlMessage);

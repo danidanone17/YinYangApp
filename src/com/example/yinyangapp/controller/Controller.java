@@ -162,7 +162,7 @@ public ArrayList<String> testGetTopRelatedTags (Context con){
 	String referenceTag;
 	ArrayList<String> relatedTags;
 	
-	referenceTag = "php";
+	referenceTag = "mysql";
 	relatedTags = mDbHelper.getTopRelatedTags(referenceTag);
 	
 	return relatedTags;
