@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="testSearchTopTags"
-        android:text="@string/TestSearchTopTags" />
+        android:text="@string/TestSearchTopTags" /> 
 
     <TextView
         android:id="@+id/text01"
@@ -46,5 +46,11 @@
         android:layout_height="wrap_content"
         android:onClick="freeTextSearch"
         android:text="@string/FreeTextSearch" />
+    
+        <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="tagSearch"
+        android:text="@string/TagSearch" />
 
 </LinearLayout>
