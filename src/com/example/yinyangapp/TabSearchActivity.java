@@ -2,6 +2,11 @@ package com.example.yinyangapp;
 
 import java.util.ArrayList;
 
+import com.example.yinyangapp.controller.Controller;
+import com.example.yinyangapp.database.DatabaseAdapter;
+import com.example.yinyangapp.databaseentities.Post;
+import com.example.yinyangapp.databaseentities.Tag;
+
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Activity;
@@ -28,15 +33,82 @@ public class TabSearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tab_search);
 		
+		// change style of centered tag button
 		Button button = (Button)this.findViewById(R.id.button_center);
 		button.getBackground().setColorFilter(0xA0149EE3, PorterDuff.Mode.MULTIPLY);
+
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());        
+		mDbHelper.createDatabase();      
+		mDbHelper.open();
+		
+		TagMapping tagMapping = new TagMapping();
+		tagMapping.createTagsTable(mDbHelper);
+		tagMapping.createEmptyMappingTable(mDbHelper);		
+		tagMapping.insertTagMaaping(mDbHelper);		
+		
+		// fill tab buttons
+		this.prefillTagButtons();
 	}
 
+	@Override
+	protected void onResume(){
+		super.onResume();
+		
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.tab_search, menu);
 		return true;
+	}
+	
+	/**
+	 * Fills tag buttons with content
+	 */
+	private void prefillTagButtons()
+	{
+		// get tags in alphabetical order
+		Controller controller = new Controller();
+		ArrayList<Tag> tags = controller.getTagsInAlphabeticalOrder(getBaseContext());
+		
+		// fill button_west
+		if (tags.get(0) != null)
+		{
+			Button buttonWest = (Button)this.findViewById(R.id.button_west);
+			buttonWest.setText(tags.get(0).getTag());
+		}
+		
+		// fill button_center
+		String centerTag = tags.get(1).getTag();
+		if (tags.get(1) != null)
+		{
+			Button buttonWest = (Button)this.findViewById(R.id.button_center);
+			buttonWest.setText(tags.get(1).getTag());
+		}
+		
+		// fill button_east
+		if (tags.get(2) != null)
+		{
+			Button buttonWest = (Button)this.findViewById(R.id.button_east);
+			buttonWest.setText(tags.get(2).getTag());
+		}
+		
+		// get tags related to tag displayed on button_center
+		ArrayList<String> relatedTags = controller.getTopRelatedTags(getBaseContext(), centerTag);
+		
+		Button buttonNorthWest = (Button)this.findViewById(R.id.button_northwest);
+		buttonNorthWest.setText(relatedTags.get(0));
+		
+		Button buttonNorthEast = (Button)this.findViewById(R.id.button_northeast);
+		buttonNorthEast.setText(relatedTags.get(1));
+		
+		Button buttonSouthWest = (Button)this.findViewById(R.id.button_southwest);
+		buttonSouthWest.setText(relatedTags.get(2));
+		
+		Button buttonSouthEast = (Button)this.findViewById(R.id.button_southeast);
+		buttonSouthEast.setText(relatedTags.get(3));
+		
 	}
 	
 	/**

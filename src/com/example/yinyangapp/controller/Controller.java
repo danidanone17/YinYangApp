@@ -283,5 +283,32 @@ public void testInsertTags(Context con){
 		return null;
 	}
 
-
+	/**
+	 * Gets a list of tags in alphabetical order
+	 * @param con the conntection to the database
+	 * @return list of tags in alphabetical order
+	 */
+	public ArrayList<Tag> getTagsInAlphabeticalOrder(Context con){
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);        
+		mDbHelper.createDatabase();      
+		mDbHelper.open();
+		
+		ArrayList<Tag> tags;
+		
+		tags = mDbHelper.getTagsInAlphabeticalOrder();
+		
+		return tags;
+	}
+	
+	public ArrayList<String> getTopRelatedTags(Context con, String tag){
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);        
+		mDbHelper.createDatabase();      
+		mDbHelper.open();
+		
+		ArrayList<String> tags;
+		
+		tags = mDbHelper.getTopRelatedTags(tag);
+		
+		return tags;
+	}
 }

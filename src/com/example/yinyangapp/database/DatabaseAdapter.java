@@ -518,4 +518,25 @@ public class DatabaseAdapter {
 		return posts;
 	}
 	
+	/**
+	 * Gets tags in alphabetical order
+	 * @return list of tags in alphabetical order
+	 */
+	public ArrayList<Tag> getTagsInAlphabeticalOrder(){
+		ArrayList<Tag> tags = new ArrayList<Tag>();
+		String sqlMessage;
+		
+		sqlMessage = "SELECT * FROM " + Tag.TABLE_NAME;
+		sqlMessage += " ORDER BY " + Tag.KEY_TAG + " ASC";
+		
+		Cursor cursor = this.getCursor(sqlMessage);
+		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor);
+		
+		for (DatabaseType tagDBType : tagsDBType) {
+			tags.add((Tag) tagDBType); 
+		}
+		
+		return tags;
+	}
+	
 }
