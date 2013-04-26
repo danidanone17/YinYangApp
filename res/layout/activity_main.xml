@@ -27,13 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="testSearch"
-        android:text="@string/TestSearch" />
-    
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="testSearchTopTags"
-        android:text="@string/TestSearchTopTags" /> 
+        android:text="@string/TestSearch"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/text01"
@@ -44,10 +39,16 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="testSearchTopTags"
+        android:text="@string/TestSearchTopTags" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="freeTextSearch"
         android:text="@string/FreeTextSearch" />
-    
-        <Button
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="tagSearch"
@@ -58,7 +59,8 @@
         android:layout_height="wrap_content"
         android:onClick="showQuestionView1"
         android:text="@string/TestQuestionView1" />
-    <Button
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="showQuestionView2"

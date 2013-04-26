@@ -11,19 +11,24 @@ import com.example.yinyangapp.databaseentities.Tag;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 
 public class TopRelatedTagsActivity extends Activity {
 	
 	public void testInsertTagMapping(){
+		
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());     
+		
 		mDbHelper.createDatabase();      
+		
 		mDbHelper.open();
 		
 		TagMapping.insertTagMaaping(mDbHelper);
 		
 		mDbHelper.close();
+		
 	}
 	
 	public void testWhatWasInserted(){
@@ -58,20 +63,26 @@ public class TopRelatedTagsActivity extends Activity {
 	}
 	
 	public void displayRelatedTags(){
+		Log.v("DEBUG", "Tag_1.1");
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());     
+		Log.v("DEBUG", "Tag_1.2");
 		mDbHelper.createDatabase();      
+		Log.v("DEBUG", "Tag_1.3");
 		mDbHelper.open();
-		
+		Log.v("DEBUG", "Tag_1.4");
 		Controller controller = new Controller();
 		ArrayList<String> tags = controller.testGetTopRelatedTags(getBaseContext());
-		
+		Log.v("DEBUG", "Tag_1.5");
 		TextView textView = (TextView) findViewById(R.id.textView2);
+		Log.v("DEBUG", "Tag_1.6 size:" + tags.size());
 		String text="";
 		for(String tag : tags) {
 			text+="TAG:" + tag + "\n";
+			Log.v("DEBUG", "Tag_1.6: " + tag);
 		}
+		Log.v("DEBUG", "Tag_1.7");
 		textView.setText("Display Related Tags (us39): " + text);
-		
+		Log.v("DEBUG", "Tag_1.8");
 		mDbHelper.close();
 	}
 	
@@ -97,10 +108,15 @@ public class TopRelatedTagsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_top_related_tags);
+		Log.v("DEBUG", "Tag_1");
 		displayRelatedTags();
+		Log.v("DEBUG", "Tag_2");
 		//testInsertTagMapping();
+		Log.v("DEBUG", "Tag_3");
 		testWhatWasInserted();
+		Log.v("DEBUG", "Tag_4");
 		displayPostsSearchedByTags();
+		Log.v("DEBUG", "Tag_5");
 	}
 
 	@Override

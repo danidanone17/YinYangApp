@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -22,7 +23,9 @@ public class MainActivity extends Activity {
 	//called when clicked Test Search Top Tags
 	public void testSearchTopTags(View view){
 		Intent intent = new Intent(this, TopRelatedTagsActivity.class);
+		Log.v("DEBUG", "main activity1");
 		startActivity(intent);
+		Log.v("DEBUG", "main activity2");
 	}
 
 	// Called when you click the testSearch-Button
@@ -31,13 +34,13 @@ public class MainActivity extends Activity {
 	public void testSearch(View view) {
 
 		Controller controller = new Controller();
-		ArrayList<DatabaseType> users = controller.testSearch(this);
+		ArrayList<DatabaseType> posts = controller.testSearch(this);
 		TextView text01 = (TextView) findViewById(R.id.text01);
 		
 		String text = "";
-		for (DatabaseType u : users) {
-			User user = (User) u;
-			text += user.getDisplayName() + "\n";
+		for (DatabaseType p : posts) {
+			Post post = (Post) p;
+			text += post.getTitle() + "\n";
 		}
 		text01.setText(text);
 	}
@@ -49,6 +52,8 @@ public class MainActivity extends Activity {
 		intent.putExtra(UserProfileActivity.EXTRA_USERID, 62);
 		startActivity(intent);
 	}
+	
+	
 	
 	public void freeTextSearch(View _) {
 		Intent intent = new Intent(this, FreeTextSearchActivity.class);

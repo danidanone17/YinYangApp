@@ -476,7 +476,10 @@ public class DatabaseAdapter {
 				relatedTags.add(relatedMapTag.getTag2());
 			}
 		}
-		
+		if (relatedTags == null){
+			Log.v("DEBUG", "relatedTags");
+		}
+		Log.v("DEBUG", "Tag_1.4.1");
 		return relatedTags;
 		}catch(Exception e){
 			System.out.println("ERROR IN GETTING THE RELATED TAGS --- SQL: " + sqlMessage + ", ERROR: "+ e.getLocalizedMessage());
