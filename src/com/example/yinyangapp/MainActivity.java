@@ -52,8 +52,19 @@ public class MainActivity extends Activity {
 	
 	public void freeTextSearch(View _) {
 		Intent intent = new Intent(this, FreeTextSearchActivity.class);
-		startActivity(intent);	
-		
+		startActivity(intent);
+	}
+	
+	public void showQuestionView1(View _){
+		Intent intent = new Intent(this, QuestionActivity.class);
+		intent.putExtra(QuestionActivity.EXTRA_QUESTIONID, 8471536);
+		startActivity(intent);
+	}
+	
+	public void showQuestionView2(View _){
+		Intent intent = new Intent(this, QuestionActivity.class);
+		intent.putExtra(QuestionActivity.EXTRA_QUESTIONID, 8471528);
+		startActivity(intent);
 	}
 	
 	public void tagSearch(View _) {
@@ -73,5 +84,5 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
 }

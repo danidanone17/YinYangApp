@@ -37,6 +37,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.yinyangapp.MainActivity" />
         </activity>
+
                <activity
             android:name="com.example.yinyangapp.TabSearchActivity"
             android:label="@string/title_activity_tab_search"
@@ -49,6 +50,14 @@
 			android:name="com.example.yinyangapp.TopRelatedTagsActivity"
 			android:label="@string/title_activity_top_related_tags" >
 		</activity>
+        <activity
+            android:name="com.example.yinyangapp.QuestionActivity"
+            android:label="@string/title_activity_question"
+            android:parentActivityName="com.example.yinyangapp.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.yinyangapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

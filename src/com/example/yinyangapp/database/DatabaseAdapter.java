@@ -1,4 +1,3 @@
-
 package com.example.yinyangapp.database;
 
 import java.io.IOException;
@@ -453,13 +452,6 @@ public class DatabaseAdapter {
 		mDb.execSQL(sqlMessage);
 	}
 
-	public void emptyTable(String tableName) {
-		String sqlMessage;
-		sqlMessage = "DELETE FROM " + tableName;
-
-		mDb.execSQL(sqlMessage);
-	}
-	
 	//get 4 top related tags to a reference tag --- User Story 39
 	public ArrayList<String> getTopRelatedTags(String referenceTag){
 		String sqlMessage;
@@ -491,7 +483,7 @@ public class DatabaseAdapter {
 		}
 		return null;
 	}
-	
+
 	//get Posts by tag or tag combination -- User Story 1
 	public ArrayList<Post> getPostsByTags(ArrayList<String> tags){
 		ArrayList<Post> posts = new ArrayList<Post>();
@@ -518,4 +510,24 @@ public class DatabaseAdapter {
 		return posts;
 	}
 	
+	
+	public void emptyTable(String tableName) {
+		String sqlMessage;
+		sqlMessage = "DELETE FROM " + tableName;
+
+		mDb.execSQL(sqlMessage);
+	}
+		/**
+	 * Returns all associated answers to a question/post
+	 * 
+	 * @param questionId
+	 *            the post id
+	 * @return an ArrayList<DatabaseType> with Post
+	 */
+	public ArrayList<DatabaseType> getAnswers(int questionId) {
+		String sqlQuery = "SELECT * FROM posts WHERE ('parent id'='"
+				+ questionId + "')";
+		Cursor cursor = this.getCursor(sqlQuery);
+		return cursorToArrayList(cursor);
+	}
 }
