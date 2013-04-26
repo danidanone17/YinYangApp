@@ -5,7 +5,7 @@ import android.database.Cursor;
 public class Post extends DatabaseType {
 
 	public static final String TABLE_NAME = "posts";
-	
+
 	public static final String KEY_ID = "id";
 	public static final String KEY_POST_TYPE_ID = "post_type_id";
 	public static final String KEY_PARENT_ID = "parent_id";
@@ -26,8 +26,7 @@ public class Post extends DatabaseType {
 	public static final String KEY_ANSWER_COUNT = "answer_count";
 	public static final String KEY_COMMENT_COUNT = "comment_count";
 	public static final String KEY_FAVORITE_COUNT = "favorite_count";
-	
-	
+
 	private int id;
 	private int postTypeId;
 	private int parentId;
@@ -48,34 +47,53 @@ public class Post extends DatabaseType {
 	private int answerCount;
 	private int commentCount;
 	private int favoriteCount;
-	
-	public Post(Cursor cursor){
+
+	public Post(Cursor cursor) {
 		super(cursor);
-		this.id=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
-		this.postTypeId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POST_TYPE_ID));
-		this.parentId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_PARENT_ID));
-		this.acceptedAnswerId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ACCEPTED_ANSWER_ID));
-		this.creationDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATION_DATE));
-		this.score=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCORE));
-		this.viewCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_VIEW_COUNT));
-		this.body=cursor.getString(cursor.getColumnIndexOrThrow(KEY_BODY));
-		this.ownerUserId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_OWNER_USER_ID));
-		this.lastEditorUserId=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_LAST_EDITOR_USER_ID));
-		this.lastEditorDisplayName=cursor.getString(cursor.getColumnIndexOrThrow(KEY_LAST_EDITOR_DISPLAY_NAME));
-		this.lastEditDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_LAST_EDIT_DATE));
-		this.lastActivityDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_LAST_ACTIVITY_DATE));
-		this.communityOwnedDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_COMMUNITY_OWNED_DATE));
-		this.closedDate=cursor.getString(cursor.getColumnIndexOrThrow(KEY_CLOSED_DATE));
-		this.title=cursor.getString(cursor.getColumnIndexOrThrow(KEY_TITLE));
-		this.tags=cursor.getString(cursor.getColumnIndexOrThrow(KEY_TAGS));
-		this.answerCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ANSWER_COUNT));
-		this.commentCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_COMMENT_COUNT));
-		this.favoriteCount=cursor.getInt(cursor.getColumnIndexOrThrow(KEY_FAVORITE_COUNT));
+		this.id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
+		this.postTypeId = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_POST_TYPE_ID));
+		this.parentId = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_PARENT_ID));
+		this.acceptedAnswerId = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_ACCEPTED_ANSWER_ID));
+		this.creationDate = cursor.getString(cursor
+				.getColumnIndexOrThrow(KEY_CREATION_DATE));
+		this.score = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCORE));
+		this.viewCount = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_VIEW_COUNT));
+		this.body = cursor.getString(cursor.getColumnIndexOrThrow(KEY_BODY));
+		this.ownerUserId = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_OWNER_USER_ID));
+		this.lastEditorUserId = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_LAST_EDITOR_USER_ID));
+		this.lastEditorDisplayName = cursor.getString(cursor
+				.getColumnIndexOrThrow(KEY_LAST_EDITOR_DISPLAY_NAME));
+		this.lastEditDate = cursor.getString(cursor
+				.getColumnIndexOrThrow(KEY_LAST_EDIT_DATE));
+		this.lastActivityDate = cursor.getString(cursor
+				.getColumnIndexOrThrow(KEY_LAST_ACTIVITY_DATE));
+		this.communityOwnedDate = cursor.getString(cursor
+				.getColumnIndexOrThrow(KEY_COMMUNITY_OWNED_DATE));
+		this.closedDate = cursor.getString(cursor
+				.getColumnIndexOrThrow(KEY_CLOSED_DATE));
+		this.title = cursor.getString(cursor.getColumnIndexOrThrow(KEY_TITLE));
+		this.tags = cursor.getString(cursor.getColumnIndexOrThrow(KEY_TAGS));
+		this.answerCount = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_ANSWER_COUNT));
+		this.commentCount = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_COMMENT_COUNT));
+		this.favoriteCount = cursor.getInt(cursor
+				.getColumnIndexOrThrow(KEY_FAVORITE_COUNT));
 	}
 
 	@Override
 	public String toString() {
 		return this.id + " " + this.title + " " + this.score;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public int getPostTypeId() {
@@ -229,5 +247,5 @@ public class Post extends DatabaseType {
 	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
 	}
-	
+
 }

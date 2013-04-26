@@ -44,7 +44,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="showQuestionView"
-        android:text="@string/TestQuestionView" />
+        android:onClick="showQuestionView1"
+        android:text="@string/TestQuestionView1" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="showQuestionView2"
+        android:text="@string/TestQuestionView2" />
 
 </LinearLayout>

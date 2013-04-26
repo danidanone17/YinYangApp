@@ -3,17 +3,17 @@ package com.example.yinyangapp.database;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.example.yinyangapp.databaseentities.Comment;
-import com.example.yinyangapp.databaseentities.DatabaseType;
-import com.example.yinyangapp.databaseentities.Post;
-import com.example.yinyangapp.databaseentities.User;
-import com.example.yinyangapp.databaseentities.Vote;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.example.yinyangapp.databaseentities.Comment;
+import com.example.yinyangapp.databaseentities.DatabaseType;
+import com.example.yinyangapp.databaseentities.Post;
+import com.example.yinyangapp.databaseentities.User;
+import com.example.yinyangapp.databaseentities.Vote;
 
 public class DatabaseAdapter {
 	protected static final String TAG = "DataAdapter";
@@ -178,5 +178,19 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor("SELECT * FROM votes WHERE (id='" + id
 				+ "')");
 		return (Vote) cursorToArrayList(cursor).get(0);
+	}
+
+	/**
+	 * Returns all associated answers to a question/post
+	 * 
+	 * @param questionId
+	 *            the post id
+	 * @return an ArrayList<DatabaseType> with Post
+	 */
+	public ArrayList<DatabaseType> getAnswers(int questionId) {
+		String sqlQuery = "SELECT * FROM posts WHERE ('parent id'='"
+				+ questionId + "')";
+		Cursor cursor = this.getCursor(sqlQuery);
+		return cursorToArrayList(cursor);
 	}
 }

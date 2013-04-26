@@ -1,34 +1,48 @@
 package com.example.yinyangapp;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.yinyangapp.controller.QuestionController;
+import com.example.yinyangapp.databaseentities.Post;
+import com.example.yinyangapp.databaseentities.User;
+
 public class QuestionActivity extends Activity {
-	
+
+	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
 	private TextView textViewQuestionScore;
 	private TextView textViewAnswerScore;
-	
+	private QuestionController qController;
+	private QuestionModel question;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		this.completeUIByDatabase();
+		Intent intent = getIntent();
+		int questionId = intent.getIntExtra(EXTRA_QUESTIONID, -1);
+		qController = new QuestionController(this);
+		question = new QuestionModel(qController, questionId);
+		updateUI();
 	}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
-
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
 	}
 
 	@Override
@@ -54,108 +68,151 @@ public class QuestionActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
-	 * Handles event when the ImageButton up_vote_question has been pressed
-	 * - increases score of question by 1
-	 * @param view the view that caused the event
+	 * Handles event when the ImageButton up_vote_question has been pressed -
+	 * increases score of question by 1
+	 * 
+	 * @param view
+	 *            the view that caused the event
 	 */
 	public void upVoteQuestion(View view) {
-	    String sScore = this.textViewQuestionScore.getText().toString();
-	    Integer iScore = Integer.parseInt(sScore);
-	    iScore = iScore + 1;
-	    this.textViewQuestionScore.setText(iScore.toString());
+		this.textViewQuestionScore.setText(Integer.toString(this.question
+				.voteQuestion(1)));
 	}
-	
+
 	/**
-	 * Handles event when the ImageButton up_vote_question has been pressed
-	 * - decreases score of question by 1
-	 * @param view the view that caused the event
+	 * Handles event when the ImageButton up_vote_question has been pressed -
+	 * decreases score of question by 1
+	 * 
+	 * @param view
+	 *            the view that caused the event
 	 */
 	public void downVoteQuestion(View view) {
-	    String sScore = this.textViewQuestionScore.getText().toString();
-	    Integer iScore = Integer.parseInt(sScore);
-	    iScore = iScore - 1;
-	    this.textViewQuestionScore.setText(iScore.toString());
+		this.textViewQuestionScore.setText(Integer.toString(this.question
+				.voteQuestion(-1)));
 	}
-	
+
 	/**
-	 * Handles event when the ImageButton up_vote_answer has been pressed
-	 * - increases score of answer by 1
-	 * @param view the view that caused the event
+	 * Handles event when the ImageButton up_vote_answer has been pressed -
+	 * increases score of answer by 1
+	 * 
+	 * @param view
+	 *            the view that caused the event
 	 */
 	public void upVoteAnswer(View view) {
-	    String sScore = this.textViewAnswerScore.getText().toString();
-	    Integer iScore = Integer.parseInt(sScore);
-	    iScore = iScore + 1;
-	    this.textViewAnswerScore.setText(iScore.toString());
+		this.textViewAnswerScore.setText(Integer.toString(this.question
+				.voteActiveAnswer(1)));
 	}
-	
+
 	/**
-	 * Handles event when the ImageButton down_vote_answer has been pressed
-	 * - decreases score of answer by 1
-	 * @param view the view that caused the event
+	 * Handles event when the ImageButton down_vote_answer has been pressed -
+	 * decreases score of answer by 1
+	 * 
+	 * @param view
+	 *            the view that caused the event
 	 */
 	public void downVoteAnswer(View view) {
-	    String sScore = this.textViewAnswerScore.getText().toString();
-	    Integer iScore = Integer.parseInt(sScore);
-	    iScore = iScore - 1;
-	    this.textViewAnswerScore.setText(iScore.toString());
+		this.textViewAnswerScore.setText(Integer.toString(this.question
+				.voteActiveAnswer(-1)));
+	}
+	/**
+	 * Show the views associated with an answer to the given question
+	 */
+	private void enableAnswerView(){
+		findViewById(R.id.answer_content).setVisibility(View.VISIBLE);
+		findViewById(R.id.answer_score).setVisibility(View.VISIBLE);
+		findViewById(R.id.answered_at).setVisibility(View.VISIBLE);
+		findViewById(R.id.answer_user_name).setVisibility(View.VISIBLE);
+		findViewById(R.id.answer_user_score).setVisibility(View.VISIBLE);
+		findViewById(R.id.up_vote_answer).setVisibility(View.VISIBLE);
+		findViewById(R.id.down_vote_answer).setVisibility(View.VISIBLE);
+		findViewById(R.id.answer_user_image).setVisibility(View.VISIBLE);
+	}
+	/**
+	 * Hide the view associated with an aswer to the given question
+	 */
+	private void disableAnswerView(){
+		findViewById(R.id.answer_content).setVisibility(View.GONE);
+		findViewById(R.id.answer_score).setVisibility(View.GONE);
+		findViewById(R.id.answered_at).setVisibility(View.GONE);
+		findViewById(R.id.answer_user_name).setVisibility(View.GONE);
+		findViewById(R.id.answer_user_score).setVisibility(View.GONE);
+		findViewById(R.id.up_vote_answer).setVisibility(View.GONE);
+		findViewById(R.id.down_vote_answer).setVisibility(View.GONE);
+		findViewById(R.id.answer_user_image).setVisibility(View.GONE);
 	}
 	
 	/**
-	 * Fills/completes TextViews of activity with dynamic content by the help of the database
+	 * Fill the views associated with an answer with data
 	 */
-	private void completeUIByDatabase() {		
-		// fill question title
-		TextView textViewTemp = (TextView) findViewById(R.id.question_title);
-		textViewTemp.setText("Question title");		
-		
-		// fill question content
-		textViewTemp = (TextView) findViewById(R.id.question_content);
-		textViewTemp.setText("Question content");
-		
-		// fill question score
-		this.textViewQuestionScore = (TextView) findViewById(R.id.question_score);
-		this.textViewQuestionScore.setText("0");
-		
-		// fill date question was asked at
-		textViewTemp = (TextView) findViewById(R.id.asked_at);
-		textViewTemp.setText("Date");
-		
-		// fill name of asking user
-		textViewTemp = (TextView) findViewById(R.id.question_user_name);
-		textViewTemp.setText("User");
-		
-		// fill score of asking user
-		textViewTemp = (TextView) findViewById(R.id.question_user_score);
-		textViewTemp.setText("0");
-		
-		// add number of answers
-		textViewTemp = (TextView) findViewById(R.id.nr_of_answers);
-		textViewTemp.setText("1 " + textViewTemp.getText());
-		
+	private void fillAnswerView() {
 		// fill answer content
-		textViewTemp = (TextView) findViewById(R.id.answer_content);
-		textViewTemp.setText("Answer content");
+		TextView textViewTemp = (TextView) findViewById(R.id.answer_content);
+		textViewTemp.setText(Html.fromHtml(question.getAnswerContent()));
 		
 		// fill answer score
 		this.textViewAnswerScore = (TextView) findViewById(R.id.answer_score);
-		this.textViewAnswerScore.setText("0");
+		this.textViewAnswerScore.setText(Integer.toString(question
+				.getAnswerScore()));
 		
 		// fill date question was answered at
 		textViewTemp = (TextView) findViewById(R.id.answered_at);
-		textViewTemp.setText("Date");
+		textViewTemp.setText(question.getAnswerDate());
 		
 		// fill name of answering user
 		textViewTemp = (TextView) findViewById(R.id.answer_user_name);
-		textViewTemp.setText("User");
+		textViewTemp.setText(question.getAnswerAuthorName());
 		
 		// fill score of answering user
 		textViewTemp = (TextView) findViewById(R.id.answer_user_score);
-		textViewTemp.setText("0");
+		textViewTemp.setText(Integer.toString(question
+				.getAnswerAuthorReputation()));
+		
 	}
-	
-	
+
+	/**
+	 * Fills/completes TextViews of activity with dynamic content by the help of
+	 * the database
+	 */
+	private void updateUI() {
+
+		// fill question title
+		TextView textViewTemp = (TextView) findViewById(R.id.question_title);
+		textViewTemp.setText(question.getQuestionTitle());
+		
+		// fill question content
+		textViewTemp = (TextView) findViewById(R.id.question_content);
+		textViewTemp.setText(Html.fromHtml(question.getQuestionBody()));
+		
+		// fill question score
+		textViewQuestionScore = (TextView) findViewById(R.id.question_score);
+		textViewQuestionScore.setText(Integer.toString(question
+				.getQuestionScore()));
+		
+		// fill date question was asked at
+		textViewTemp = (TextView) findViewById(R.id.asked_at);
+		textViewTemp.setText(question.getQuestionDate());
+		
+		// fill name of asking user
+		textViewTemp = (TextView) findViewById(R.id.question_user_name);
+		textViewTemp.setText(question.getAuthorName());
+		
+		// fill score of asking user
+		textViewTemp = (TextView) findViewById(R.id.question_user_score);
+		textViewTemp.setText(Integer.toString(question.getAuthorReputation()));
+		
+		// add number of answers
+		textViewTemp = (TextView) findViewById(R.id.nr_of_answers);
+		textViewTemp.setText(Integer.toString(question.getNrOfAnswers()) + " "
+				+ R.string.nr_of_answers);
+		
+		if (question.existsAnswer()) {
+			enableAnswerView();
+			fillAnswerView();
+		} else {
+			disableAnswerView();
+		}
+	}
 
 }

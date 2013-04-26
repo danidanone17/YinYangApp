@@ -45,7 +45,8 @@
     <string name="TestUserProfile">Test the user profile view</string>
     <string name="TestSearch">Test to get information from the database</string>
     <string name="TestText">Test the different functionality</string>
-    <string name="TestQuestionView">Test the question view</string>
+    <string name="TestQuestionView1">Test the question view</string>
+    <string name="TestQuestionView2">Test the question view (no answer)</string>
     
     <!-- FreeTextSearchActivity -->
     <string name="title_activity_free_text_search">Search for posts</string>
@@ -62,5 +63,6 @@
     <string name="enter_answer">Enter answer...</string>
     <string name="button_add">+</string>
     <string name="your_answer">Your answer</string>
+    <string name="no_answer">There exists no accepted answers yet.</string>
 
 </resources>
