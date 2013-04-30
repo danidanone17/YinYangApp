@@ -1,4 +1,4 @@
-package com.example.yinyangapp;
+package com.example.yinyangapp.activities;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.yinyangapp.controller.QuestionController;
+import com.example.yinyangapp.R;
+import com.example.yinyangapp.controllers.QuestionController;
+import com.example.yinyangapp.controllers.QuestionModel;
 import com.example.yinyangapp.databaseentities.Post;
 import com.example.yinyangapp.databaseentities.User;
 

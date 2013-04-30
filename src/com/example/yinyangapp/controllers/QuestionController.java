@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.yinyangapp.controller;
+package com.example.yinyangapp.controllers;
 
 import java.util.ArrayList;
 

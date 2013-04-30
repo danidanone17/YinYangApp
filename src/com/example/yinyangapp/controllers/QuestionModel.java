@@ -1,13 +1,12 @@
 /**
  * 
  */
-package com.example.yinyangapp;
+package com.example.yinyangapp.controllers;
 
 import java.util.ArrayList;
 
 import android.util.Log;
 
-import com.example.yinyangapp.controller.QuestionController;
 import com.example.yinyangapp.databaseentities.DatabaseType;
 import com.example.yinyangapp.databaseentities.Post;
 import com.example.yinyangapp.databaseentities.User;

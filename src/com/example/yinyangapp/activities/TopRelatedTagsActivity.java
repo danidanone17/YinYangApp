@@ -1,9 +1,11 @@
-package com.example.yinyangapp;
+package com.example.yinyangapp.activities;
 
 import java.util.ArrayList;
 
-import com.example.yinyangapp.controller.Controller;
+import com.example.yinyangapp.R;
+import com.example.yinyangapp.controllers.Controller;
 import com.example.yinyangapp.database.DatabaseAdapter;
+import com.example.yinyangapp.database.TagMapping;
 import com.example.yinyangapp.databaseentities.DatabaseType;
 import com.example.yinyangapp.databaseentities.MapTags;
 import com.example.yinyangapp.databaseentities.Post;

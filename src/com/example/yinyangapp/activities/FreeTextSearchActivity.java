@@ -1,4 +1,4 @@
-package com.example.yinyangapp;
+package com.example.yinyangapp.activities;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.yinyangapp.R;
 import com.example.yinyangapp.database.DatabaseAdapter;
 import com.example.yinyangapp.database.MeanOfSearch;
 import com.example.yinyangapp.database.SearchEntity;
