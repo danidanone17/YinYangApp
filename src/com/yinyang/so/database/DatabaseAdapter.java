@@ -533,4 +533,43 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor(sqlQuery);
 		return cursorToArrayList(cursor);
 	}
+	
+	//KEY_TAG - column in table TABLE_NAME
+	public ArrayList<String> getNextAndPreviousTags(String searchTag) {		
+		ArrayList<DatabaseType> dbNext = new ArrayList<DatabaseType>();
+		ArrayList<DatabaseType> dbPrevious = new ArrayList<DatabaseType>();		
+		ArrayList<String> nextAndPreviousTags = new ArrayList<String>();
+		String sqlQuery;
+		Cursor tagCursor;
+		Tag nextTag;
+		Tag previousTag;
+		
+		sqlQuery = "SELECT * FROM " +
+				"(SELECT * FROM '"+ Tag.TABLE_NAME +"'" +
+				"ORDER BY '"+ Tag.KEY_TAG +"')" + 
+				"WHERE '"+ Tag.KEY_TAG+"' > '"+ searchTag +"' LIMIT 1";
+			
+		//Executing the SQL-query
+		tagCursor = this.getCursor(sqlQuery);
+		//Saving the cursor as a DatabaseType ArrayList
+		dbNext = cursorToArrayList(tagCursor);
+	
+		sqlQuery = "SELECT * FROM " +
+				"(SELECT * FROM '"+ Tag.TABLE_NAME +"'" +
+				"ORDER BY '"+ Tag.KEY_TAG +"' DESC)" + 
+				"WHERE '"+ Tag.KEY_TAG+"' < '"+ searchTag +"' LIMIT 1";
+
+		//Executing the SQL-query
+		tagCursor = this.getCursor(sqlQuery);
+		//Saving the cursor as a DatabaseType ArrayList
+		dbPrevious = cursorToArrayList(tagCursor);
+		//Casting DatabaseType to Tag
+		nextTag = (Tag)dbNext.get(0);
+		previousTag = (Tag)dbPrevious.get(0);
+		//Adding to String ArrayList
+		nextAndPreviousTags.add(nextTag.getTag());
+		nextAndPreviousTags.add(previousTag.getTag());
+		
+		return nextAndPreviousTags;		
+	}
 }
