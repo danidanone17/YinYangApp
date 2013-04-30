@@ -110,7 +110,7 @@ public class TopRelatedTagsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_top_related_tags);
-		Log.v("DEBUG", "Tag_1");
+		/*Log.v("DEBUG", "Tag_1");
 		displayRelatedTags();
 		Log.v("DEBUG", "Tag_2");
 		//testInsertTagMapping();
@@ -118,7 +118,8 @@ public class TopRelatedTagsActivity extends Activity {
 		testWhatWasInserted();
 		Log.v("DEBUG", "Tag_4");
 		displayPostsSearchedByTags();
-		Log.v("DEBUG", "Tag_5");
+		Log.v("DEBUG", "Tag_5");*/
+		testInsertTagMapping();
 	}
 
 	@Override

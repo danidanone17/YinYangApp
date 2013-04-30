@@ -8,6 +8,7 @@ public class Tag extends DatabaseType{
 	
 	public static final String KEY_ID = "id";
 	public static final String KEY_TAG = "tag";
+	public static final String KEY_COUNT_APPEARANCE = "countAppearance";
 	
 	private int id;
 	private String tag;
