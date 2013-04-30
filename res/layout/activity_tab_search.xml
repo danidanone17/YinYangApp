@@ -109,9 +109,9 @@
             android:layout_gravity="center_horizontal"/>
     </LinearLayout>
     
-    <com.example.yinyangapp.PredicateLayout
+    <com.yinyang.so.extras.PredicateLayout
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
     	android:id="@+id/layout_selectedtags">
-    </com.example.yinyangapp.PredicateLayout>
+    </com.yinyang.so.extras.PredicateLayout>
 </LinearLayout>
