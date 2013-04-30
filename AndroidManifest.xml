@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.yinyangapp"
+    package="com.yinyang.so"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.yinyangapp.activities.MainActivity"
+            android:name="com.yinyang.so.activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,40 +23,40 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.yinyangapp.activities.UserProfileActivity"
+            android:name="com.yinyang.so.activities.UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.yinyangapp.MainActivity" />
+                android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
-            android:name="com.example.yinyangapp.activities.FreeTextSearchActivity"
+            android:name="com.yinyang.so.activities.FreeTextSearchActivity"
             android:label="@string/title_activity_free_text_search"
-            android:parentActivityName="com.example.yinyangapp.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.yinyangapp.MainActivity" />
+                android:value="com.yinyang.so.MainActivity" />
         </activity>
 
                <activity
-            android:name="com.example.yinyangapp.activities.TabSearchActivity"
+            android:name="com.yinyang.so.activities.TabSearchActivity"
             android:label="@string/title_activity_tab_search"
-            android:parentActivityName="com.example.yinyangapp.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.yinyangapp.MainActivity" />
+                android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
-			android:name="com.example.yinyangapp.activities.TopRelatedTagsActivity"
+			android:name="com.yinyang.so.activities.TopRelatedTagsActivity"
 			android:label="@string/title_activity_top_related_tags" >
 		</activity>
         <activity
-            android:name="com.example.yinyangapp.activities.QuestionActivity"
+            android:name="com.yinyang.so.activities.QuestionActivity"
             android:label="@string/title_activity_question"
-            android:parentActivityName="com.example.yinyangapp.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.yinyangapp.MainActivity" />
+                android:value="com.yinyang.so.MainActivity" />
         </activity>
     </application>
 

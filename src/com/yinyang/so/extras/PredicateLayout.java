@@ -1,4 +1,4 @@
-package com.example.yinyangapp.extras;
+package com.yinyang.so.extras;
 
 import android.content.Context;
 import android.util.AttributeSet;

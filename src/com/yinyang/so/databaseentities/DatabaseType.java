@@ -1,4 +1,4 @@
-package com.example.yinyangapp.databaseentities;
+package com.yinyang.so.databaseentities;
 
 import android.database.Cursor;
 

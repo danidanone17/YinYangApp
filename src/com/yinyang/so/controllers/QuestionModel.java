@@ -1,15 +1,15 @@
 /**
  * 
  */
-package com.example.yinyangapp.controllers;
+package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
 
 import android.util.Log;
 
-import com.example.yinyangapp.databaseentities.DatabaseType;
-import com.example.yinyangapp.databaseentities.Post;
-import com.example.yinyangapp.databaseentities.User;
+import com.yinyang.so.databaseentities.DatabaseType;
+import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.User;
 
 /**
  * @author Fredrik

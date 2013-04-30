@@ -1,10 +1,10 @@
-package com.example.yinyangapp.activities;
+package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
-import com.example.yinyangapp.R;
-import com.example.yinyangapp.controllers.SearchController;
-import com.example.yinyangapp.extras.PredicateLayout;
+import com.yinyang.so.R;
+import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.extras.PredicateLayout;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;

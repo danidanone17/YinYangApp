@@ -1,4 +1,4 @@
-package com.example.yinyangapp.database;
+package com.yinyang.so.database;
 
 public enum MeanOfSearch {
 	exact, contained

@@ -1,4 +1,4 @@
-package com.example.yinyangapp.controllers;
+package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
 

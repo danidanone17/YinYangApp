@@ -1,16 +1,16 @@
 /**
  * 
  */
-package com.example.yinyangapp.controllers;
+package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
 
 import android.content.Context;
 
-import com.example.yinyangapp.database.DatabaseAdapter;
-import com.example.yinyangapp.databaseentities.DatabaseType;
-import com.example.yinyangapp.databaseentities.Post;
-import com.example.yinyangapp.databaseentities.User;
+import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.databaseentities.DatabaseType;
+import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.User;
 
 public class QuestionController {
 	private DatabaseAdapter dbAdapter;

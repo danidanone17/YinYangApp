@@ -1,4 +1,4 @@
-package com.example.yinyangapp.database;
+package com.yinyang.so.database;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -8,13 +8,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.example.yinyangapp.databaseentities.Comment;
-import com.example.yinyangapp.databaseentities.DatabaseType;
-import com.example.yinyangapp.databaseentities.MapTags;
-import com.example.yinyangapp.databaseentities.Post;
-import com.example.yinyangapp.databaseentities.Tag;
-import com.example.yinyangapp.databaseentities.User;
-import com.example.yinyangapp.databaseentities.Vote;
+import com.yinyang.so.databaseentities.Comment;
+import com.yinyang.so.databaseentities.DatabaseType;
+import com.yinyang.so.databaseentities.MapTags;
+import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.Tag;
+import com.yinyang.so.databaseentities.User;
+import com.yinyang.so.databaseentities.Vote;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.example.yinyangapp.activities;
+package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
@@ -11,12 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.yinyangapp.R;
-import com.example.yinyangapp.database.DatabaseAdapter;
-import com.example.yinyangapp.database.MeanOfSearch;
-import com.example.yinyangapp.database.SearchEntity;
-import com.example.yinyangapp.databaseentities.DatabaseType;
-import com.example.yinyangapp.databaseentities.Post;
+import com.yinyang.so.R;
+import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.database.MeanOfSearch;
+import com.yinyang.so.database.SearchEntity;
+import com.yinyang.so.databaseentities.DatabaseType;
+import com.yinyang.so.databaseentities.Post;
 
 public class FreeTextSearchActivity extends Activity {
 

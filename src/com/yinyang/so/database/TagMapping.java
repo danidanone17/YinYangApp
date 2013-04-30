@@ -1,7 +1,7 @@
-package com.example.yinyangapp.database;
+package com.yinyang.so.database;
 
-import com.example.yinyangapp.database.*;
-import com.example.yinyangapp.databaseentities.*;
+import com.yinyang.so.database.*;
+import com.yinyang.so.databaseentities.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

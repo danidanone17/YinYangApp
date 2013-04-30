@@ -1,4 +1,4 @@
-package com.example.yinyangapp.controllers;
+package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
 
@@ -9,14 +9,14 @@ import java.util.Calendar;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.yinyangapp.database.DatabaseAdapter;
-import com.example.yinyangapp.database.MeanOfSearch;
-import com.example.yinyangapp.database.SearchEntity;
-import com.example.yinyangapp.databaseentities.DatabaseType;
-import com.example.yinyangapp.databaseentities.MapTags;
-import com.example.yinyangapp.databaseentities.Post;
-import com.example.yinyangapp.databaseentities.Tag;
-import com.example.yinyangapp.databaseentities.User;
+import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.database.MeanOfSearch;
+import com.yinyang.so.database.SearchEntity;
+import com.yinyang.so.databaseentities.DatabaseType;
+import com.yinyang.so.databaseentities.MapTags;
+import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.Tag;
+import com.yinyang.so.databaseentities.User;
 
 public class Controller {
 

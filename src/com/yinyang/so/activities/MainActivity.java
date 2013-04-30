@@ -1,11 +1,11 @@
-package com.example.yinyangapp.activities;
+package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
-import com.example.yinyangapp.controllers.Controller;
-import com.example.yinyangapp.R;
-import com.example.yinyangapp.database.DatabaseAdapter;
-import com.example.yinyangapp.databaseentities.*;
+import com.yinyang.so.R;
+import com.yinyang.so.controllers.Controller;
+import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.databaseentities.*;
 
 import android.os.Bundle;
 import android.app.Activity;
