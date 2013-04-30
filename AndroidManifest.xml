@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
     <application
@@ -58,7 +58,7 @@
                 android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
-            android:name="com.yinyang.so.SearchResultActivity"
+            android:name="com.yinyang.so.activities.SearchResultActivity"
             android:label="@string/title_activity_search_result" >
         </activity>
     </application>

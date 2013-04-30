@@ -72,5 +72,13 @@
     <string name="your_answer">Your answer</string>
     <string name="no_answer">There exists no accepted answers yet.</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
+    
+    <!-- SearchResultActivity -->
+    <string name="a_c">Answers</string>
+    <string name="title">Title</string>
+    <string name="tag1">tag1</string>
+    <string name="tag2">tag2</string>
+    <string name="tag3">tag3</string>
+    <string name="TestSearchResult">Test Search Result</string>
 
 </resources>

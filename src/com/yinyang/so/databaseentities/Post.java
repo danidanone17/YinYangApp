@@ -48,6 +48,11 @@ public class Post extends DatabaseType {
 	private int commentCount;
 	private int favoriteCount;
 
+	public Post(){
+		super(null);
+		
+	}
+	
 	public Post(Cursor cursor) {
 		super(cursor);
 		this.id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
