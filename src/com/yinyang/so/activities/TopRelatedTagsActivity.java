@@ -28,17 +28,17 @@ public class TopRelatedTagsActivity extends Activity {
 		
 		mDbHelper.open();
 		
+		//create the Tag table + fill it
 		mDbHelper.dropTable(Tag.TABLE_NAME);
 		TagMapping.createTagsTable(mDbHelper);
+		TagMapping.insertCountTags(mDbHelper);
 		
-		HashMap<String, String> columnValuesForInsert = new HashMap<String, String>();
-		columnValuesForInsert.put(Tag.KEY_TAG, "aaaa");
-		columnValuesForInsert.put(Tag.KEY_COUNT_APPEARANCE, "NULL");
-
-		mDbHelper.insertSql(Tag.TABLE_NAME, columnValuesForInsert);
-		
-		//TagMapping.insertCountTags(mDbHelper);
-		//TagMapping.insertCountMapTags(mDbHelper);
+		//create the MapTag table + fill it
+		/*
+		mDbHelper.dropTable(MapTags.TABLE_NAME);
+		TagMapping.createEmptyMappingTable(mDbHelper);
+		TagMapping.insertCountMapTags(mDbHelper);
+		*/
 		
 		mDbHelper.close();
 		
@@ -132,8 +132,6 @@ public class TopRelatedTagsActivity extends Activity {
 		Log.v("DEBUG", "Tag_5");*/
 		
 		testInsertTagMapping();
-		
-		testWhatWasInserted();
 	}
 
 	@Override
