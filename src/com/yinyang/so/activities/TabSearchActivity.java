@@ -171,7 +171,7 @@ public class TabSearchActivity extends Activity {
 		EditText editView = (EditText)this.findViewById(R.id.edit_search);
 		
 		// parse tags selected for search together with search free text
-		SearchController searchController = new SearchController();
+		SearchController searchController = new SearchController(getBaseContext());
 		String returnedText = searchController.parseTagSearchString(selectedTags, editView.getText().toString());
 		
 		Toast toast = Toast.makeText(this.getApplicationContext(), returnedText, Toast.LENGTH_LONG);

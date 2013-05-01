@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
+import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
@@ -63,15 +64,20 @@ public class FreeTextSearchActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Handles event when search button is clicked
+	 * @param view the search button
+	 */
 	public void searchFreeText(View view) {
+		// free text to search for
 		EditText editText = (EditText) findViewById(R.id.stringSearch);
 		textSearch = editText.getText().toString();
 		
-		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());
-		mDbHelper.createDatabase();
-		mDbHelper.open();
+		// execute search
+		SearchController oSearchController = new SearchController(getBaseContext());	
+		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch);
 		
-		ArrayList<Post> postsFound = mDbHelper.getQuestionsByFreeText(textSearch.split(" "));
+		// present search result
 		testSearch(postsFound);
 	}
 
