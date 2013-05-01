@@ -533,4 +533,31 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor(sqlQuery);
 		return cursorToArrayList(cursor);
 	}
+	
+	/**
+	 * Gets questions where the given words are contained in either the title or the body
+	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
+	 */
+	public ArrayList<Post> getQuestionsByFreeText(String[] oWords)
+	{
+		// create sql statement
+		String sSqlMessage = "SELECT * FROM " + Post.TABLE_NAME;
+		sSqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
+		for(int i = 0; i < oWords.length; i++)
+		{ 
+			sSqlMessage += " AND (" + Post.KEY_TITLE + " LIKE '%" + oWords[i] + "%'";
+			sSqlMessage += " OR " + Post.KEY_BODY + " LIKE '%" + oWords[i] + "%')";
+		}
+		
+		// execute sql statement
+		Cursor oCursor = this.getCursor(sSqlMessage);
+		
+		// convert result to  an array list of Posts
+		ArrayList<Post> oQuestions = new ArrayList<Post>();		
+		for (DatabaseType tagDBType : cursorToArrayList(oCursor)) {
+			oQuestions.add((Post) tagDBType); 
+		}
+		
+		return oQuestions;
+	}
 }

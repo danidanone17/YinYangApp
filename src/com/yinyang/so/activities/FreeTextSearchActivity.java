@@ -65,49 +65,23 @@ public class FreeTextSearchActivity extends Activity {
 
 	public void searchFreeText(View view) {
 		EditText editText = (EditText) findViewById(R.id.stringSearch);
-
 		textSearch = editText.getText().toString();
-		ArrayList<DatabaseType> postsFound = performSearch(textSearch);
-
+		
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());
+		mDbHelper.createDatabase();
+		mDbHelper.open();
+		
+		ArrayList<Post> postsFound = mDbHelper.getQuestionsByFreeText(textSearch.split(" "));
 		testSearch(postsFound);
 	}
 
 	// for testing, append on the text view the result, each on a different line
-	public void testSearch(ArrayList<DatabaseType> postsFound) {
+	public void testSearch(ArrayList<Post> postsFound) {
 		TextView textView = (TextView) findViewById(R.id.searchResults);
 		textView.setText("");
 
-		for (DatabaseType post : postsFound) {
-			Post p = (Post) post;
-			textView.append(p.getTitle() + "\n");
+		for (Post post : postsFound) {
+			textView.append(post.getTitle() + "\n");
 		}
 	}
-
-	// get an array of posts based on each word in textSearch
-	// at this point, the search will return only the posts which contain all
-	// the words in their post
-	public ArrayList<DatabaseType> performSearch(String textSearch) {
-
-		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());
-		mDbHelper.createDatabase();
-		mDbHelper.open();
-		ArrayList<SearchEntity> criteria = new ArrayList<SearchEntity>();
-
-		String[] textSearchSplited = new String[200];
-		textSearchSplited = textSearch.split(" ");
-		for (String textSearchS : textSearchSplited) {
-			// add each word to the hash to search into the text of the posts
-			criteria.add(new SearchEntity(Post.KEY_BODY, textSearchS,
-					MeanOfSearch.contained));
-		}
-		// search only in questions
-		criteria.add(new SearchEntity(Post.KEY_POST_TYPE_ID, "1",
-				MeanOfSearch.exact));
-		String table = Post.TABLE_NAME;
-
-		ArrayList<DatabaseType> posts = mDbHelper.getDataByCriteria(table,
-				criteria);
-		return posts;
-	}
-
 }
