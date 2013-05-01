@@ -1,9 +1,12 @@
 package com.yinyang.so.databaseentities;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Post extends DatabaseType {
-
+public class Post extends DatabaseType  {
+	private int mData;
+	
 	public static final String TABLE_NAME = "posts";
 
 	public static final String KEY_ID = "id";
@@ -252,5 +255,4 @@ public class Post extends DatabaseType {
 	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
 	}
-
 }

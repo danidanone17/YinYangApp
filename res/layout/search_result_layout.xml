@@ -9,52 +9,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:gravity="center"
-        android:text="@string/a_c"
          />
     
     <TextView
         android:id="@+id/title"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/a_c" 
-        android:text="@string/title"
+        android:layout_toRightOf="@id/a_c"
         android:textSize="20sp"/>
     
     <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@id/a_c"
-                android:layout_below="@id/title"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp" >
-
-                <Button
-                    android:id="@+id/tag1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/tag1"
-                    android:textSize="10dp"
-                     />
-
-                <Button
-                    android:id="@+id/tag2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/tag2"
-                    android:textSize="10dp" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/tag3"
-                    android:textSize="10dp" />
+         android:id="@+id/tag_button_layout"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:layout_alignParentBottom="true"
+         android:layout_toRightOf="@id/a_c"
+         android:layout_below="@id/title"
+         android:paddingLeft="0dp"
+         android:paddingRight="0dp">
     </LinearLayout>
     
 </RelativeLayout>
