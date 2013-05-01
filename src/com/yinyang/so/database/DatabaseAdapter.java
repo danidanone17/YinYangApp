@@ -255,7 +255,7 @@ public class DatabaseAdapter {
 			System.out.println("INSERT STATEMENT: " + sqlMessage);
 			mDb.execSQL(sqlMessage);
 		} catch (Exception e) {
-			System.out.println("INSERT ERROR: " + e.getMessage());
+			Log.e("DatabaseAdaptor","INSERT ERROR: " + e.getMessage());
 		}
 
 	}
@@ -533,4 +533,16 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor(sqlQuery);
 		return cursorToArrayList(cursor);
 	}
+	
+	public Tag getTag(int id) {
+		Cursor cursor = this.getCursor("SELECT * FROM " + Tag.TABLE_NAME
+				+ " WHERE (id=" + id + ")");
+		try {
+			return (Tag) cursorToArrayList(cursor).get(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }

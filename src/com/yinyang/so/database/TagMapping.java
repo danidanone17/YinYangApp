@@ -27,33 +27,20 @@ public class TagMapping {
 	}
 
 	public static void createTagsTable(DatabaseAdapter mDbHelper) {
-		String tableName = "tags";
-		String idColumn = "id";
+		String tableName = Tag.TABLE_NAME;
+		String idColumn = Tag.KEY_ID;
 		HashMap<String, String> columns = new HashMap<String, String>();
-		columns.put("tag", "varchar(255) NOT NULL");
-		columns.put("countAppearance", "INTEGER");
+		columns.put(Tag.KEY_TAG, "varchar(255) NOT NULL");
+		columns.put(Tag.KEY_COUNT_APPEARANCE, "INTEGER");
 
 		mDbHelper.createTable(tableName, idColumn, columns);
 	}
-	
-	//create, fill mapping_tags and tags tables
-	public static void insertTagMaaping(DatabaseAdapter mDbHelper) {
 
-		// create mapping tag table + tag table
-		try{
-		mDbHelper.dropTable(MapTags.TABLE_NAME);
-		 createEmptyMappingTable(mDbHelper);
-		 System.out.println("CreatedEmptyMappingTable");
-		 createTagsTable(mDbHelper);
-		 System.out.println("CreatedEmptyTagsTable");}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		 
+	// create, fill mapping_tags and tags tables
+	public static void insertTagMaaping(DatabaseAdapter mDbHelper) {
 
 		mDbHelper.emptyTable(MapTags.TABLE_NAME);
 		System.out.println("EmptiedMapTagsTable");
-		mDbHelper.emptyTable(Tag.TABLE_NAME);
 
 		Post post;
 		String tagLine;
@@ -68,7 +55,7 @@ public class TagMapping {
 		 * Get the first and the last index of POSTS table and loop through the
 		 * table
 		 */
-		 
+
 		int postTableFirstId = mDbHelper
 				.getFirstIndexFromPostsWithTagsNotNull();
 		int postTableLastId = mDbHelper.getLastIndexFromPostsWithTagsNotNull();
@@ -76,15 +63,15 @@ public class TagMapping {
 		while (postTableFirstId <= postTableLastId) {
 
 			System.out.println("postTableFirstId: " + postTableFirstId);
-			
-			//get the post for postTableFirstId
+
+			// get the post for postTableFirstId
 			post = mDbHelper.getPost(postTableFirstId);
 
 			/*
 			 * Get the id for the next post which does not have the column TAGS
 			 * empty (NULL) and put it in postTableFirstId
 			 */
-			 
+
 			try {
 				postTableFirstId = mDbHelper
 						.getNextPostIdWithTagNotNull(postTableFirstId);
@@ -94,22 +81,22 @@ public class TagMapping {
 			}
 
 			if (post != null) {
-				//get the content of the column tags for the selected row
+				// get the content of the column tags for the selected row
 				tagLine = post.getTags();
-				
+
 				if (!tagLine.isEmpty() && tagLine != "" && tagLine != "NULL") {
 					tagLine.replace("<", "");
 
 					System.out.println("POST " + tagLine);
-					
-					//split to get each tag
+
+					// split to get each tag
 					String[] tags = tagLine.split(">");
 
 					/*
 					 * we take the tags 2 by 2 and search in the mapping table
 					 * to see if we have inserted the combination already
 					 */
-					 
+
 					for (int i = 0; i < tags.length; i++) {
 						tags[i] = tags[i].substring(1, tags[i].length());
 					}
@@ -117,8 +104,9 @@ public class TagMapping {
 					for (int i = 0; i < tags.length - 1; i++)
 						for (int j = 1; j < tags.length; j++) {
 							if (!tags[i].isEmpty() && tags[i] != ""
-									&& !tags[j].isEmpty() && tags[j] != "") {
-								
+									&& !tags[j].isEmpty() && tags[j] != ""
+									&& tags[i] != tags[j]) {
+
 								/*
 								 * we search tag1 = current_tag1 and tag2 =
 								 * current_tag2, as well as tag1 = current_tag2
@@ -126,7 +114,6 @@ public class TagMapping {
 								 * not inserted, we insert it now. If it is, we
 								 * loop again
 								 */
-								 
 
 								searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
 								searchInMappingTableCriteria2 = new ArrayList<SearchEntity>();
@@ -184,18 +171,87 @@ public class TagMapping {
 							}
 						}
 
+				}
+			}
+
+		}
+		// update countAppearance (which is currently 0 in all the table)
+		// insertCount(mDbHelper);
+	}
+
+	public static void insertTags(DatabaseAdapter mDbHelper) {
+
+		mDbHelper.emptyTable(Tag.TABLE_NAME);
+
+		Post post;
+		String tagLine;
+		ArrayList<SearchEntity> searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
+		ArrayList<SearchEntity> searchInTagsTableCriteria;
+		SearchEntity searchEntity1;
+		HashMap<String, String> columnValuesForInsert;
+
+		/*
+		 * Get the first and the last index of POSTS table and loop through the
+		 * table
+		 */
+
+		int postTableFirstId = mDbHelper
+				.getFirstIndexFromPostsWithTagsNotNull();
+		int postTableLastId = mDbHelper.getLastIndexFromPostsWithTagsNotNull();
+
+		while (postTableFirstId <= postTableLastId) {
+
+			System.out.println("postTableFirstId: " + postTableFirstId);
+
+			// get the post for postTableFirstId
+			post = mDbHelper.getPost(postTableFirstId);
+
+			/*
+			 * Get the id for the next post which does not have the column TAGS
+			 * empty (NULL) and put it in postTableFirstId
+			 */
+
+			try {
+				postTableFirstId = mDbHelper
+						.getNextPostIdWithTagNotNull(postTableFirstId);
+			} catch (Exception e) {
+				System.out.println("FINISHED GOING THROUGH POSTS");
+				postTableFirstId = postTableLastId + 1;
+			}
+
+			if (post != null) {
+				// get the content of the column tags for the selected row
+				tagLine = post.getTags();
+
+				if (!tagLine.isEmpty() && tagLine != "" && tagLine != "NULL") {
+					tagLine.replace("<", "");
+
+					System.out.println("POST " + tagLine);
+
+					// split to get each tag
+					String[] tags = tagLine.split(">");
+
 					/*
-					 * For each tag found above, we search in the table tab to check if it has already been inserted
-					 * If the result is not found, the tag is
-					 * inserted into the tag table If not, go to the next step
+					 * we take the tags 2 by 2 and search in the mapping table
+					 * to see if we have inserted the combination already
 					 */
-					 
+
 					for (int i = 0; i < tags.length; i++) {
-						
+						tags[i] = tags[i].substring(1, tags[i].length());
+					}
+
+					/*
+					 * For each tag found above, we search in the table tab to
+					 * check if it has already been inserted If the result is
+					 * not found, the tag is inserted into the tag table If not,
+					 * go to the next step
+					 */
+
+					for (int i = 0; i < tags.length; i++) {
+
 						/*
 						 * SEARCH IN THE DB see if tag has already been inserted
 						 */
-						 
 
 						searchInTagsTableCriteria = new ArrayList<SearchEntity>();
 
@@ -209,6 +265,7 @@ public class TagMapping {
 							columnValuesForInsert = new HashMap<String, String>();
 
 							columnValuesForInsert.put(Tag.KEY_TAG, tags[i]);
+							columnValuesForInsert.put(Tag.KEY_COUNT_APPEARANCE, "NULL");
 
 							mDbHelper.insertSql(Tag.TABLE_NAME,
 									columnValuesForInsert);
@@ -220,8 +277,6 @@ public class TagMapping {
 			}
 
 		}
-		// update countAppearance (which is currently 0 in all the table)
-		//insertCount(mDbHelper);
 	}
 
 	/*
@@ -229,8 +284,8 @@ public class TagMapping {
 	 * two tags appear together in a row in the posts table (tag column) and add
 	 * it to the countAppearance field in mapping_table
 	 */
-	 
-	public static void insertCount(DatabaseAdapter mDbHelper) {
+
+	public static void insertCountMapTags(DatabaseAdapter mDbHelper) {
 		int countAppearance;
 
 		MapTags tagCombination;
@@ -246,10 +301,10 @@ public class TagMapping {
 			tagCombination = mDbHelper.getMapTags(postTableFirstId);
 			postTableFirstId++;
 
-			SearchEntity searchEntity1 = new SearchEntity(Post.KEY_TAGS,
-					tagCombination.getTag1(), MeanOfSearch.contained);
-			SearchEntity searchEntity2 = new SearchEntity(Post.KEY_TAGS,
-					tagCombination.getTag2(), MeanOfSearch.contained);
+			SearchEntity searchEntity1 = new SearchEntity(Post.KEY_TAGS, "<"
+					+ tagCombination.getTag1() + ">", MeanOfSearch.contained);
+			SearchEntity searchEntity2 = new SearchEntity(Post.KEY_TAGS, "<"
+					+ tagCombination.getTag2() + ">", MeanOfSearch.contained);
 
 			ArrayList<SearchEntity> searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
 			searchInMappingTableCriteria1.add(searchEntity1);
@@ -269,45 +324,42 @@ public class TagMapping {
 					"ID = " + tagCombination.getId());
 		}
 	}
-	
+
 	public static void insertCountTags(DatabaseAdapter mDbHelper) {
 		int countAppearance;
-		
+
 		Tag tag;
-		MapTags tagCombination;
 		HashMap<String, String> columnValuesForUpdate = new HashMap<String, String>();
 
-		int postTableFirstId = mDbHelper.getFirstIndex(Tag.TABLE_NAME);
-		int postTableLastId = mDbHelper.getLastIndex(Tag.TABLE_NAME);
+		int tagTableFirstId = mDbHelper.getFirstIndex(Tag.TABLE_NAME);
+		int tagTableLastId = mDbHelper.getLastIndex(Tag.TABLE_NAME);
 
-		while (postTableFirstId <= postTableLastId) {
+		while (tagTableFirstId <= tagTableLastId) {
 
-			System.out.println("postTableFirstId: " + postTableFirstId);
+			System.out.println("postTableFirstId: " + tagTableFirstId);
 
-			tagCombination = mDbHelper.getMapTags(postTableFirstId);
-			postTableFirstId++;
+			tag = mDbHelper.getTag(tagTableFirstId);
+			tagTableFirstId++;
 
-			SearchEntity searchEntity1 = new SearchEntity(Post.KEY_TAGS,
-					tagCombination.getTag1(), MeanOfSearch.contained);
-			SearchEntity searchEntity2 = new SearchEntity(Post.KEY_TAGS,
-					tagCombination.getTag2(), MeanOfSearch.contained);
+			if (tag != null) {
+				SearchEntity searchEntity1 = new SearchEntity(Post.KEY_TAGS,
+						"<" + tag.getTag() + ">", MeanOfSearch.contained);
 
-			ArrayList<SearchEntity> searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
-			searchInMappingTableCriteria1.add(searchEntity1);
-			searchInMappingTableCriteria1.add(searchEntity2);
+				ArrayList<SearchEntity> searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
+				searchInMappingTableCriteria1.add(searchEntity1);
 
-			countAppearance = mDbHelper.getCountByCriteria(Post.TABLE_NAME,
-					searchInMappingTableCriteria1);
+				countAppearance = mDbHelper.getCountByCriteria(Post.TABLE_NAME,
+						searchInMappingTableCriteria1);
 
-			columnValuesForUpdate.put(MapTags.KEY_COUNT_APPEARANCE, ""
-					+ countAppearance);
+				columnValuesForUpdate.put(Tag.KEY_COUNT_APPEARANCE, ""
+						+ countAppearance);
 
-			System.out.println("UPDATE - ID: " + tagCombination.getId()
-					+ ", TAG1: " + tagCombination.getTag1() + ", TAG2: "
-					+ tagCombination.getTag2());
+				System.out.println("UPDATE - ID: " + tag.getId() + ", TAG: "
+						+ tag.getTag());
 
-			mDbHelper.updateSql(MapTags.TABLE_NAME, columnValuesForUpdate,
-					"ID = " + tagCombination.getId());
+				mDbHelper.updateSql(Tag.TABLE_NAME, columnValuesForUpdate,
+						"ID = " + tag.getId());
+			}
 		}
 	}
 
