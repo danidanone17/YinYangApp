@@ -57,11 +57,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
         </activity>
-        <!-- 
+        
         <activity
-            android:name="com.yinyang.so.activities.SearchResultActivity"
-            android:label="@string/title_activity_search_result" >
-        </activity> -->
+            android:name="com.yinyang.so.activities.SearchResultActivity">
+        </activity>
     </application>
 
 </manifest>
