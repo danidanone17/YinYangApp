@@ -14,3 +14,16 @@
 /project.properties
 
 /proguard-project.txt
+
+/tests/bin
+
+/tests/gen
+/tests/.classpath
+
+/tests/.project
+
+/tests/.settings
+
+/tests/project.properties
+
+/tests/proguard-project.txt
