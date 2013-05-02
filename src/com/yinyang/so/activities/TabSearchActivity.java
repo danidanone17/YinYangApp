@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.databaseentities.Tag;
 import com.yinyang.so.extras.PredicateLayout;
 
 import android.graphics.PorterDuff;
@@ -76,12 +77,25 @@ public class TabSearchActivity extends Activity {
 	 */
 	public void moveToCenter(View view){
 		// get text of pressed button
-		Button button = (Button)view;
-		String text = button.getId() + "";
+		Button oButton = (Button)view;
+		String sTag = (String) oButton.getText();
 		
-		// replace text of button_center with new text
-		Button centerButton = (Button)this.findViewById(R.id.button_center);
-		centerButton.setText(text);
+		// get center tag button
+		Button oCenterButton = (Button)this.findViewById(R.id.button_center);
+		
+		// replace text of center tag button
+		this.replaceTagButtonText(oCenterButton, sTag);
+	}
+	
+	/**
+	 * Replaces the text of the given button by the provided text
+	 * @param oButton button to replace the text for
+	 * @param sNewText string to replace the text a button with
+	 */
+	private void replaceTagButtonText(Button oButton, String sNewText)
+	{
+		oButton.setText(sNewText);
+		oButton.setTag(sNewText);
 	}
 	
 	/**
@@ -176,6 +190,54 @@ public class TabSearchActivity extends Activity {
 		
 		Toast toast = Toast.makeText(this.getApplicationContext(), returnedText, Toast.LENGTH_LONG);
 		toast.show();
+	}
+	
+	/**
+	 * Handles event when search tag button is pressed
+	 * @param view the button that invoked the onClick method
+	 */
+	public void performTagSearch(View view){
+		// get tag search text
+		EditText editView = (EditText)this.findViewById(R.id.edit_tag_search);
+		
+		// get tag by name
+		SearchController oSearchController = new SearchController(getBaseContext());
+		Tag oTag = oSearchController.getTagByName(editView.getText().toString());
+		
+		// get center tag button and replace its text
+		String sNewCenterTag = oTag != null ? oTag.getTag() : "";
+		Button oCenterButton = (Button)this.findViewById(R.id.button_center);
+		this.replaceTagButtonText(oCenterButton, sNewCenterTag);
+		
+		// populate top related tags
+		Button oNorthWestButton = (Button)this.findViewById(R.id.button_northwest);
+		this.replaceTagButtonText(oNorthWestButton, "");
+		Button oNorthEastButton = (Button)this.findViewById(R.id.button_northeast);
+		this.replaceTagButtonText(oNorthEastButton, "");
+		Button oSouthWestButton = (Button)this.findViewById(R.id.button_southwest);
+		this.replaceTagButtonText(oSouthWestButton, "");
+		Button oSouthEastButton = (Button)this.findViewById(R.id.button_southeast);
+		this.replaceTagButtonText(oSouthEastButton, "");
+		if(!"".equals(sNewCenterTag)){
+			ArrayList<String> oTopRelatedTags = oSearchController.getTopRelatedTags(sNewCenterTag);	
+			if(oTopRelatedTags.size() > 0){
+				this.replaceTagButtonText(oNorthWestButton, oTopRelatedTags.get(0));
+			}
+			
+			if(oTopRelatedTags.size() > 1){
+				this.replaceTagButtonText(oNorthEastButton, oTopRelatedTags.get(1));
+			}
+			
+			if(oTopRelatedTags.size() > 2){
+				this.replaceTagButtonText(oSouthWestButton, oTopRelatedTags.get(2));
+			}
+			
+			if(oTopRelatedTags.size() > 3){
+				this.replaceTagButtonText(oSouthEastButton, oTopRelatedTags.get(3));
+			}	
+		}
+		
+		// TODO: populate neighbar tags
 	}
 	
 }

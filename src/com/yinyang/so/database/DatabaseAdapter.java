@@ -560,4 +560,26 @@ public class DatabaseAdapter {
 		
 		return oQuestions;
 	}
+	
+	/**
+	 * Returns tags thats' name match the given string
+	 * @param sName string the tag name should match
+	 * @return tags thats' name match the given string
+	 */
+	public Tag getTagByName(String sName)
+	{
+		String sSqlMessage;
+
+		sSqlMessage = "SELECT * FROM " + Tag.TABLE_NAME;
+		sSqlMessage += " WHERE " +  Tag.KEY_TAG + " LIKE '" + sName + "' LIMIT 1";
+
+		Cursor oCursor = this.getCursor(sSqlMessage);
+		
+		// convert result to  an array list of Posts
+		for (DatabaseType tagDBType : cursorToArrayList(oCursor)) {
+			return (Tag) tagDBType; 				
+		}
+		
+		return null;
+	}
 }

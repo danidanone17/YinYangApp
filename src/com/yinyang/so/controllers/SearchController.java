@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.Tag;
 
 public class SearchController {
 	private DatabaseAdapter dbAdapter;
@@ -49,4 +50,24 @@ public class SearchController {
 		return dbAdapter.getQuestionsByFreeText(sFreeText.split(" "));
 	}
 	
+	/**
+	 * Returns tags thats' name match the given string
+	 * @param sName string the tag name should match
+	 * @return tags thats' name match the given string
+	 */
+	public Tag getTagByName(String sName)
+	{
+		dbAdapter.open();
+		return dbAdapter.getTagByName(sName);
+	}	
+	
+	/**
+	 * Returns the four top related tags
+	 * @param sName tag the returned tags are top related to
+	 * @return the four top related tags
+	 */
+	public ArrayList<String> getTopRelatedTags(String sName){
+		dbAdapter.open();
+		return dbAdapter.getTopRelatedTags(sName);
+	}
 }
