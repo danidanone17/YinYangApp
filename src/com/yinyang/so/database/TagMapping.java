@@ -346,7 +346,7 @@ public class TagMapping {
 
 			if (tag != null) {
 				searchEntity = new SearchEntity(Post.KEY_TAGS,
-						"<" + tag.getTag() + ">", MeanOfSearch.contained);
+						tag.getTag(), MeanOfSearch.contained);
 
 				searchInMappingTableCriteria = new ArrayList<SearchEntity>();
 				searchInMappingTableCriteria.add(searchEntity);

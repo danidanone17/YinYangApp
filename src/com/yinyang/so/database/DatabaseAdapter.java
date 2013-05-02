@@ -539,9 +539,7 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor("SELECT * FROM " + Tag.TABLE_NAME
 				+ " WHERE id=" + id);
 		try {
-			for (DatabaseType dbType : cursorToArrayList(cursor)) {
-				tag = (Tag) dbType;
-			}
+			tag = (Tag) cursorToArrayList(cursor).get(0);
 		} catch (Exception e) {
 			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
 			//e.printStackTrace();
