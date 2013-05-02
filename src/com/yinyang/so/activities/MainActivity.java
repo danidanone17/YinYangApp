@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 	public void testUserProfile(View _) {
 		try {
 			Intent intent = new Intent(this, UserProfileActivity.class);
-			intent.putExtra(UserProfileActivity.EXTRA_USERID, 3);
+			intent.putExtra(UserProfileActivity.EXTRA_USERID, 42);
 			startActivity(intent);
 		} catch (Exception e) {
 			e.printStackTrace();

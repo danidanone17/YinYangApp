@@ -123,7 +123,7 @@ public class UserProfileActivity extends Activity {
 
 	private void setAge() {
 		TextView textView = (TextView) findViewById(R.id.age);
-		textView.setText(Integer.toString(controller.getAge()));
+		textView.setText(controller.getAge());
 	}
 
 	private void setDescription() {

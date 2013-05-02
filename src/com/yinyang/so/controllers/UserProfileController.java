@@ -4,6 +4,8 @@
 package com.yinyang.so.controllers;
 
 import java.util.Calendar;
+import java.util.Date;
+
 import android.content.Context;
 
 import com.yinyang.so.database.DatabaseAdapter;
@@ -19,43 +21,47 @@ public class UserProfileController {
 	private String timeSinceCreated;
 	private String descriptionInHtml;
 	private User user;
-	
+
 	/**
 	 * 
 	 * @param context
 	 * @param userId
 	 */
-	public UserProfileController(Context context, int userId){
+	public UserProfileController(Context context, int userId) {
 		mDbHelper = new DatabaseAdapter(context);
 		fetchUserFromDb(userId);
-		if (user == null){
+		if (user == null) {
 			throw new NullPointerException();
 		}
-	
-		descriptionInHtml = updateHtmlDescription(user.getAboutMe());
-		
+
+		String desc = user.getAboutMe();
+		if (desc == "NULL")
+			desc = "";
+		else
+			descriptionInHtml = updateHtmlDescription(desc);
+
 		timeSinceCreated = getTimeSinceDate(user.getCreationDate());
 		timeSinceLastAccess = getTimeSinceDate(user.getLastAccessDate());
-		
+
 	}
-	
-	private void fetchUserFromDb(int userId){
+
+	private void fetchUserFromDb(int userId) {
 		mDbHelper.createDatabase();
 		mDbHelper.open();
 		user = mDbHelper.getUser(userId);
 		mDbHelper.close();
-		
+
 	}
-		
-	private String updateHtmlDescription(String text){
-		return text.replaceAll("\"","\\\"");
+
+	private String updateHtmlDescription(String text) {
+		return text.replaceAll("\"", "\\\"");
 	}
-	
-	public int getReputationText(){
+
+	public int getReputationText() {
 		return user.getReputation();
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return user.getDisplayName();
 	}
 
@@ -72,15 +78,32 @@ public class UserProfileController {
 	}
 
 	public String getWebsite() {
-		return user.getWebsiteUrl();
+		String web = user.getWebsiteUrl();
+		if (web == "NULL")
+			return "";
+		else
+			return web;
 	}
 
 	public String getLocation() {
-		return user.getLocation();
+		String loc = user.getLocation();
+		if (loc == "NULL")
+			return "";
+		else
+			return loc;
 	}
 
-	public int getAge() {
-		return user.getAge();
+	/**
+	 * Returns "" if the field is empty in the database
+	 * 
+	 * @return
+	 */
+	public String getAge() {
+		int age = user.getAge();
+		if (age == 0)
+			return "";
+		else
+			return Integer.toString(age);
 	}
 
 	public String getDescriptionInHtml() {
@@ -90,14 +113,15 @@ public class UserProfileController {
 	public int getProfileViews() {
 		return user.getViews();
 	}
-	
+
 	/**
 	 * 
-	 * @param date String with date on "yyyy-MM-dd"
+	 * @param date
+	 *            String with date on "yyyy-MM-dd"
 	 * @return
 	 */
 
-	public String getTimeSinceDate(String date) {
+	private String getTimeSinceDate(String date) {
 		Calendar today = Calendar.getInstance();
 
 		int year = today.get(Calendar.YEAR)
@@ -171,6 +195,4 @@ public class UserProfileController {
 		}
 		return null;
 	}
-
-
 }
