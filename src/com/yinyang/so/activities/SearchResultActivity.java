@@ -38,9 +38,9 @@ public class SearchResultActivity extends Activity {
 		setContentView(R.layout.activity_search_result);
 		
 		// TODO: remove test data
-//		Intent oIntent = getIntent();
-//		posts = oIntent.getParcelableArrayExtra("POSTS");
-		posts = new ArrayList<Post>();	
+		Intent oIntent = getIntent();
+		posts = oIntent.getParcelableArrayListExtra("POSTS");
+		/*posts = new ArrayList<Post>();	
 		
 		Post post1 = new Post();	
 		post1.setAnswerCount(2);
@@ -52,7 +52,7 @@ public class SearchResultActivity extends Activity {
 		post2.setAnswerCount(2);
 		post2.setTitle("How to convert string to long");
 		post2.setTags("<c#><java>");
-		posts.add(post2);
+		posts.add(post2);*/
 		
 		// initialize post array adapter
 		postArrayAdapter = new PostArrayAdapter(this,
