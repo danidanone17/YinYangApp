@@ -72,7 +72,8 @@
     <string name="your_answer">Your answer</string>
     <string name="no_answer">There exists no accepted answers yet.</string>
     
-    <!-- SearchResultActivity -->
+    <!-- SearchResultActivity--> 
     <string name="TestSearchResult">Test Search Result</string>
+   <!--  <string name="title_activity_search_result">Test Search Result</string> -->
 
 </resources>
