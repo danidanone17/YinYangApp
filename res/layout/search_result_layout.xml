@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/a_c"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:clickable="true"/>
     
     <LinearLayout
          android:id="@+id/tag_button_layout"

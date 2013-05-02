@@ -6,6 +6,7 @@ import com.yinyang.so.R;
 import com.yinyang.so.databaseentities.Post;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -37,22 +38,9 @@ public class SearchResultActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_result);
 		
-		// TODO: remove test data
+		// get posts to display
 		Intent oIntent = getIntent();
 		posts = oIntent.getParcelableArrayListExtra("POSTS");
-		/*posts = new ArrayList<Post>();	
-		
-		Post post1 = new Post();	
-		post1.setAnswerCount(2);
-		post1.setTitle("MySQL");
-		post1.setTags("<mysql><index>");
-		posts.add(post1);
-		
-		Post post2 = new Post();	
-		post2.setAnswerCount(2);
-		post2.setTitle("How to convert string to long");
-		post2.setTags("<c#><java>");
-		posts.add(post2);*/
 		
 		// initialize post array adapter
 		postArrayAdapter = new PostArrayAdapter(this,
@@ -102,6 +90,16 @@ public class SearchResultActivity extends Activity {
 				TextView title = (TextView) v.findViewById(R.id.title);
 				if (title != null) {
 					title.setText(o.getTitle());
+					title.setId(o.getId());
+					title.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							TextView title = (TextView)view;
+							Intent oIntent = new Intent(SearchResultActivity.this,QuestionActivity.class);
+							oIntent.putExtra(com.yinyang.so.activities.QuestionActivity.EXTRA_QUESTIONID, title.getId());
+							startActivity(oIntent);
+						}
+						});
 				}
 			
 				// dynamically add tag buttons

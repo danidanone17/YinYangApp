@@ -2,6 +2,7 @@ package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.yinyang.so.controllers.QuestionModel;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
 
+@SuppressLint("NewApi")
 public class QuestionActivity extends Activity {
 
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
