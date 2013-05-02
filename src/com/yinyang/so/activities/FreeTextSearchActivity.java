@@ -101,4 +101,29 @@ public class FreeTextSearchActivity extends Activity {
 			textView.append(post.getTitle() + "\n");
 		}
 	}
+	
+	public ArrayList<DatabaseType> performSearch(String textSearch) {
+
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());
+		mDbHelper.createDatabase();
+		mDbHelper.open();
+		ArrayList<SearchEntity> criteria = new ArrayList<SearchEntity>();
+
+		String[] textSearchSplited = new String[200];
+		textSearchSplited = textSearch.split(" ");
+		for (String textSearchS : textSearchSplited) {
+			// add each word to the hash to search into the text of the posts
+			criteria.add(new SearchEntity(Post.KEY_BODY, textSearchS,
+					MeanOfSearch.contained));
+		}
+		// search only in questions
+		criteria.add(new SearchEntity(Post.KEY_POST_TYPE_ID, "1",
+				MeanOfSearch.exact));
+		String table = Post.TABLE_NAME;
+
+		ArrayList<DatabaseType> posts = mDbHelper.getDataByCriteria(table,
+				criteria);
+		return posts;
+	}
+
 }
