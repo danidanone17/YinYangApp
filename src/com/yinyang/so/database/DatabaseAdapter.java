@@ -304,12 +304,9 @@ public class DatabaseAdapter {
 			Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='"
 					+ id + "')");
 			ArrayList<DatabaseType> list = cursorToArrayList(cursor);
-			Log.v("DB", "ArrayList size: " + Integer.toString(list.size()));
 			if (list.isEmpty()){
-				Log.e("DB", "isEmpty");
 				return null;
 			} else {
-				Log.v("DB", "array is not empty");
 				return (User) list.get(0);
 			}
 		} catch (SQLException mSQLException) {

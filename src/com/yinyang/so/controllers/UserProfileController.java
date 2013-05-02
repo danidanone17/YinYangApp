@@ -5,8 +5,6 @@ package com.yinyang.so.controllers;
 
 import java.util.Calendar;
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.databaseentities.User;
@@ -31,7 +29,6 @@ public class UserProfileController {
 		mDbHelper = new DatabaseAdapter(context);
 		fetchUserFromDb(userId);
 		if (user == null){
-			Log.e("DB", "User is null");
 			throw new NullPointerException();
 		}
 	
@@ -42,9 +39,6 @@ public class UserProfileController {
 		
 	}
 	
-	public boolean hasUser(){
-		return (user != null);
-	}
 	private void fetchUserFromDb(int userId){
 		mDbHelper.createDatabase();
 		mDbHelper.open();

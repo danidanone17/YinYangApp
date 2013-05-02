@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,19 +31,21 @@ public class UserProfileActivity extends Activity {
 			controller = new UserProfileController(this, userId);
 		} catch (NullPointerException e) {
 			String text = "No user with id: " + userId;
-			Log.e("DB", "Exeption caught, create toast");
-		//	Toast toast = Toast.makeText(this.getApplicationContext(), text, Toast.LENGTH_SHORT);
-			Log.e("DB", "Toast created, show it");
-		//	toast.show();
-			Log.e("DB", "Toast has been shown");
+			Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+			toast.show();
 			finish();
 		}
-		if (controller.hasUser()) {
-			Log.e("DB", "After catching exception");
+		if (controller != null) {
 			setContentView(R.layout.activity_user_profile);
 			updateView();
-		}
+		}	
 
+	}
+	@Override
+	protected void onResume(){
+		super.onResume();
+		//if (controller == null)
+			//this.finish();
 	}
 
 	@Override
@@ -77,7 +78,6 @@ public class UserProfileActivity extends Activity {
 	}
 
 	private void updateView() {
-		Log.e("DB", "In updateView");
 		setReputationText();
 		setUserNameText();
 		setCreationDateText();
