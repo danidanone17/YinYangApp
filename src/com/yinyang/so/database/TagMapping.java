@@ -185,9 +185,8 @@ public class TagMapping {
 
 		Post post;
 		String tagLine;
-		ArrayList<SearchEntity> searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
-		ArrayList<SearchEntity> searchInTagsTableCriteria;
-		SearchEntity searchEntity1;
+		ArrayList<SearchEntity> searchInTagsTableCriteria = new ArrayList<SearchEntity>();
+		SearchEntity searchEntity;
 		HashMap<String, String> columnValuesForInsert;
 
 		/*
@@ -223,10 +222,10 @@ public class TagMapping {
 				// get the content of the column tags for the selected row
 				tagLine = post.getTags();
 
-				if (!tagLine.isEmpty() && tagLine != "" && tagLine != "NULL") {
-					tagLine.replace("<", "");
+				if (!tagLine.isEmpty() && tagLine != ""
+						&& tagLine.equals("NULL") != true) {
 
-					System.out.println("POST " + tagLine);
+					System.out.println("TagLine: " + tagLine);
 
 					// split to get each tag
 					String[] tags = tagLine.split(">");
@@ -255,17 +254,19 @@ public class TagMapping {
 
 						searchInTagsTableCriteria = new ArrayList<SearchEntity>();
 
-						searchEntity1 = new SearchEntity(Tag.KEY_TAG, tags[i],
+						searchEntity = new SearchEntity(Tag.KEY_TAG, tags[i],
 								MeanOfSearch.exact);
 
-						searchInTagsTableCriteria.add(searchEntity1);
+						searchInTagsTableCriteria.add(searchEntity);
 
 						if (mDbHelper.getDataByCriteria(Tag.TABLE_NAME,
-								searchInTagsTableCriteria).isEmpty()) {
+								searchInTagsTableCriteria).size() == 0) {
+
 							columnValuesForInsert = new HashMap<String, String>();
 
 							columnValuesForInsert.put(Tag.KEY_TAG, tags[i]);
-							columnValuesForInsert.put(Tag.KEY_COUNT_APPEARANCE, "NULL");
+							columnValuesForInsert.put(Tag.KEY_COUNT_APPEARANCE,
+									"NULL");
 
 							mDbHelper.insertSql(Tag.TABLE_NAME,
 									columnValuesForInsert);
@@ -330,32 +331,34 @@ public class TagMapping {
 
 		Tag tag;
 		HashMap<String, String> columnValuesForUpdate = new HashMap<String, String>();
+		SearchEntity searchEntity;
+		ArrayList<SearchEntity> searchInMappingTableCriteria;
 
 		int tagTableFirstId = mDbHelper.getFirstIndex(Tag.TABLE_NAME);
 		int tagTableLastId = mDbHelper.getLastIndex(Tag.TABLE_NAME);
 
 		while (tagTableFirstId <= tagTableLastId) {
 
-			System.out.println("postTableFirstId: " + tagTableFirstId);
+			System.out.println("tagTableFirstId: " + tagTableFirstId);
 
 			tag = mDbHelper.getTag(tagTableFirstId);
 			tagTableFirstId++;
 
 			if (tag != null) {
-				SearchEntity searchEntity1 = new SearchEntity(Post.KEY_TAGS,
+				searchEntity = new SearchEntity(Post.KEY_TAGS,
 						"<" + tag.getTag() + ">", MeanOfSearch.contained);
 
-				ArrayList<SearchEntity> searchInMappingTableCriteria1 = new ArrayList<SearchEntity>();
-				searchInMappingTableCriteria1.add(searchEntity1);
+				searchInMappingTableCriteria = new ArrayList<SearchEntity>();
+				searchInMappingTableCriteria.add(searchEntity);
 
 				countAppearance = mDbHelper.getCountByCriteria(Post.TABLE_NAME,
-						searchInMappingTableCriteria1);
+						searchInMappingTableCriteria);
 
 				columnValuesForUpdate.put(Tag.KEY_COUNT_APPEARANCE, ""
 						+ countAppearance);
 
 				System.out.println("UPDATE - ID: " + tag.getId() + ", TAG: "
-						+ tag.getTag());
+						+ tag.getTag() + "COUNT: " + countAppearance);
 
 				mDbHelper.updateSql(Tag.TABLE_NAME, columnValuesForUpdate,
 						"ID = " + tag.getId());

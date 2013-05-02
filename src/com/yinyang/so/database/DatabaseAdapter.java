@@ -282,10 +282,10 @@ public class DatabaseAdapter {
 		sqlMessage += " WHERE " + whereClause;
 
 		try {
-			System.out.println("UPDATE MESSAGE: " + sqlMessage);
 			mDb.execSQL(sqlMessage);
+			System.out.println("(after update) UPDATE MESSAGE: " + sqlMessage);
 		} catch (Exception e) {
-			System.out.println("ERROR IN UPDATE: " + e.getMessage());
+			Log.e("ERROR IN sqlUPDATE","MESSAGE: " + e.getMessage());
 		}
 	}
 
@@ -418,7 +418,7 @@ public class DatabaseAdapter {
 	public int getLastIndexFromPostsWithTagsNotNull() {
 		String sqlMessage;
 
-		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL ORDER BY id DESC LIMIT 1";
+		sqlMessage = "SELECT id FROM posts WHERE tags <> 'NULL' ORDER BY id DESC LIMIT 1";
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
@@ -428,7 +428,7 @@ public class DatabaseAdapter {
 	public int getFirstIndexFromPostsWithTagsNotNull() {
 		String sqlMessage;
 
-		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL ORDER BY id ASC LIMIT 1";
+		sqlMessage = "SELECT id FROM posts WHERE tags <> 'NULL' ORDER BY id ASC LIMIT 1";
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
@@ -438,7 +438,7 @@ public class DatabaseAdapter {
 	public int getNextPostIdWithTagNotNull(int id) {
 		String sqlMessage;
 
-		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL AND id > " + id + " ORDER BY ID ASC LIMIT 1";
+		sqlMessage = "SELECT id FROM posts WHERE tags <> 'NULL' AND id > " + id + " ORDER BY ID ASC LIMIT 1";
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
@@ -535,14 +535,18 @@ public class DatabaseAdapter {
 	}
 	
 	public Tag getTag(int id) {
+		Tag tag = null;
 		Cursor cursor = this.getCursor("SELECT * FROM " + Tag.TABLE_NAME
-				+ " WHERE (id=" + id + ")");
+				+ " WHERE id=" + id);
 		try {
-			return (Tag) cursorToArrayList(cursor).get(0);
+			for (DatabaseType dbType : cursorToArrayList(cursor)) {
+				tag = (Tag) dbType;
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
+			//e.printStackTrace();
 		}
+		return tag;
 	}
 	
 }
