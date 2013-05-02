@@ -9,14 +9,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:gravity="center"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:background="@drawable/back"
          />
     
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="170dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/a_c"
         android:layout_marginLeft="20dp"
