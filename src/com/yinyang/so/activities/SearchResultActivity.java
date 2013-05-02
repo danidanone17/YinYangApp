@@ -1,5 +1,6 @@
 package com.yinyang.so.activities;
 
+import com.yinyang.so.extras.PredicateLayout;
 import java.util.ArrayList;
 
 import com.yinyang.so.R;
@@ -101,9 +102,10 @@ public class SearchResultActivity extends Activity {
 						}
 						});
 				}
-			
+				
+				
 				// dynamically add tag buttons
-				LinearLayout layout = (LinearLayout) v.findViewById(R.id.tag_button_layout);
+				PredicateLayout layout = (PredicateLayout) v.findViewById(R.id.tag_button_layout);
 				ArrayList<String> oTags = this.convertTagStringToList(o.getTags());
 				for(String tag : oTags)
 				{

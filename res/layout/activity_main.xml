@@ -65,11 +65,5 @@
         android:layout_height="wrap_content"
         android:onClick="showQuestionView2"
         android:text="@string/TestQuestionView2" />
-    
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="searchResult"
-        android:text="@string/TestSearchResult" />
 
 </LinearLayout>

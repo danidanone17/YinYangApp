@@ -71,7 +71,6 @@
     <string name="button_add">+</string>
     <string name="your_answer">Your answer</string>
     <string name="no_answer">There exists no accepted answers yet.</string>
-    <string name="title_activity_search_result">SearchResultActivity</string>
     
     <!-- SearchResultActivity -->
     <string name="TestSearchResult">Test Search Result</string>
