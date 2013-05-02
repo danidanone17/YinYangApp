@@ -18,9 +18,9 @@ import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.Tag;
 import com.yinyang.so.databaseentities.User;
 
-public class Controller {
+public class MainController {
 
-	public Controller() {
+	public MainController() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -197,81 +197,6 @@ public class Controller {
 			mDbHelper.insertSql(Tag.TABLE_NAME, columnValuesForInsert);
 
 		}
-	}
-
-	public String getDateDifference(String startDate) {
-		Calendar current = Calendar.getInstance();
-
-		int year = current.get(Calendar.YEAR)
-				- Integer.parseInt(startDate.split("-")[0]);
-		int month = current.get(Calendar.MONTH)
-				- Integer.parseInt(startDate.split("-")[1]);
-		int day = current.get(Calendar.DAY_OF_MONTH)
-				- Integer.parseInt(startDate.split("-")[2]);
-		if (year > 1) {
-			if (month == 0) {
-				return year + " years";
-			}
-			if (month > 1) {
-				return year + " years, " + month + " months";
-			}
-			if (month == 1) {
-				return year + " years, " + month + " month";
-			}
-			if (month < 0) {
-				year--;
-				month = month + 12;
-				if (year == 1) {
-					if (month > 1) {
-						return year + " year, " + month + " months";
-					} else {
-						return year + " year, " + month + " month";
-					}
-				}
-				if (year > 1) {
-					if (month > 1) {
-						return year + " years, " + month + " months";
-					} else {
-						return year + " years, " + month + " month";
-					}
-				}
-
-			}
-		}
-		if (year == 1) {
-			if (month == 0) {
-				return year + " year";
-			}
-			if (month > 1) {
-				return year + " year, " + month + " months";
-			}
-			if (month == 1) {
-				return year + " year, " + month + " month";
-			}
-			if (month < 0) {
-				month = month + 12;
-				if (month > 1) {
-					return month + " months";
-				} else {
-					return month + " month";
-				}
-			}
-		}
-		if (year == 0) {
-			if (month > 1) {
-				return month + " months";
-			} else {
-				if (day > 1) {
-					return day + "days";
-				}
-				if (day == 0) {
-					return "today";
-				} else {
-					return day + "day";
-				}
-			}
-		}
-		return null;
 	}
 
 }

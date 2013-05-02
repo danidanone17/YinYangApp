@@ -1,55 +1,49 @@
 package com.yinyang.so.activities;
 
-import java.text.SimpleDateFormat;
-
-import com.yinyang.so.R;
-import com.yinyang.so.controllers.Controller;
-import com.yinyang.so.database.DatabaseAdapter;
-import com.yinyang.so.databaseentities.User;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
-import android.view.*;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.yinyang.so.R;
+import com.yinyang.so.controllers.UserProfileController;
 
 public class UserProfileActivity extends Activity {
 
 	public final static String EXTRA_USERID = "com.example.YingYangApp.USERID";
 	public final static String EXTRA_DB_HELPER = "com.example.YingYangApp.DBHELPER";
-	private int userId = 304;
-	private DatabaseAdapter mDbHelper;
-	private int reputation;
-	private String name;
-	private String creationDate;
-	private String lastAccessDate;
-	private String website;
-	private String location;
-	private int age;
-	private String description;
-	private int profileViews;
-	private int downVotes;
-	private int upVotes;
-	private Controller controller;
+	private UserProfileController controller;
+	private int userId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_user_profile);
 		setupActionBar();
 		Intent intent = getIntent();
 		userId = intent.getIntExtra(EXTRA_USERID, -1);
-		mDbHelper = new DatabaseAdapter(getBaseContext());
-		controller = new Controller();
 		try {
-			getDbInformation();
-		} catch (java.text.ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			controller = new UserProfileController(this, userId);
+		} catch (NullPointerException e) {
+			String text = "No user with id: " + userId;
+			Log.e("DB", "Exeption caught, create toast");
+		//	Toast toast = Toast.makeText(this.getApplicationContext(), text, Toast.LENGTH_SHORT);
+			Log.e("DB", "Toast created, show it");
+		//	toast.show();
+			Log.e("DB", "Toast has been shown");
+			finish();
 		}
-		updateView();
+		if (controller.hasUser()) {
+			Log.e("DB", "After catching exception");
+			setContentView(R.layout.activity_user_profile);
+			updateView();
+		}
 
 	}
 
@@ -59,13 +53,12 @@ public class UserProfileActivity extends Activity {
 		getMenuInflater().inflate(R.menu.user_profile, menu);
 		return true;
 	}
-	
+
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
 
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -83,33 +76,8 @@ public class UserProfileActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
-	private void getDbInformation() throws java.text.ParseException {
-		mDbHelper.createDatabase();
-		mDbHelper.open();
-
-		User user = mDbHelper.getUser(userId);
-
-		reputation = user.getReputation();
-		name = user.getDisplayName();
-		website = user.getWebsiteUrl();
-		location = user.getLocation();
-		age = user.getAge();
-		description = user.getAboutMe();
-		profileViews = user.getViews();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		creationDate = user.getCreationDate();
-		lastAccessDate = user.getLastAccessDate();
-
-		description.replaceAll("\"", "\\\"");
-
-		System.out.println(description);
-
-		mDbHelper.close();
-	}
-
 	private void updateView() {
+		Log.e("DB", "In updateView");
 		setReputationText();
 		setUserNameText();
 		setCreationDateText();
@@ -124,71 +92,87 @@ public class UserProfileActivity extends Activity {
 
 	private void setReputationText() {
 		TextView textView = (TextView) findViewById(R.id.reputationScore);
-		textView.setText("" + reputation);
+		textView.setText("" + controller.getReputationText());
 	}
 
 	private void setUserNameText() {
 		TextView textView = (TextView) findViewById(R.id.userName);
-		textView.setText(name);
+		textView.setText(controller.getUserName());
 	}
 
 	private void setCreationDateText() {
 		TextView textView = (TextView) findViewById(R.id.membershipDuration);
-		textView.setText(controller.getDateDifference(creationDate));
+		textView.setText(controller.getTimeSinceCreation());
 
 	}
 
 	private void setLastAccessDate() {
 		TextView textView = (TextView) findViewById(R.id.lastSeen);
-		textView.setText(controller.getDateDifference(lastAccessDate));
+		textView.setText(controller.getTimeSinceAccess());
 	}
 
 	private void setWebsite() {
 		TextView textView = (TextView) findViewById(R.id.website);
-		textView.setText(website);
+		textView.setText(controller.getWebsite());
 	}
 
 	private void setLocation() {
 		TextView textView = (TextView) findViewById(R.id.location);
-		textView.setText(location);
+		textView.setText(controller.getLocation());
 	}
 
 	private void setAge() {
 		TextView textView = (TextView) findViewById(R.id.age);
-		textView.setText("" + age);
+		textView.setText(Integer.toString(controller.getAge()));
 	}
 
 	private void setDescription() {
 		TextView textView = (TextView) findViewById(R.id.userDescription);
-		textView.setText(Html.fromHtml(description));
-		// textView.setMovementMethod(LinkMovementMethod.getInstance());
+		textView.setText(Html.fromHtml(controller.getDescriptionInHtml()));
 	}
 
 	private void setProfileViews() {
 		TextView textView = (TextView) findViewById(R.id.profileViews);
-		textView.setText("" + profileViews);
+		textView.setText(Integer.toString(controller.getProfileViews()));
 	}
 
-	// Do things when the buttons is pressed
 	public void favoriteQuestionsView(View view) {
+		Intent intent = new Intent(this, NotImplementedActivity.class);
+		startActivity(intent);
 	}
 
 	public void reputationView(View view) {
+
+		Intent intent = new Intent(this, NotImplementedActivity.class);
+		startActivity(intent);
 	}
 
 	public void answersView(View view) {
+
+		Intent intent = new Intent(this, NotImplementedActivity.class);
+		startActivity(intent);
 	}
 
 	public void questionsView(View view) {
+
+		Intent intent = new Intent(this, NotImplementedActivity.class);
+		startActivity(intent);
 	}
 
 	public void tagsView(View view) {
+		Intent intent = new Intent(this, NotImplementedActivity.class);
+		startActivity(intent);
 	}
 
 	public void badgesView(View view) {
+
+		Intent intent = new Intent(this, NotImplementedActivity.class);
+		startActivity(intent);
 	}
 
 	public void activitiesView(View view) {
-	}
 
+		Intent intent = new Intent(this, NotImplementedActivity.class);
+		startActivity(intent);
+	}
 }

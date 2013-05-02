@@ -68,11 +68,13 @@ public class DatabaseAdapter {
 
 			// returns different classes depending on the number of
 			// columns in the cursor
+			Log.e("DB", "cursorToArrayList, after last: " + Boolean.toString(cursor.isAfterLast()));
 			switch (cursor.getColumnCount()) {
 
 			// users table has 13 fields
 			case 13:
 				while (cursor.moveToNext()) {
+					Log.e("DB", "creating new user");
 					User user = new User(cursor);
 					list.add(user);
 				}
@@ -246,7 +248,7 @@ public class DatabaseAdapter {
 			sqlMessage += ", " + pairs.getKey();
 			values += ", '" + pairs.getValue() + "'";
 		}
-		
+
 		values += ")";
 
 		sqlMessage += values;
@@ -289,10 +291,32 @@ public class DatabaseAdapter {
 		}
 	}
 
+	/**
+	 * Fetch a user (User) from the database. Return null if there is no user
+	 * with the given id.
+	 * 
+	 * @param id
+	 *            an int
+	 * @return a User
+	 */
 	public User getUser(int id) {
-		Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='" + id
-				+ "')");
-		return (User) cursorToArrayList(cursor).get(0);
+		try {
+			Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='"
+					+ id + "')");
+			ArrayList<DatabaseType> list = cursorToArrayList(cursor);
+			Log.v("DB", "ArrayList size: " + Integer.toString(list.size()));
+			if (list.isEmpty()){
+				Log.e("DB", "isEmpty");
+				return null;
+			} else {
+				Log.v("DB", "array is not empty");
+				return (User) list.get(0);
+			}
+		} catch (SQLException mSQLException) {
+			Log.e(TAG, "getUser >>" + mSQLException.toString());
+			throw mSQLException;
+		}
+
 	}
 
 	public ArrayList<DatabaseType> getComments() {
@@ -393,7 +417,7 @@ public class DatabaseAdapter {
 			return null;
 		}
 	}
-	
+
 	public int getLastIndex(String table) {
 		String sqlMessage;
 
@@ -403,7 +427,7 @@ public class DatabaseAdapter {
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
-	
+
 	public int getFirstIndex(String table) {
 		String sqlMessage;
 
@@ -413,7 +437,6 @@ public class DatabaseAdapter {
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
-
 
 	public int getLastIndexFromPostsWithTagsNotNull() {
 		String sqlMessage;
@@ -438,7 +461,8 @@ public class DatabaseAdapter {
 	public int getNextPostIdWithTagNotNull(int id) {
 		String sqlMessage;
 
-		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL AND id > " + id + " ORDER BY ID ASC LIMIT 1";
+		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL AND id > "
+				+ id + " ORDER BY ID ASC LIMIT 1";
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
@@ -452,75 +476,77 @@ public class DatabaseAdapter {
 		mDb.execSQL(sqlMessage);
 	}
 
-	//get 4 top related tags to a reference tag --- User Story 39
-	public ArrayList<String> getTopRelatedTags(String referenceTag){
+	// get 4 top related tags to a reference tag --- User Story 39
+	public ArrayList<String> getTopRelatedTags(String referenceTag) {
 		String sqlMessage;
 		MapTags relatedMapTag;
 		ArrayList<String> relatedTags = new ArrayList<String>();
-		
-		sqlMessage = "SELECT * FROM " + MapTags.TABLE_NAME + " WHERE (TAG1 LIKE '" + referenceTag + "' " +
-				"OR TAG2 LIKE '" + referenceTag + "') AND TAG1 NOT LIKE TAG2 ORDER BY " + MapTags.KEY_COUNT_APPEARANCE + " DESC LIMIT 4";
 
-		try{
-		Cursor cursor = this.getCursor(sqlMessage);
-		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor);
-		
-		
-		for (DatabaseType tagDBType : tagsDBType) {
-			relatedMapTag = (MapTags) tagDBType; 
-			
-			if(referenceTag.equals(relatedMapTag.getTag2())){
-				relatedTags.add(relatedMapTag.getTag1());
+		sqlMessage = "SELECT * FROM " + MapTags.TABLE_NAME
+				+ " WHERE (TAG1 LIKE '" + referenceTag + "' "
+				+ "OR TAG2 LIKE '" + referenceTag
+				+ "') AND TAG1 NOT LIKE TAG2 ORDER BY "
+				+ MapTags.KEY_COUNT_APPEARANCE + " DESC LIMIT 4";
+
+		try {
+			Cursor cursor = this.getCursor(sqlMessage);
+			ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor);
+
+			for (DatabaseType tagDBType : tagsDBType) {
+				relatedMapTag = (MapTags) tagDBType;
+
+				if (referenceTag.equals(relatedMapTag.getTag2())) {
+					relatedTags.add(relatedMapTag.getTag1());
+				} else {
+					relatedTags.add(relatedMapTag.getTag2());
+				}
 			}
-			else{
-				relatedTags.add(relatedMapTag.getTag2());
+			if (relatedTags == null) {
+				Log.v("DEBUG", "relatedTags");
 			}
-		}
-		if (relatedTags == null){
-			Log.v("DEBUG", "relatedTags");
-		}
-		Log.v("DEBUG", "Tag_1.4.1");
-		return relatedTags;
-		}catch(Exception e){
-			System.out.println("ERROR IN GETTING THE RELATED TAGS --- SQL: " + sqlMessage + ", ERROR: "+ e.getLocalizedMessage());
+			Log.v("DEBUG", "Tag_1.4.1");
+			return relatedTags;
+		} catch (Exception e) {
+			System.out.println("ERROR IN GETTING THE RELATED TAGS --- SQL: "
+					+ sqlMessage + ", ERROR: " + e.getLocalizedMessage());
 		}
 		return null;
 	}
 
-	//get Posts by tag or tag combination -- User Story 1
-	public ArrayList<Post> getPostsByTags(ArrayList<String> tags){
+	// get Posts by tag or tag combination -- User Story 1
+	public ArrayList<Post> getPostsByTags(ArrayList<String> tags) {
 		ArrayList<Post> posts = new ArrayList<Post>();
 		String sqlMessage;
-		int i=0;
-		
+		int i = 0;
+
 		sqlMessage = "SELECT * FROM " + Post.TABLE_NAME + " WHERE ";
-		
+
 		for (String tag : tags) {
-			if (i>0){
+			if (i > 0) {
 				sqlMessage += " AND ";
 			}
 			sqlMessage += Post.KEY_TAGS + " LIKE '%" + tag + "%'";
 			i++;
 		}
-		
+
 		Cursor cursor = this.getCursor(sqlMessage);
 		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor);
-		
+
 		for (DatabaseType tagDBType : tagsDBType) {
-			posts.add((Post) tagDBType); 
+			posts.add((Post) tagDBType);
 		}
-		
+
 		return posts;
 	}
-	
-	
+
 	public void emptyTable(String tableName) {
 		String sqlMessage;
 		sqlMessage = "DELETE FROM " + tableName;
 
 		mDb.execSQL(sqlMessage);
 	}
-		/**
+
+	/**
 	 * Returns all associated answers to a question/post
 	 * 
 	 * @param questionId

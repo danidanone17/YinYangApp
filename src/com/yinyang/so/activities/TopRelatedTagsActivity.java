@@ -3,7 +3,7 @@ package com.yinyang.so.activities;
 import java.util.ArrayList;
 
 import com.yinyang.so.R;
-import com.yinyang.so.controllers.Controller;
+import com.yinyang.so.controllers.MainController;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.TagMapping;
 import com.yinyang.so.databaseentities.DatabaseType;
@@ -40,7 +40,7 @@ public class TopRelatedTagsActivity extends Activity {
 		//mDbHelper.emptyTable(MapTags.TABLE_NAME);
 		//mDbHelper.emptyTable(Tag.TABLE_NAME);
 		
-		Controller controller = new Controller();
+		MainController controller = new MainController();
 
 		
 		//controller.testInsertTags(getBaseContext());
@@ -72,7 +72,7 @@ public class TopRelatedTagsActivity extends Activity {
 		Log.v("DEBUG", "Tag_1.3");
 		mDbHelper.open();
 		Log.v("DEBUG", "Tag_1.4");
-		Controller controller = new Controller();
+		MainController controller = new MainController();
 		ArrayList<String> tags = controller.testGetTopRelatedTags(getBaseContext());
 		Log.v("DEBUG", "Tag_1.5");
 		TextView textView = (TextView) findViewById(R.id.textView2);
@@ -93,7 +93,7 @@ public class TopRelatedTagsActivity extends Activity {
 		mDbHelper.createDatabase();      
 		mDbHelper.open();
 		
-		Controller controller = new Controller();
+		MainController controller = new MainController();
 		ArrayList<Post> posts = controller.testGetPostsByTags(getBaseContext());
 		
 		TextView textView = (TextView) findViewById(R.id.textView3);

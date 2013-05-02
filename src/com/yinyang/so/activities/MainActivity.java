@@ -3,7 +3,7 @@ package com.yinyang.so.activities;
 import java.util.ArrayList;
 
 import com.yinyang.so.R;
-import com.yinyang.so.controllers.Controller;
+import com.yinyang.so.controllers.MainController;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.databaseentities.*;
 
@@ -29,11 +29,11 @@ public class MainActivity extends Activity {
 	}
 
 	// Called when you click the testSearch-Button
-	// Displays a test search performed in the Controller
+	// Displays a test search performed in the MainController
 		
 	public void testSearch(View view) {
 
-		Controller controller = new Controller();
+		MainController controller = new MainController();
 		ArrayList<DatabaseType> posts = controller.testSearch(this);
 		TextView text01 = (TextView) findViewById(R.id.text01);
 		
@@ -48,9 +48,14 @@ public class MainActivity extends Activity {
 	// Called when you click the testUserProfileButton
 	// Go to the user profile view for the specified user id 106
 	public void testUserProfile(View _) {
+		try{
 		Intent intent = new Intent(this, UserProfileActivity.class);
-		intent.putExtra(UserProfileActivity.EXTRA_USERID, 62);
+		intent.putExtra(UserProfileActivity.EXTRA_USERID, 3);
 		startActivity(intent);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	
