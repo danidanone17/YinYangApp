@@ -534,42 +534,81 @@ public class DatabaseAdapter {
 		return cursorToArrayList(cursor);
 	}
 	
-	//KEY_TAG - column in table TABLE_NAME
+	//User story 51 - Get next and previous tag alphabetically
 	public ArrayList<String> getNextAndPreviousTags(String searchTag) {		
 		ArrayList<DatabaseType> dbNext = new ArrayList<DatabaseType>();
 		ArrayList<DatabaseType> dbPrevious = new ArrayList<DatabaseType>();		
 		ArrayList<String> nextAndPreviousTags = new ArrayList<String>();
-		String sqlQuery;
-		Cursor tagCursor;
-		Tag nextTag;
-		Tag previousTag;
-		
-		sqlQuery = "SELECT * FROM " +
-				"(SELECT * FROM '"+ Tag.TABLE_NAME +"'" +
-				"ORDER BY '"+ Tag.KEY_TAG +"')" + 
-				"WHERE '"+ Tag.KEY_TAG+"' > '"+ searchTag +"' LIMIT 1";
-			
-		//Executing the SQL-query
-		tagCursor = this.getCursor(sqlQuery);
-		//Saving the cursor as a DatabaseType ArrayList
-		dbNext = cursorToArrayList(tagCursor);
-	
-		sqlQuery = "SELECT * FROM " +
-				"(SELECT * FROM '"+ Tag.TABLE_NAME +"'" +
-				"ORDER BY '"+ Tag.KEY_TAG +"' DESC)" + 
-				"WHERE '"+ Tag.KEY_TAG+"' < '"+ searchTag +"' LIMIT 1";
+		String sqlQuery = "";
+		Cursor tagCursor= null;
+		Tag nextTag = null;
+		Tag previousTag = null;
 
-		//Executing the SQL-query
-		tagCursor = this.getCursor(sqlQuery);
-		//Saving the cursor as a DatabaseType ArrayList
-		dbPrevious = cursorToArrayList(tagCursor);
+		//Selecting next element, alphabetically
+		sqlQuery = "SELECT * FROM " +
+				"(SELECT * FROM "+ Tag.TABLE_NAME  +
+				" ORDER BY "+ Tag.KEY_TAG +")" + 
+				" WHERE "+ Tag.KEY_TAG+" > '"+ searchTag +"' LIMIT 1";
+
+		try {	
+			//Executing the SQL-query
+			tagCursor = this.getCursor(sqlQuery);
+			//Nothing is returned as "next" for the last element of the table, fetch first element
+			if(tagCursor.getCount() == 0) {
+				sqlQuery = "SELECT * FROM (SELECT * FROM " + Tag.TABLE_NAME +
+						" ORDER BY " + Tag.KEY_TAG + ") LIMIT 1";
+				tagCursor = this.getCursor(sqlQuery);
+			}
+			//Saving the cursor as a DatabaseType ArrayList
+			dbNext = cursorToArrayList(tagCursor);					
+		}
+		//WRITE: What exceptions should be caught? 
+		catch(NullPointerException npe) {
+			npe.printStackTrace();
+			System.out.println("!!! NullPointerException in getNextAndPreviousTags - next tag" + npe.getMessage());
+		}
+		catch(ArrayIndexOutOfBoundsException aie) {
+			aie.printStackTrace();
+		}
+		
+		//Selecting previous element, alphabetically
+		sqlQuery = "SELECT * FROM " +
+				"(SELECT * FROM "+ Tag.TABLE_NAME +
+				" ORDER BY "+ Tag.KEY_TAG +" DESC)" + 
+				" WHERE "+ Tag.KEY_TAG+" < '"+ searchTag +"' LIMIT 1";
+
+		try {
+			//Executing the SQL-query
+			tagCursor = this.getCursor(sqlQuery);
+			//Nothing is returned as "previous" for the first element of the table, fetch last element
+			if(tagCursor.getCount() == 0) {
+					sqlQuery = "SELECT * FROM (SELECT * FROM "+ Tag.TABLE_NAME  +
+							" ORDER BY "+ Tag.KEY_TAG +" DESC) LIMIT 1";
+					tagCursor = this.getCursor(sqlQuery);
+			}
+			//Saving the cursor as a DatabaseType ArrayList
+			dbPrevious = cursorToArrayList(tagCursor);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("!!! Exception in getNextAndPreviousTags - previous tag" + e.getMessage());
+		}
+			
 		//Casting DatabaseType to Tag
-		nextTag = (Tag)dbNext.get(0);
-		previousTag = (Tag)dbPrevious.get(0);
+		for(DatabaseType dbp : dbPrevious) {
+			previousTag = (Tag)dbp;
+		}
+		
+		for (DatabaseType dbn : dbNext) {
+			nextTag = (Tag)dbn;
+		}
+		//nextTag = (Tag)dbNext.get(0);
+		//previousTag = (Tag)dbPrevious.get(0);
+		
 		//Adding to String ArrayList
 		nextAndPreviousTags.add(nextTag.getTag());
-		nextAndPreviousTags.add(previousTag.getTag());
-		
+		nextAndPreviousTags.add(previousTag.getTag());		
+
 		return nextAndPreviousTags;		
 	}
 }

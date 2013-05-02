@@ -2,7 +2,21 @@ package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+
+import com.yinyang.so.database.DatabaseAdapter;
+
 public class SearchController {
+	private DatabaseAdapter dbAdapter;
+
+	/**
+	 * Communicates with the database through a DatabaseAdapter Fetches
+	 * information for the question model
+	 */
+	public SearchController(Context con) {
+		dbAdapter = new DatabaseAdapter(con);
+		dbAdapter.createDatabase();
+	}
 
 	/**
 	 * Parses tags selected as search criteria with search free text
@@ -21,5 +35,9 @@ public class SearchController {
 		// add search free text to parsed string
 		searchString += freeText;
 		return searchString;
+	}
+	public ArrayList<String> getNextAndPreviousTags(String searchTag){
+		dbAdapter.open();
+		return dbAdapter.getNextAndPreviousTags(searchTag);
 	}
 }
