@@ -1,9 +1,12 @@
 package com.yinyang.so.databaseentities;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Post extends DatabaseType {
-
+public class Post extends DatabaseType implements Parcelable{
+	private int mData;
+	
 	public static final String TABLE_NAME = "posts";
 
 	public static final String KEY_ID = "id";
@@ -47,7 +50,80 @@ public class Post extends DatabaseType {
 	private int answerCount;
 	private int commentCount;
 	private int favoriteCount;
+	
+	// Parcelling part
+    public Post(Parcel in){
+    	super(null);
+        String[] data = new String[20];
 
+        in.readStringArray(data);
+        this.id = Integer.parseInt(data[0]);
+        this.postTypeId = Integer.parseInt(data[1]);
+    	this.parentId = Integer.parseInt(data[2]);
+    	this.acceptedAnswerId = Integer.parseInt(data[3]);
+    	this.creationDate = data[4];
+    	this.score = Integer.parseInt(data[5]);
+    	this.viewCount = Integer.parseInt(data[6]);
+    	this.body = data[7];
+    	this.ownerUserId = Integer.parseInt(data[8]);
+    	this.lastEditorUserId = Integer.parseInt(data[9]);
+    	this.lastEditorDisplayName = data[10];
+    	this.lastEditDate = data[11];
+    	this.lastActivityDate = data[12];
+    	this.communityOwnedDate = data[13];
+    	this.closedDate = data[14];
+    	this.title = data[15];
+    	this.tags = data[16];
+    	this.answerCount = Integer.parseInt(data[17]);
+    	this.commentCount = Integer.parseInt(data[18]);
+    	this.favoriteCount = Integer.parseInt(data[19]);
+  
+    }
+
+        public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] 
+        		{
+                Integer.toString(this.id),
+                Integer.toString(this.postTypeId),
+                Integer.toString(this.parentId),
+                Integer.toString(this.acceptedAnswerId),
+            	this.creationDate,
+            	Integer.toString(this.score),
+            	Integer.toString(this.viewCount),
+            	this.body,
+            	Integer.toString(this.ownerUserId),
+            	Integer.toString(this.lastEditorUserId),
+            	this.lastEditorDisplayName,
+            	this.lastEditDate,
+            	this.lastActivityDate,
+            	this.communityOwnedDate,
+            	this.closedDate,
+            	this.title,
+            	this.tags,
+            	Integer.toString(this.answerCount),
+            	Integer.toString(this.commentCount),
+            	Integer.toString(this.favoriteCount)});
+    }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Post createFromParcel(Parcel in) {
+            return new Post(in); 
+        }
+
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
+
+	public Post(){
+		super(null);
+		
+	}
+	
 	public Post(Cursor cursor) {
 		super(cursor);
 		this.id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
@@ -247,5 +323,4 @@ public class Post extends DatabaseType {
 	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
 	}
-
 }

@@ -2,8 +2,11 @@ package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,10 +37,9 @@ public class FreeTextSearchActivity extends Activity {
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
+	@SuppressLint("NewApi")
 	private void setupActionBar() {
-
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
 	}
 
 	@Override
@@ -68,6 +70,9 @@ public class FreeTextSearchActivity extends Activity {
 	 * Handles event when search button is clicked
 	 * @param view the search button
 	 */
+
+	@SuppressWarnings("unchecked")
+
 	public void searchFreeText(View view) {
 		// free text to search for
 		EditText editText = (EditText) findViewById(R.id.stringSearch);
@@ -79,6 +84,12 @@ public class FreeTextSearchActivity extends Activity {
 		
 		// present search result
 		testSearch(postsFound);
+		ArrayList<DatabaseType> oPosts = performSearch(textSearch);
+
+		// invoke search result activity
+		Intent oIntent = new Intent(FreeTextSearchActivity.this,SearchResultActivity.class);
+		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) oPosts);
+		startActivity(oIntent);
 	}
 
 	// for testing, append on the text view the result, each on a different line

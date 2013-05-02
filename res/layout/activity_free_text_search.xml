@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:inputType="text"
-        android:text="@string/string_search" />
+        android:hint="@string/string_search" />
 
     <Button
         android:id="@+id/searchCommand"

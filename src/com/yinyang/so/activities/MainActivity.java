@@ -90,4 +90,10 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	//@Override
+	public void searchResult(View _){
+		Intent intent = new Intent(this, SearchResultActivity.class);
+		startActivity(intent);
+	}
+	
 }
