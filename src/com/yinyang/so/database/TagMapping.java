@@ -181,7 +181,7 @@ public class TagMapping {
 
 	public static void insertTags(DatabaseAdapter mDbHelper) {
 
-		mDbHelper.emptyTable(Tag.TABLE_NAME);
+		//mDbHelper.emptyTable(Tag.TABLE_NAME);
 
 		Post post;
 		String tagLine;
