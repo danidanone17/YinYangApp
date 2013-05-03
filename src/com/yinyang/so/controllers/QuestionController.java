@@ -62,9 +62,9 @@ public class QuestionController {
 	 *            an int representing the question id
 	 * @return an ArrayList with Posts (DatabaseType)
 	 */
-	public ArrayList<DatabaseType> getAnswers(int questionId) {
+	public ArrayList<Post> getAnswers(int questionId) {
 		dbAdapter.open();
-		ArrayList<DatabaseType> answers = dbAdapter.getAnswers(questionId);
+		ArrayList<Post> answers = dbAdapter.getAnswers(questionId);
 		dbAdapter.close();
 		return answers;
 	}

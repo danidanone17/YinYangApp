@@ -24,7 +24,7 @@ public class QuestionModel {
 	private Post activeAnswer;
 	private int questionScore = 0;
 	private int answerScore = 0;
-	private ArrayList<DatabaseType> answers;
+	private ArrayList<Post> answers;
 
 	/**
 	 * Creates a model of a question with answers and author information
