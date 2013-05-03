@@ -42,7 +42,8 @@
     <string name="user_description">Some descriprion here</string>
 
     <!-- Main Acitivty View -->
-    <string name="TestUserProfile">Test the user profile view</string>
+    <string name="TestUserProfile1">Existing user</string>
+    <string name="TestUserProfile2">Non-existing user</string>
     <string name="TestSearch">Test to get information from the database</string>
     <string name="TestText">Test the different functionality</string>
     <string name="TestQuestionView1">Test the question view</string>

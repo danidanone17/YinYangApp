@@ -44,8 +44,6 @@ public class UserProfileActivity extends Activity {
 	@Override
 	protected void onResume(){
 		super.onResume();
-		//if (controller == null)
-			//this.finish();
 	}
 
 	@Override

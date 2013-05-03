@@ -1,4 +1,4 @@
-/**
+	/**
  * 
  */
 package com.yinyang.so.controllers;
@@ -79,7 +79,7 @@ public class UserProfileController {
 
 	public String getWebsite() {
 		String web = user.getWebsiteUrl();
-		if (web == "NULL")
+		if (web.equals("NULL"))
 			return "";
 		else
 			return web;
