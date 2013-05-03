@@ -82,13 +82,9 @@ public class FreeTextSearchActivity extends Activity {
 		SearchController oSearchController = new SearchController(getBaseContext());	
 		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch);
 		
-		// present search result
-		testSearch(postsFound);
-		ArrayList<DatabaseType> oPosts = performSearch(textSearch);
-
 		// invoke search result activity
 		Intent oIntent = new Intent(FreeTextSearchActivity.this,SearchResultActivity.class);
-		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) oPosts);
+		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) postsFound);
 		startActivity(oIntent);
 	}
 

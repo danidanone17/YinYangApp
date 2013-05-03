@@ -570,10 +570,14 @@ public class DatabaseAdapter {
 	{
 		String sSqlMessage;
 
-		sSqlMessage = "SELECT * FROM " + Tag.TABLE_NAME;
+		sSqlMessage = "SELECT " + Tag.KEY_TAG + " FROM " + Tag.TABLE_NAME;
 		sSqlMessage += " WHERE " +  Tag.KEY_TAG + " LIKE '" + sName + "' LIMIT 1";
-
-		Cursor oCursor = this.getCursor(sSqlMessage);cursor.moveToFirst();
-		return cursor.getString(0);
+		
+		Cursor oCursor = this.getCursor(sSqlMessage);
+		oCursor.moveToFirst();
+		if(oCursor.getCount() > 0)
+			{return oCursor.getString(0);}
+		else
+			{return "";}
 	}
 }

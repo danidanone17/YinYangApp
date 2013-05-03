@@ -202,10 +202,9 @@ public class TabSearchActivity extends Activity {
 		
 		// get tag by name
 		SearchController oSearchController = new SearchController(getBaseContext());
-		Tag oTag = oSearchController.getTagByName(editView.getText().toString());
+		String sNewCenterTag = oSearchController.getTagByName(editView.getText().toString());
 		
 		// get center tag button and replace its text
-		String sNewCenterTag = oTag != null ? oTag.getTag() : "";
 		Button oCenterButton = (Button)this.findViewById(R.id.button_center);
 		this.replaceTagButtonText(oCenterButton, sNewCenterTag);
 		
