@@ -534,12 +534,14 @@ public class DatabaseAdapter {
 		return cursorToArrayList(cursor);
 	}
 	
-	public Tag getTag(int id) {
-		Tag tag = null;
+	public String getTag(int id) {
+		String tag = null;
 		String sqlQuery = "SELECT " + Tag.KEY_TAG + " FROM " + Tag.TABLE_NAME + " WHERE (id='" + id + "')";
 		try {
 			Cursor cursor = this.getCursor(sqlQuery);
-			tag = (Tag) cursorToArrayList(cursor).get(0);
+			cursor.moveToFirst();
+			
+			tag = cursor.getString(0);
 		} catch (Exception e) {
 			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
 			//e.printStackTrace();

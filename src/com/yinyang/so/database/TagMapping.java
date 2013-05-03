@@ -329,7 +329,7 @@ public class TagMapping {
 	public static void insertCountTags(DatabaseAdapter mDbHelper) {
 		int countAppearance;
 
-		Tag tag;
+		String tag;
 		HashMap<String, String> columnValuesForUpdate = new HashMap<String, String>();
 		SearchEntity searchEntity;
 		ArrayList<SearchEntity> searchInMappingTableCriteria;
@@ -342,11 +342,11 @@ public class TagMapping {
 			System.out.println("tagTableFirstId: " + tagTableFirstId);
 
 			tag = mDbHelper.getTag(tagTableFirstId);
-			tagTableFirstId++;
+			
 
 			if (tag != null) {
 				searchEntity = new SearchEntity(Post.KEY_TAGS,
-						tag.getTag(), MeanOfSearch.contained);
+						"<"+tag+">", MeanOfSearch.contained);
 
 				searchInMappingTableCriteria = new ArrayList<SearchEntity>();
 				searchInMappingTableCriteria.add(searchEntity);
@@ -357,12 +357,13 @@ public class TagMapping {
 				columnValuesForUpdate.put(Tag.KEY_COUNT_APPEARANCE, ""
 						+ countAppearance);
 
-				System.out.println("UPDATE - ID: " + tag.getId() + ", TAG: "
-						+ tag.getTag() + "COUNT: " + countAppearance);
+				System.out.println("UPDATE - ID: " + tagTableFirstId + ", TAG: "
+						+ tag + "COUNT: " + countAppearance);
 
 				mDbHelper.updateSql(Tag.TABLE_NAME, columnValuesForUpdate,
-						"ID = " + tag.getId());
+						"ID = " + tagTableFirstId);
 			}
+			tagTableFirstId++;
 		}
 	}
 
