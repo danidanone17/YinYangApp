@@ -9,6 +9,7 @@ import com.yinyang.so.extras.PredicateLayout;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;

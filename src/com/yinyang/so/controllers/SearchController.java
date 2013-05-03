@@ -49,4 +49,9 @@ public class SearchController {
 		return dbAdapter.getQuestionsByFreeText(sFreeText.split(" "));
 	}
 	
+
+	public ArrayList<String> getNextAndPreviousTags(String searchTag){
+		dbAdapter.open();
+		return dbAdapter.getNextAndPreviousTags(searchTag);
+	}
 }
