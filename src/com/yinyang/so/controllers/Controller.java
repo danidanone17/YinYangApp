@@ -83,7 +83,7 @@ public class Controller {
 
 		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
 
-		SearchEntity searchEntity1 = new SearchEntity(Tag.KEY_TAG, "a",
+		SearchEntity searchEntity1 = new SearchEntity(Tag.KEY_TAG, "java",
 				MeanOfSearch.contained);
 
 		searchCriteria.add(searchEntity1);

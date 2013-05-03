@@ -48,7 +48,7 @@ public class Tag extends DatabaseType{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "id: "+ this.id + ", tag: " + this.tag;
+		return "id: "+ this.id + ", tag: " + this.tag + ", countAppearance: " + this.countAppearance;
 	}
 
 }
