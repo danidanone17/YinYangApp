@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
-import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
@@ -66,38 +65,33 @@ public class FreeTextSearchActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * Handles event when search button is clicked
-	 * @param view the search button
-	 */
-
 	@SuppressWarnings("unchecked")
-
 	public void searchFreeText(View view) {
-		// free text to search for
 		EditText editText = (EditText) findViewById(R.id.stringSearch);
+
 		textSearch = editText.getText().toString();
-		
-		// execute search
-		SearchController oSearchController = new SearchController(getBaseContext());	
-		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch);
-		
+		ArrayList<DatabaseType> oPosts = performSearch(textSearch);
+
 		// invoke search result activity
 		Intent oIntent = new Intent(FreeTextSearchActivity.this,SearchResultActivity.class);
-		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) postsFound);
+		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) oPosts);
 		startActivity(oIntent);
 	}
 
 	// for testing, append on the text view the result, each on a different line
-	public void testSearch(ArrayList<Post> postsFound) {
+	public void testSearch(ArrayList<DatabaseType> postsFound) {
 		TextView textView = (TextView) findViewById(R.id.searchResults);
 		textView.setText("");
 
-		for (Post post : postsFound) {
-			textView.append(post.getTitle() + "\n");
+		for (DatabaseType post : postsFound) {
+			Post p = (Post) post;
+			textView.append(p.getTitle() + "\n");
 		}
 	}
-	
+
+	// get an array of posts based on each word in textSearch
+	// at this point, the search will return only the posts which contain all
+	// the words in their post
 	public ArrayList<DatabaseType> performSearch(String textSearch) {
 
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());
