@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.Tag;
 
 import android.test.InstrumentationTestCase;
 import junit.framework.Assert;
@@ -22,6 +23,18 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		
 		boolean bValid = isValidFreeTextSearchResult(sFreeText, oPosts);
 		Assert.assertEquals(true, bValid);	
+	}
+	
+	/**
+	 * Tests tag search
+	 */
+	public void testTagSearch(){
+		String sTag = "java";
+		
+		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
+		String sFoundTag = oSearchController.getTagByName(sTag);
+		
+		Assert.assertEquals(true, sTag.equals(sFoundTag.toLowerCase()));
 	}
 	
 	/**

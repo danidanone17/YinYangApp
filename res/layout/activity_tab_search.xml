@@ -9,13 +9,38 @@
     tools:context=".TabSearchActivity"
     android:orientation="vertical"
     android:id="@+id/layout_main" >
+    
+    <LinearLayout 
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_gravity="center_horizontal"
+	    	android:layout_marginTop="10dp"
+	    	android:layout_marginBottom="10dp">
+                
+		    <EditText 
+		        android:id="@+id/edit_tag_search"
+		        android:layout_width="200dp"
+		        android:layout_height="wrap_content"
+		        android:hint="@string/tag_search"
+		        android:singleLine="true"/>
+		    
+		    <Button
+	            android:id="@+id/button_tag_search"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:onClick="performTagSearch"
+	            android:text="@string/search_command"
+	            android:textSize="20sp" 
+	            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+    
     <LinearLayout 
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:gravity="center_horizontal"
     	android:weightSum="1"
     	android:baselineAligned="false">
-    	
+    	 	
         <LinearLayout 
             android:layout_width="0dp"
             android:layout_height="wrap_content"

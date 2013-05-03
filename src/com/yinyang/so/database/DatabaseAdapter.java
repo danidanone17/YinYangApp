@@ -638,4 +638,24 @@ public class DatabaseAdapter {
 
 		return nextAndPreviousTags;		
 	}
+	
+	/**
+	 * Returns the tag that's name match the given string
+	 * @param sName string the tag name should match
+	 * @return the tag that's name match the given string
+	 */
+	public String getTagByName(String sName)
+	{
+		String sSqlMessage;
+
+		sSqlMessage = "SELECT " + Tag.KEY_TAG + " FROM " + Tag.TABLE_NAME;
+		sSqlMessage += " WHERE " +  Tag.KEY_TAG + " LIKE '" + sName + "' LIMIT 1";
+		
+		Cursor oCursor = this.getCursor(sSqlMessage);
+		oCursor.moveToFirst();
+		if(oCursor.getCount() > 0)
+			{return oCursor.getString(0);}
+		else
+			{return "";}
+	}
 }

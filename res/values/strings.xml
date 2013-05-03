@@ -74,6 +74,10 @@
     
     <!-- SearchResultActivity--> 
     <string name="TestSearchResult">Test Search Result</string>
+    
+    <!-- TabSearchActivity -->
+    <string name="tag_search">Search tag</string>
+    
    <!--  <string name="title_activity_search_result">Test Search Result</string> -->
 
 </resources>
