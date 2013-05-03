@@ -544,7 +544,7 @@ public class DatabaseAdapter {
 		Tag nextTag = null;
 		Tag previousTag = null;
 
-		//Selecting next element, alphabetically
+		//Selecting next tag, alphabetically
 		sqlQuery = "SELECT * FROM " +
 				"(SELECT * FROM "+ Tag.TABLE_NAME  +
 				" ORDER BY "+ Tag.KEY_TAG +")" + 
@@ -562,16 +562,16 @@ public class DatabaseAdapter {
 			//Saving the cursor as a DatabaseType ArrayList
 			dbNext = cursorToArrayList(tagCursor);					
 		}
-		//WRITE: What exceptions should be caught? 
 		catch(NullPointerException npe) {
 			npe.printStackTrace();
-			System.out.println("!!! NullPointerException in getNextAndPreviousTags - next tag" + npe.getMessage());
+			System.out.println("!!! NullPointerException in getNextAndPreviousTags - next tag, error:" + npe.getMessage());
 		}
 		catch(ArrayIndexOutOfBoundsException aie) {
 			aie.printStackTrace();
+			System.out.println("!!! ArrayIndexOutOfBoundsException in getNextAndPreviousTags - next tag, error:" + aie.getMessage());			
 		}
 		
-		//Selecting previous element, alphabetically
+		//Selecting previous tag, alphabetically
 		sqlQuery = "SELECT * FROM " +
 				"(SELECT * FROM "+ Tag.TABLE_NAME +
 				" ORDER BY "+ Tag.KEY_TAG +" DESC)" + 
@@ -589,9 +589,13 @@ public class DatabaseAdapter {
 			//Saving the cursor as a DatabaseType ArrayList
 			dbPrevious = cursorToArrayList(tagCursor);
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("!!! Exception in getNextAndPreviousTags - previous tag" + e.getMessage());
+		catch(NullPointerException npe) {
+			npe.printStackTrace();
+			System.out.println("!!! NullPointerException in getNextAndPreviousTags - previous tag, error:" + npe.getMessage());
+		}
+		catch(ArrayIndexOutOfBoundsException aie) {
+			aie.printStackTrace();
+			System.out.println("!!! ArrayIndexOutOfBoundsException in getNextAndPreviousTags - previous tag, error:" + aie.getMessage());			
 		}
 			
 		//Casting DatabaseType to Tag
@@ -602,8 +606,6 @@ public class DatabaseAdapter {
 		for (DatabaseType dbn : dbNext) {
 			nextTag = (Tag)dbn;
 		}
-		//nextTag = (Tag)dbNext.get(0);
-		//previousTag = (Tag)dbPrevious.get(0);
 		
 		//Adding to String ArrayList
 		nextAndPreviousTags.add(nextTag.getTag());
