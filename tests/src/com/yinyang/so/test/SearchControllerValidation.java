@@ -32,9 +32,9 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		String sTag = "java";
 		
 		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
-		Tag oTag = oSearchController.getTagByName(sTag);
+		String sFoundTag = oSearchController.getTagByName(sTag);
 		
-		Assert.assertEquals(true, oTag != null && sTag.equals(oTag.getTag().toLowerCase()));
+		Assert.assertEquals(true, sTag.equals(sFoundTag.toLowerCase()));
 	}
 	
 	/**

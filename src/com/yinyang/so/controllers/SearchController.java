@@ -51,11 +51,11 @@ public class SearchController {
 	}
 	
 	/**
-	 * Returns tags thats' name match the given string
+	 * Returns tag that's name match the given string
 	 * @param sName string the tag name should match
-	 * @return tags thats' name match the given string
+	 * @return tag that's name match the given string
 	 */
-	public Tag getTagByName(String sName)
+	public String getTagByName(String sName)
 	{
 		dbAdapter.open();
 		return dbAdapter.getTagByName(sName);
