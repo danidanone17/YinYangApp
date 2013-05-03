@@ -1,6 +1,7 @@
 package com.yinyang.so.activities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.Controller;
@@ -27,7 +28,18 @@ public class TopRelatedTagsActivity extends Activity {
 		
 		mDbHelper.open();
 		
-		TagMapping.insertTagMaaping(mDbHelper);
+		//create the Tag table + fill it
+		mDbHelper.dropTable(Tag.TABLE_NAME);
+		TagMapping.createTagsTable(mDbHelper);
+		TagMapping.insertTags(mDbHelper);
+		TagMapping.insertCountTags(mDbHelper);
+		
+		//create the MapTag table + fill it
+		/*
+		mDbHelper.dropTable(MapTags.TABLE_NAME);
+		TagMapping.createEmptyMappingTable(mDbHelper);
+		TagMapping.insertCountMapTags(mDbHelper);
+		*/
 		
 		mDbHelper.close();
 		
@@ -45,8 +57,8 @@ public class TopRelatedTagsActivity extends Activity {
 		
 		//controller.testInsertTags(getBaseContext());
 		
-		ArrayList<DatabaseType> tag = controller.testSearch(getBaseContext());
-		//ArrayList<DatabaseType> tag = controller.testSearchTags(getBaseContext());
+		//ArrayList<DatabaseType> tag = controller.testSearchMapTags(getBaseContext());
+		ArrayList<DatabaseType> tag = controller.testSearchTags(getBaseContext());
 		
 		System.out.println("toString(result): " + tag.toString());
 		
@@ -54,10 +66,10 @@ public class TopRelatedTagsActivity extends Activity {
 
 		String text="";
 		for(DatabaseType u : tag) {
-			//Tag tagObj = (Tag) u;
-			//text+="TAG:" + tagObj.getTag() + "\n";
-			MapTags tagObj = (MapTags) u;
-			text+="TAG1:" + tagObj.getTag1() + ", TAG2: " + tagObj.getTag2() + ", COUNT: " + tagObj.getCountAppearance() + "\n";
+			Tag tagObj = (Tag) u;
+			text+="TAG:" + tagObj.getTag() + ", COUNT: " + tagObj.getCountAppearance() + "\n";
+			//MapTags tagObj = (MapTags) u;
+			//text+="TAG1:" + tagObj.getTag1() + ", TAG2: " + tagObj.getTag2() + ", COUNT: " + tagObj.getCountAppearance() + "\n";
 		}
 		textView.setText("Test what was imported (us38): " + text);
 		
@@ -110,7 +122,7 @@ public class TopRelatedTagsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_top_related_tags);
-		Log.v("DEBUG", "Tag_1");
+		/*Log.v("DEBUG", "Tag_1");
 		displayRelatedTags();
 		Log.v("DEBUG", "Tag_2");
 		//testInsertTagMapping();
@@ -118,7 +130,9 @@ public class TopRelatedTagsActivity extends Activity {
 		testWhatWasInserted();
 		Log.v("DEBUG", "Tag_4");
 		displayPostsSearchedByTags();
-		Log.v("DEBUG", "Tag_5");
+		Log.v("DEBUG", "Tag_5");*/
+		
+		testInsertTagMapping();
 	}
 
 	@Override

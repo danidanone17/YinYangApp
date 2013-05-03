@@ -83,11 +83,36 @@ public class Controller {
 
 		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
 
-		SearchEntity searchEntity1 = new SearchEntity(Tag.KEY_TAG, "php",
-				MeanOfSearch.exact);
+		SearchEntity searchEntity1 = new SearchEntity(Tag.KEY_TAG, "java",
+				MeanOfSearch.contained);
 
 		searchCriteria.add(searchEntity1);
 
+		ArrayList<DatabaseType> tag = mDbHelper.getDataByCriteria(table,
+				searchCriteria);
+		mDbHelper.close();
+		return tag;
+
+	}
+	
+	public ArrayList<DatabaseType> testSearchMapTags(Context con) {
+
+		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);
+		mDbHelper.createDatabase();
+		mDbHelper.open();
+
+		String table = MapTags.TABLE_NAME;
+
+		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
+
+		SearchEntity searchEntity1 = new SearchEntity(MapTags.KEY_TAG1, "php",
+				MeanOfSearch.contained);
+		SearchEntity searchEntity2 = new SearchEntity(MapTags.KEY_TAG2, "mysql",
+				MeanOfSearch.contained);
+
+		searchCriteria.add(searchEntity1);
+		searchCriteria.add(searchEntity2);
+		
 		ArrayList<DatabaseType> tag = mDbHelper.getDataByCriteria(table,
 				searchCriteria);
 		mDbHelper.close();

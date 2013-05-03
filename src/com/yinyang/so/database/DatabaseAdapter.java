@@ -205,7 +205,7 @@ public class DatabaseAdapter {
 		String sqlMessage;
 
 		sqlMessage = "CREATE TABLE " + tableName + " ( ";
-		sqlMessage = sqlMessage + idName + " INTEGER PRIMARY KEY ";
+		sqlMessage = sqlMessage + idName + " int PRIMARY KEY ";
 
 		Iterator it = columns.entrySet().iterator();
 		Map.Entry pairs;
@@ -255,7 +255,7 @@ public class DatabaseAdapter {
 			System.out.println("INSERT STATEMENT: " + sqlMessage);
 			mDb.execSQL(sqlMessage);
 		} catch (Exception e) {
-			System.out.println("INSERT ERROR: " + e.getMessage());
+			Log.e("DatabaseAdaptor","INSERT ERROR: " + e.getMessage());
 		}
 
 	}
@@ -282,10 +282,10 @@ public class DatabaseAdapter {
 		sqlMessage += " WHERE " + whereClause;
 
 		try {
-			System.out.println("UPDATE MESSAGE: " + sqlMessage);
 			mDb.execSQL(sqlMessage);
+			System.out.println("(after update) UPDATE MESSAGE: " + sqlMessage);
 		} catch (Exception e) {
-			System.out.println("ERROR IN UPDATE: " + e.getMessage());
+			Log.e("ERROR IN sqlUPDATE","MESSAGE: " + e.getMessage());
 		}
 	}
 
@@ -418,7 +418,7 @@ public class DatabaseAdapter {
 	public int getLastIndexFromPostsWithTagsNotNull() {
 		String sqlMessage;
 
-		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL ORDER BY id DESC LIMIT 1";
+		sqlMessage = "SELECT id FROM posts WHERE tags <> 'NULL' ORDER BY id DESC LIMIT 1";
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
@@ -428,7 +428,7 @@ public class DatabaseAdapter {
 	public int getFirstIndexFromPostsWithTagsNotNull() {
 		String sqlMessage;
 
-		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL ORDER BY id ASC LIMIT 1";
+		sqlMessage = "SELECT id FROM posts WHERE tags <> 'NULL' ORDER BY id ASC LIMIT 1";
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
@@ -438,7 +438,7 @@ public class DatabaseAdapter {
 	public int getNextPostIdWithTagNotNull(int id) {
 		String sqlMessage;
 
-		sqlMessage = "SELECT id FROM posts WHERE tags IS NOT NULL AND id > " + id + " ORDER BY ID ASC LIMIT 1";
+		sqlMessage = "SELECT id FROM posts WHERE tags <> 'NULL' AND id > " + id + " ORDER BY ID ASC LIMIT 1";
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
@@ -658,4 +658,20 @@ public class DatabaseAdapter {
 		else
 			{return "";}
 	}
+
+	public String getTag(int id) {
+		String tag = null;
+		String sqlQuery = "SELECT " + Tag.KEY_TAG + " FROM " + Tag.TABLE_NAME + " WHERE (id='" + id + "')";
+		try {
+			Cursor cursor = this.getCursor(sqlQuery);
+			cursor.moveToFirst();
+			
+			tag = cursor.getString(0);
+		} catch (Exception e) {
+			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
+			//e.printStackTrace();
+		}
+		return tag;
+	}
+
 }
