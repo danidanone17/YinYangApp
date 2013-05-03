@@ -29,9 +29,9 @@ public class TopRelatedTagsActivity extends Activity {
 		mDbHelper.open();
 		
 		//create the Tag table + fill it
-		//mDbHelper.dropTable(Tag.TABLE_NAME);
-		//TagMapping.createTagsTable(mDbHelper);
-		//TagMapping.insertTags(mDbHelper);
+		mDbHelper.dropTable(Tag.TABLE_NAME);
+		TagMapping.createTagsTable(mDbHelper);
+		TagMapping.insertTags(mDbHelper);
 		TagMapping.insertCountTags(mDbHelper);
 		
 		//create the MapTag table + fill it

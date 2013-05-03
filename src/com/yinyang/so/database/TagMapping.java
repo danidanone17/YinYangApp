@@ -21,7 +21,7 @@ public class TagMapping {
 		HashMap<String, String> columns = new HashMap<String, String>();
 		columns.put("tag1", "VARCHAR(25) NOT NULL");
 		columns.put("tag2", "VARCHAR(25) NOT NULL");
-		columns.put("countAppearance", "INTEGER");
+		columns.put("countAppearance", "int");
 
 		mDbHelper.createTable(tableName, idColumn, columns);
 	}
@@ -31,7 +31,7 @@ public class TagMapping {
 		String idColumn = Tag.KEY_ID;
 		HashMap<String, String> columns = new HashMap<String, String>();
 		columns.put(Tag.KEY_TAG, "varchar(255) NOT NULL");
-		columns.put(Tag.KEY_COUNT_APPEARANCE, "INTEGER");
+		columns.put(Tag.KEY_COUNT_APPEARANCE, "int");
 
 		mDbHelper.createTable(tableName, idColumn, columns);
 	}

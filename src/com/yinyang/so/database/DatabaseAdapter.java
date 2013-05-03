@@ -205,7 +205,7 @@ public class DatabaseAdapter {
 		String sqlMessage;
 
 		sqlMessage = "CREATE TABLE " + tableName + " ( ";
-		sqlMessage = sqlMessage + idName + " INTEGER PRIMARY KEY ";
+		sqlMessage = sqlMessage + idName + " int PRIMARY KEY ";
 
 		Iterator it = columns.entrySet().iterator();
 		Map.Entry pairs;
@@ -536,9 +536,9 @@ public class DatabaseAdapter {
 	
 	public Tag getTag(int id) {
 		Tag tag = null;
-		Cursor cursor = this.getCursor("SELECT * FROM " + Tag.TABLE_NAME
-				+ " WHERE id=" + id);
+		String sqlQuery = "SELECT * FROM " + Tag.TABLE_NAME + " WHERE id=" + id;
 		try {
+			Cursor cursor = this.getCursor(sqlQuery);
 			tag = (Tag) cursorToArrayList(cursor).get(0);
 		} catch (Exception e) {
 			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
