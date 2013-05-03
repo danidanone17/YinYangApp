@@ -58,7 +58,7 @@ public class TopRelatedTagsActivity extends Activity {
 		//controller.testInsertTags(getBaseContext());
 		
 		//ArrayList<DatabaseType> tag = controller.testSearchMapTags(getBaseContext());
-		ArrayList<DatabaseType> tag = controller.testSearchTags(getBaseContext());
+		ArrayList<Tag> tag = controller.testSearchTags(getBaseContext());
 		
 		System.out.println("toString(result): " + tag.toString());
 		

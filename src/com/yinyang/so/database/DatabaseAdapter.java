@@ -1,7 +1,6 @@
 package com.yinyang.so.database;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,12 +15,10 @@ import com.yinyang.so.databaseentities.Tag;
 import com.yinyang.so.databaseentities.User;
 import com.yinyang.so.databaseentities.Vote;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.SyncStateContract.Columns;
 import android.util.Log;
 
 public class DatabaseAdapter {
@@ -62,35 +59,41 @@ public class DatabaseAdapter {
 		mDbHelper.close();
 	}
 
-	private ArrayList<Post> getPosts(Cursor cursor) {
+	private ArrayList<Post> getPostsFromCursor(Cursor cursor) {
 		ArrayList<Post> posts = new ArrayList<Post>();
 		for (DatabaseType db : cursorToArrayList(cursor, TableType.posts)) {
 			posts.add((Post) db); }
 		return posts; }
 	
-	private ArrayList<User> getUsers(Cursor cursor) {
+	private ArrayList<User> getUsersFromCursor(Cursor cursor) {
 		ArrayList<User> users = new ArrayList<User>();
 		for (DatabaseType db : cursorToArrayList(cursor, TableType.users)) {
 			users.add((User) db); }
 		return users; }
 	
-	private ArrayList<Comment> getComments(Cursor cursor) {
+	private ArrayList<Comment> getCommentsFromCursor(Cursor cursor) {
 		ArrayList<Comment> comments = new ArrayList<Comment>();
 		for (DatabaseType db : cursorToArrayList(cursor, TableType.comments)) {
 			comments.add((Comment) db); }
 		return comments; }
 
-	private ArrayList<Vote> getVotes(Cursor cursor) {
+	private ArrayList<Vote> getVotesFromCursor(Cursor cursor) {
 		ArrayList<Vote> votes = new ArrayList<Vote>();
 		for (DatabaseType db : cursorToArrayList(cursor, TableType.votes)) {
 			votes.add((Vote) db); }
 		return votes; }
 
-	private ArrayList<Tag> getTags(Cursor cursor) {
+	private ArrayList<Tag> getTagsFromCursor(Cursor cursor) {
 		ArrayList<Tag> tags = new ArrayList<Tag>();
 		for (DatabaseType db : cursorToArrayList(cursor, TableType.tags)) {
 			tags.add((Tag) db); }
 		return tags; }
+
+	private ArrayList<MapTags> getMappingTagsFromCursor(Cursor cursor) {
+		ArrayList<MapTags> mapTags = new ArrayList<MapTags>();
+		for (DatabaseType db : cursorToArrayList(cursor, TableType.mapping_tags)) {
+			mapTags.add((MapTags) db); }
+		return mapTags; }
 
 	
 	private ArrayList<DatabaseType> cursorToArrayList(Cursor cursor,
@@ -98,11 +101,9 @@ public class DatabaseAdapter {
 		ArrayList<DatabaseType> list = new ArrayList<DatabaseType>();
 		if (cursor != null) {
 
-			// returns different classes depending on the number of
-			// columns in the cursor
+			// returns different classes depending on the table type
 			switch (ttype) {
 
-			// users table has 13 fields
 			case users:
 				while (cursor.moveToNext()) {
 					User user = new User(cursor);
@@ -110,7 +111,6 @@ public class DatabaseAdapter {
 				}
 				break;
 
-			// comments table has 6 fields
 			case comments:
 				while (cursor.moveToNext()) {
 					Comment comment = new Comment(cursor);
@@ -118,7 +118,6 @@ public class DatabaseAdapter {
 				}
 				break;
 
-			// posts table has 20 fields
 			case posts:
 				while (cursor.moveToNext()) {
 					Post post = new Post(cursor);
@@ -126,24 +125,18 @@ public class DatabaseAdapter {
 				}
 				break;
 
-			// votes table has 4 fields
 			case votes:
-				String[] columnNames = cursor.getColumnNames();
-				for (String columnName : columnNames) {
-					if (columnName.equals("post_id")) {
-						while (cursor.moveToNext()) {
-							Vote vote = new Vote(cursor);
-							list.add(vote);
-						}
-					}
-					if (columnName.equals("tag1")) {
-						while (cursor.moveToNext()) {
-							MapTags mapTags = new MapTags(cursor);
-							list.add(mapTags);
-						}
-					}
+				while (cursor.moveToNext()) {
+					Vote vote = new Vote(cursor);
+					list.add(vote);
 				}
+				break;
 
+			case mapping_tags:
+				while (cursor.moveToNext()) {
+					MapTags mapTags = new MapTags(cursor);
+					list.add(mapTags);
+				}
 				break;
 
 			case tags:
@@ -158,6 +151,59 @@ public class DatabaseAdapter {
 		return list;
 	}
 
+	// wrapper for getDataByCriteria<Post>
+	public ArrayList<Post> getPostsByCriteria(ArrayList<SearchEntity> criteria) {
+		ArrayList<Post> posts = new ArrayList<Post>();
+		for (DatabaseType db : getDataByCriteria(TableType.posts, criteria)) {
+			posts.add((Post) db); }
+		return posts; }
+
+	// wrapper for getDataByCriteria<User>
+	public ArrayList<User> getUsersByCriteria(ArrayList<SearchEntity> criteria) {
+		ArrayList<User> users = new ArrayList<User>();
+		for (DatabaseType db : getDataByCriteria(TableType.users, criteria)) {
+			users.add((User) db); }
+		return users; }
+
+	// wrapper for getDataByCriteria<Tag>
+	public ArrayList<Tag> getTagsByCriteria(ArrayList<SearchEntity> criteria) {
+		ArrayList<Tag> tags = new ArrayList<Tag>();
+		for (DatabaseType db : getDataByCriteria(TableType.tags, criteria)) {
+			tags.add((Tag) db); }
+		return tags; }
+
+	// wrapper for getDataByCriteria<MappingTags>
+	public ArrayList<MapTags> getMappingTagsByCriteria(ArrayList<SearchEntity> criteria) {
+		ArrayList<MapTags> mappingTags = new ArrayList<MapTags>();
+		for (DatabaseType db : getDataByCriteria(TableType.mapping_tags, criteria)) {
+			mappingTags.add((MapTags) db); }
+		return mappingTags; }
+
+	private ArrayList<DatabaseType> getDataByCriteria(TableType ttype,
+			ArrayList<SearchEntity> criteria) {
+		String where = " WHERE ";
+		int i = 0;
+		for (SearchEntity searchEntity : criteria) {
+			if (i > 0) {
+				where += " AND ";
+			}
+
+			if (searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)) {
+				where += searchEntity.getKey() + " LIKE '%"
+						+ searchEntity.getValue() + "%'";
+			}
+			if (searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)) {
+				where += searchEntity.getKey() + " LIKE '"
+						+ searchEntity.getValue() + "'";
+			}
+			i++;
+		}
+		String sqlQuery = "SELECT * FROM " + ttype.getValue() + where;
+		Log.e("", "SQL QUERY : " + sqlQuery);
+		Cursor cursor = this.getCursor(sqlQuery);
+		return cursorToArrayList(cursor, ttype);
+	}
+	
 	private Cursor getCursor(String sqlString) {
 		try {
 			Cursor mCur = mDb.rawQuery(sqlString, null);
@@ -179,47 +225,7 @@ public class DatabaseAdapter {
 
 	public ArrayList<User> getUsers() {
 		Cursor cursor = this.getCursor("SELECT * FROM users LIMIT 20");
-		return getUsers(cursor);
-	}
-
-	/*
-	 * old version, changed 04/19/2013 public ArrayList<DatabaseType>
-	 * getDataByCriteria(String tableName, HashMap<String, String> criteria) {
-	 * String where = " WHERE "; Iterator<Entry<String,String>> iterator =
-	 * criteria.entrySet().iterator(); while (iterator.hasNext()) {
-	 * Entry<String,String> criterion = iterator.next(); where+=
-	 * criterion.getKey()+" LIKE '%"+criterion.getValue()+"%'"; if
-	 * (iterator.hasNext()) {where+= " and ";} } String sqlQuery =
-	 * "SELECT * FROM " + tableName + where; Log.e("", "SQL QUERY : " +
-	 * sqlQuery); Cursor cursor = this.getCursor(sqlQuery); return
-	 * cursorToArrayList(cursor); }
-	 */
-
-	public ArrayList<DatabaseType> getDataByCriteria(String tableName,
-			ArrayList<SearchEntity> criteria) {
-		String where = " WHERE ";
-		int i = 0;
-
-		for (SearchEntity searchEntity : criteria) {
-			if (i > 0) {
-				where += " AND ";
-			}
-
-			if (searchEntity.getMeanOfSearch().equals(MeanOfSearch.contained)) {
-				where += searchEntity.getKey() + " LIKE '%"
-						+ searchEntity.getValue() + "%'";
-			}
-			if (searchEntity.getMeanOfSearch().equals(MeanOfSearch.exact)) {
-				where += searchEntity.getKey() + " LIKE '"
-						+ searchEntity.getValue() + "'";
-			}
-			i++;
-		}
-
-		String sqlQuery = "SELECT * FROM " + tableName + where;
-		Log.e("", "SQL QUERY : " + sqlQuery);
-		Cursor cursor = this.getCursor(sqlQuery);
-		return cursorToArrayList(cursor, TableType.valueOf(tableName));
+		return getUsersFromCursor(cursor);
 	}
 
 	public ArrayList<DatabaseType> getTable(String tableName) {
@@ -239,11 +245,11 @@ public class DatabaseAdapter {
 		sqlMessage = "CREATE TABLE " + tableName + " ( ";
 		sqlMessage = sqlMessage + idName + " INTEGER PRIMARY KEY ";
 
-		Iterator it = columns.entrySet().iterator();
-		Map.Entry pairs;
+		Iterator<Entry<String, String>> it = columns.entrySet().iterator();
+		Map.Entry<String, String> pairs;
 
 		while (it.hasNext()) {
-			pairs = (Map.Entry) it.next();
+			pairs = (Map.Entry<String, String>) it.next();
 			sqlMessage = sqlMessage + ", ";
 			sqlMessage = sqlMessage + pairs.getKey() + " " + pairs.getValue();
 		}
@@ -270,11 +276,11 @@ public class DatabaseAdapter {
 		sqlMessage += " ( id";
 		values = ") VALUES (" + id;
 
-		Iterator it = columnValues.entrySet().iterator();
-		Map.Entry pairs;
+		Iterator<Entry<String, String>> it = columnValues.entrySet().iterator();
+		Map.Entry<String, String> pairs;
 
 		while (it.hasNext()) {
-			pairs = (Map.Entry) it.next();
+			pairs = (Map.Entry<String, String>) it.next();
 			sqlMessage += ", " + pairs.getKey();
 			values += ", '" + pairs.getValue() + "'";
 		}
@@ -299,11 +305,11 @@ public class DatabaseAdapter {
 
 		sqlMessage = "UPDATE " + tableName + " SET ";
 
-		Iterator it = columnValues.entrySet().iterator();
-		Map.Entry pairs;
+		Iterator<Entry<String, String>> it = columnValues.entrySet().iterator();
+		Map.Entry<String, String> pairs;
 
 		while (it.hasNext()) {
-			pairs = (Map.Entry) it.next();
+			pairs = (Map.Entry<String, String>) it.next();
 			sqlMessage += pairs.getKey() + "='" + pairs.getValue() + "'";
 
 			if (it.hasNext()) {
@@ -324,24 +330,24 @@ public class DatabaseAdapter {
 	public User getUser(int id) {
 		Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='" + id
 				+ "')");
-		return getUsers(cursor).get(0);
+		return getUsersFromCursor(cursor).get(0);
 	}
 
 	public ArrayList<Comment> getComments() {
 		Cursor cursor = this.getCursor("SELECT * FROM comments LIMIT 20");
-		return getComments(cursor);
+		return getCommentsFromCursor(cursor);
 	}
 
 	public Comment getComment(int id) {
 
 		Cursor cursor = this.getCursor("SELECT * FROM comments WHERE (id='"
 				+ id + "')");
-		return getComments(cursor).get(0);
+		return getCommentsFromCursor(cursor).get(0);
 	}
 
 	public ArrayList<Post> getPosts() {
 		Cursor cursor = this.getCursor("SELECT * FROM posts LIMIT 20");
-		return getPosts(cursor);
+		return getPostsFromCursor(cursor);
 	}
 
 	// constructs the SQL statement for getting specific columns from a table
@@ -397,7 +403,7 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor("SELECT * FROM posts WHERE (id='" + id
 				+ "')");
 		try {
-			return getPosts(cursor).get(0);
+			return getPostsFromCursor(cursor).get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -406,20 +412,20 @@ public class DatabaseAdapter {
 
 	public ArrayList<Vote> getVotes() {
 		Cursor cursor = this.getCursor("SELECT * FROM votes LIMIT 20");
-		return getVotes(cursor);
+		return getVotesFromCursor(cursor);
 	}
 
 	public Vote getVote(int id) {
 		Cursor cursor = this.getCursor("SELECT * FROM votes WHERE (id='" + id
 				+ "')");
-		return getVotes(cursor).get(0);
+		return getVotesFromCursor(cursor).get(0);
 	}
 
 	public MapTags getMapTags(int id) {
 		Cursor cursor = this.getCursor("SELECT * FROM " + MapTags.TABLE_NAME
 				+ " WHERE (id=" + id + ")");
 		try {
-			return (MapTags) cursorToArrayList(cursor, TableType.valueOf(MapTags.TABLE_NAME)).get(0);
+			return getMappingTagsFromCursor(cursor).get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -495,7 +501,7 @@ public class DatabaseAdapter {
 
 		try{
 		Cursor cursor = this.getCursor(sqlMessage);
-		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor, TableType.valueOf(MapTags.TABLE_NAME));
+		ArrayList<MapTags> tagsDBType = getMappingTagsFromCursor(cursor);
 		
 		
 		for (DatabaseType tagDBType : tagsDBType) {
@@ -507,9 +513,6 @@ public class DatabaseAdapter {
 			else{
 				relatedTags.add(relatedMapTag.getTag2());
 			}
-		}
-		if (relatedTags == null){
-			Log.v("DEBUG", "relatedTags");
 		}
 		Log.v("DEBUG", "Tag_1.4.1");
 		return relatedTags;
@@ -534,14 +537,8 @@ public class DatabaseAdapter {
 			sqlMessage += Post.KEY_TAGS + " LIKE '%" + tag + "%'";
 			i++;
 		}
-		
 		Cursor cursor = this.getCursor(sqlMessage);
-		ArrayList<DatabaseType> tagsDBType = cursorToArrayList(cursor, TableType.posts);
-		
-		for (DatabaseType tagDBType : tagsDBType) {
-			posts.add((Post) tagDBType); 
-		}
-		
+		posts = getPostsFromCursor(cursor);		
 		return posts;
 	}
 	
@@ -564,7 +561,7 @@ public class DatabaseAdapter {
 		String sqlQuery = "SELECT * FROM posts WHERE ('parent id'='"
 				+ questionId + "')";
 		Cursor cursor = this.getCursor(sqlQuery);
-		return getPosts(cursor);
+		return getPostsFromCursor(cursor);
 	}
 	
 	/**
@@ -587,7 +584,7 @@ public class DatabaseAdapter {
 		
 		// convert result to  an array list of Posts
 		ArrayList<Post> oQuestions = new ArrayList<Post>();		
-		for (DatabaseType tagDBType : getPosts(oCursor)) {
+		for (DatabaseType tagDBType : getPostsFromCursor(oCursor)) {
 			oQuestions.add((Post) tagDBType); 
 		}
 		
@@ -597,13 +594,11 @@ public class DatabaseAdapter {
 
 	//User story 51 - Get next and previous tag alphabetically
 	public ArrayList<String> getNextAndPreviousTags(String searchTag) {		
-		ArrayList<DatabaseType> dbNext = new ArrayList<DatabaseType>();
-		ArrayList<DatabaseType> dbPrevious = new ArrayList<DatabaseType>();		
+		ArrayList<Tag> dbNextTag = new ArrayList<Tag>();
+		ArrayList<Tag> dbPreviousTag = new ArrayList<Tag>();		
 		ArrayList<String> nextAndPreviousTags = new ArrayList<String>();
 		String sqlQuery = "";
 		Cursor tagCursor= null;
-		Tag nextTag = null;
-		Tag previousTag = null;
 
 		//Selecting next tag, alphabetically
 		sqlQuery = "SELECT * FROM " +
@@ -621,7 +616,7 @@ public class DatabaseAdapter {
 				tagCursor = this.getCursor(sqlQuery);
 			}
 			//Saving the cursor as a DatabaseType ArrayList
-			dbNext = cursorToArrayList(tagCursor, TableType.tags);					
+			dbNextTag = getTagsFromCursor(tagCursor);					
 		}
 		catch(NullPointerException npe) {
 			npe.printStackTrace();
@@ -648,7 +643,7 @@ public class DatabaseAdapter {
 					tagCursor = this.getCursor(sqlQuery);
 			}
 			//Saving the cursor as a DatabaseType ArrayList
-			dbPrevious = cursorToArrayList(tagCursor, TableType.tags);
+			dbPreviousTag = getTagsFromCursor(tagCursor);
 		}
 		catch(NullPointerException npe) {
 			npe.printStackTrace();
@@ -659,18 +654,9 @@ public class DatabaseAdapter {
 			System.out.println("!!! ArrayIndexOutOfBoundsException in getNextAndPreviousTags - previous tag, error:" + aie.getMessage());			
 		}
 
-		//Casting DatabaseType to Tag
-		for(DatabaseType dbp : dbPrevious) {
-			previousTag = (Tag)dbp;
-		}
-
-		for (DatabaseType dbn : dbNext) {
-			nextTag = (Tag)dbn;
-		}
-
 		//Adding to String ArrayList
-		nextAndPreviousTags.add(nextTag.getTag());
-		nextAndPreviousTags.add(previousTag.getTag());		
+		nextAndPreviousTags.add(dbNextTag.get(0).getTag());
+		nextAndPreviousTags.add(dbPreviousTag.get(0).getTag());		
 
 		return nextAndPreviousTags;		
 	}

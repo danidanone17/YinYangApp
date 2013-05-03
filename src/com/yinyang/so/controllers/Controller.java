@@ -25,33 +25,28 @@ public class Controller {
 	}
 
 	// test the provided database
-	public ArrayList<DatabaseType> testSearch(Context con) {
+	public ArrayList<Post> testSearch(Context con) {
 
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);
 		mDbHelper.createDatabase();
 		mDbHelper.open();
-
-		String table = Post.TABLE_NAME;
 
 		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
 
 		SearchEntity searchEntity1 = new SearchEntity(Post.KEY_TAGS,
 				"multicore", MeanOfSearch.contained);
 		searchCriteria.add(searchEntity1);
-		ArrayList<DatabaseType> posts = mDbHelper.getDataByCriteria(table,
-				searchCriteria);
+		ArrayList<Post> posts = mDbHelper.getPostsByCriteria(searchCriteria);
 		mDbHelper.close();
 
 		return posts;
 	}
 
-	public ArrayList<DatabaseType> testSearchUser(Context con) {
+	public ArrayList<User> testSearchUser(Context con) {
 
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);
 		mDbHelper.createDatabase();
 		mDbHelper.open();
-
-		String table = User.TABLE_NAME;
 
 		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
 
@@ -64,8 +59,7 @@ public class Controller {
 
 		searchCriteria.add(searchEntity2);
 
-		ArrayList<DatabaseType> users = mDbHelper.getDataByCriteria(table,
-				searchCriteria);
+		ArrayList<User> users = mDbHelper.getUsersByCriteria(searchCriteria);
 
 		mDbHelper.close();
 
@@ -73,13 +67,11 @@ public class Controller {
 
 	}
 
-	public ArrayList<DatabaseType> testSearchTags(Context con) {
+	public ArrayList<Tag> testSearchTags(Context con) {
 
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);
 		mDbHelper.createDatabase();
 		mDbHelper.open();
-
-		String table = Tag.TABLE_NAME;
 
 		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
 
@@ -88,20 +80,17 @@ public class Controller {
 
 		searchCriteria.add(searchEntity1);
 
-		ArrayList<DatabaseType> tag = mDbHelper.getDataByCriteria(table,
-				searchCriteria);
+		ArrayList<Tag> tag = mDbHelper.getTagsByCriteria(searchCriteria);
 		mDbHelper.close();
 		return tag;
 
 	}
 	
-	public ArrayList<DatabaseType> testSearchMapTags(Context con) {
+	public ArrayList<MapTags> testSearchMapTags(Context con) {
 
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(con);
 		mDbHelper.createDatabase();
 		mDbHelper.open();
-
-		String table = MapTags.TABLE_NAME;
 
 		ArrayList<SearchEntity> searchCriteria = new ArrayList<SearchEntity>();
 
@@ -113,8 +102,7 @@ public class Controller {
 		searchCriteria.add(searchEntity1);
 		searchCriteria.add(searchEntity2);
 		
-		ArrayList<DatabaseType> tag = mDbHelper.getDataByCriteria(table,
-				searchCriteria);
+		ArrayList<MapTags> tag = mDbHelper.getMappingTagsByCriteria(searchCriteria);
 		mDbHelper.close();
 		return tag;
 
@@ -213,8 +201,7 @@ public class Controller {
 
 		searchInTagsTableCriteria.add(searchEntity1);
 
-		if (mDbHelper.getDataByCriteria(Tag.TABLE_NAME,
-				searchInTagsTableCriteria).isEmpty()) {
+		if (mDbHelper.getTagsByCriteria(searchInTagsTableCriteria).isEmpty()) {
 			HashMap<String, String> columnValuesForInsert = new HashMap<String, String>();
 
 			columnValuesForInsert.put(Tag.KEY_TAG, "mysql");

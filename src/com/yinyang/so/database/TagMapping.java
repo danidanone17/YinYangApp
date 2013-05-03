@@ -1,11 +1,8 @@
 package com.yinyang.so.database;
 
-import com.yinyang.so.database.*;
 import com.yinyang.so.databaseentities.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class TagMapping {
@@ -143,12 +140,10 @@ public class TagMapping {
 								searchInMappingTableCriteria2
 										.add(searchEntity2);
 
-								if (mDbHelper.getDataByCriteria(
-										MapTags.TABLE_NAME,
+								if (mDbHelper.getMappingTagsByCriteria(
 										searchInMappingTableCriteria1)
 										.isEmpty()
-										&& mDbHelper.getDataByCriteria(
-												MapTags.TABLE_NAME,
+										&& mDbHelper.getMappingTagsByCriteria(
 												searchInMappingTableCriteria2)
 												.isEmpty()) {
 
@@ -259,7 +254,7 @@ public class TagMapping {
 
 						searchInTagsTableCriteria.add(searchEntity);
 
-						if (mDbHelper.getDataByCriteria(Tag.TABLE_NAME,
+						if (mDbHelper.getTagsByCriteria(
 								searchInTagsTableCriteria).size() == 0) {
 
 							columnValuesForInsert = new HashMap<String, String>();

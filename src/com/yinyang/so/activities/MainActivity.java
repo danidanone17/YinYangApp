@@ -34,13 +34,12 @@ public class MainActivity extends Activity {
 	public void testSearch(View view) {
 
 		Controller controller = new Controller();
-		ArrayList<DatabaseType> posts = controller.testSearch(this);
+		ArrayList<Post> posts = controller.testSearch(this);
 		TextView text01 = (TextView) findViewById(R.id.text01);
 		
 		String text = "";
-		for (DatabaseType p : posts) {
-			Post post = (Post) p;
-			text += post.getTitle() + "\n";
+		for (Post p : posts) {
+			text += p.getTitle() + "\n";
 		}
 		text01.setText(text);
 	}

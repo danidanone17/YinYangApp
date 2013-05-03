@@ -65,12 +65,11 @@ public class FreeTextSearchActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void searchFreeText(View view) {
 		EditText editText = (EditText) findViewById(R.id.stringSearch);
 
 		textSearch = editText.getText().toString();
-		ArrayList<DatabaseType> oPosts = performSearch(textSearch);
+		ArrayList<Post> oPosts = performSearch(textSearch);
 
 		// invoke search result activity
 		Intent oIntent = new Intent(FreeTextSearchActivity.this,SearchResultActivity.class);
@@ -92,7 +91,7 @@ public class FreeTextSearchActivity extends Activity {
 	// get an array of posts based on each word in textSearch
 	// at this point, the search will return only the posts which contain all
 	// the words in their post
-	public ArrayList<DatabaseType> performSearch(String textSearch) {
+	public ArrayList<Post> performSearch(String textSearch) {
 
 		DatabaseAdapter mDbHelper = new DatabaseAdapter(getBaseContext());
 		mDbHelper.createDatabase();
@@ -109,10 +108,8 @@ public class FreeTextSearchActivity extends Activity {
 		// search only in questions
 		criteria.add(new SearchEntity(Post.KEY_POST_TYPE_ID, "1",
 				MeanOfSearch.exact));
-		String table = Post.TABLE_NAME;
 
-		ArrayList<DatabaseType> posts = mDbHelper.getDataByCriteria(table,
-				criteria);
+		ArrayList<Post> posts = mDbHelper.getPostsByCriteria(criteria);
 		return posts;
 	}
 
