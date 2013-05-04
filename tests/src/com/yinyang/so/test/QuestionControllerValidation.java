@@ -46,10 +46,10 @@ public class QuestionControllerValidation extends
 	// it may depend on changes in the db...
 	// TODO: Make it independent
 	public void testGetAnswers() {
-		ArrayList<DatabaseType> answers = qc.getAnswers(8414075);
+		ArrayList<Post> answers = qc.getAnswers(8414075);
 		assertEquals(answers.size(), 2);
-		Post ans1 = (Post) answers.get(0);
-		Post ans2 = (Post) answers.get(1);
+		Post ans1 = answers.get(0);
+		Post ans2 = answers.get(1);
 		assertEquals(ans1.getId(), 8414109);
 		assertEquals(ans2.getId(), 8414247);
 	}

@@ -287,8 +287,8 @@ public class TagMapping {
 		MapTags tagCombination;
 		HashMap<String, String> columnValuesForUpdate = new HashMap<String, String>();
 
-		int postTableFirstId = mDbHelper.getFirstIndex(MapTags.TABLE_NAME);
-		int postTableLastId = mDbHelper.getLastIndex(MapTags.TABLE_NAME);
+		int postTableFirstId = mDbHelper.getFirstIndex(TableType.mapping_tags);
+		int postTableLastId = mDbHelper.getLastIndex(TableType.mapping_tags);
 
 		while (postTableFirstId <= postTableLastId) {
 
@@ -306,7 +306,7 @@ public class TagMapping {
 			searchInMappingTableCriteria1.add(searchEntity1);
 			searchInMappingTableCriteria1.add(searchEntity2);
 
-			countAppearance = mDbHelper.getCountByCriteria(Post.TABLE_NAME,
+			countAppearance = mDbHelper.getCountByCriteria(TableType.posts,
 					searchInMappingTableCriteria1);
 
 			columnValuesForUpdate.put(MapTags.KEY_COUNT_APPEARANCE, ""
@@ -329,8 +329,8 @@ public class TagMapping {
 		SearchEntity searchEntity;
 		ArrayList<SearchEntity> searchInMappingTableCriteria;
 
-		int tagTableFirstId = mDbHelper.getFirstIndex(Tag.TABLE_NAME);
-		int tagTableLastId = mDbHelper.getLastIndex(Tag.TABLE_NAME);
+		int tagTableFirstId = mDbHelper.getFirstIndex(TableType.tags);
+		int tagTableLastId = mDbHelper.getLastIndex(TableType.tags);
 
 		while (tagTableFirstId <= tagTableLastId) {
 
@@ -346,7 +346,7 @@ public class TagMapping {
 				searchInMappingTableCriteria = new ArrayList<SearchEntity>();
 				searchInMappingTableCriteria.add(searchEntity);
 
-				countAppearance = mDbHelper.getCountByCriteria(Post.TABLE_NAME,
+				countAppearance = mDbHelper.getCountByCriteria(TableType.posts,
 						searchInMappingTableCriteria);
 
 				columnValuesForUpdate.put(Tag.KEY_COUNT_APPEARANCE, ""

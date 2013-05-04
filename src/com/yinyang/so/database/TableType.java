@@ -21,7 +21,8 @@ public enum TableType {
 		this.value = value;
 	}
 	
-	public String getValue() {
+	@Override
+	public String toString() {
 		return this.value;
 	}
 }

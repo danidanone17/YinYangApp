@@ -12,6 +12,7 @@ import android.util.Log;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
+import com.yinyang.so.database.TableType;
 import com.yinyang.so.databaseentities.DatabaseType;
 import com.yinyang.so.databaseentities.MapTags;
 import com.yinyang.so.databaseentities.Post;
@@ -132,7 +133,7 @@ public class Controller {
 
 		HashMap<String, String> columnValuesForUpdate = new HashMap<String, String>();
 
-		int postTableLastId = mDbHelper.getLastIndex(MapTags.TABLE_NAME);
+		int postTableLastId = mDbHelper.getLastIndex(TableType.mapping_tags);
 
 		MapTags tagCombination = mDbHelper.getMapTags(postTableLastId);
 
@@ -146,7 +147,7 @@ public class Controller {
 		searchInMappingTableCriteria1.add(searchEntity1);
 		searchInMappingTableCriteria1.add(searchEntity2);
 
-		int countAppearance = mDbHelper.getCountByCriteria(Post.TABLE_NAME,
+		int countAppearance = mDbHelper.getCountByCriteria(TableType.posts,
 				searchInMappingTableCriteria1);
 
 		columnValuesForUpdate.put(MapTags.KEY_COUNT_APPEARANCE, ""
