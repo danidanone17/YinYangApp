@@ -70,7 +70,7 @@
         <Button 
             android:id="@+id/button_west"
 			style="@style/tag_button"
-			android:onClick="moveBackwards"/>
+			android:onClick="moveToCenter"/>
         
         <Button 
             android:id="@+id/button_center"
@@ -80,7 +80,7 @@
 		<Button 
             android:id="@+id/button_east"
             style="@style/tag_button"
-            android:onClick="moveForwards"/>
+            android:onClick="moveToCenter"/>
                         
     </LinearLayout>
     

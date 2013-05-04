@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class TabSearchActivity extends Activity {
-	
 	/**
 	 * List of tags that are currently selected for search
 	 */
@@ -28,14 +27,32 @@ public class TabSearchActivity extends Activity {
 	 * Maximum number of tags that can be selected for search
 	 */
 	private final int MAXIMUM_NO_SELECTED_TAGS = 5;
+	
+	/**
+	 * Search controller
+	 */
+	private SearchController oSearchController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tab_search);
 		
+		oSearchController = new SearchController(this.getBaseContext());
+		
 		Button button = (Button)this.findViewById(R.id.button_center);
 		button.getBackground().setColorFilter(0xA0149EE3, PorterDuff.Mode.MULTIPLY);
+		
+		ArrayList<String> oTags = oSearchController.getThreeTagsInAlphabeticalOrder();
+		
+		// get center tag button and replace its text
+		Button oCenterButton = (Button)this.findViewById(R.id.button_center);
+		this.replaceTagButtonText(oCenterButton, oTags.get(1));
+		
+		// populate buttons around center button
+		this.populateCenterSurroundingButtons(oTags.get(1));
+		
+		
 	}
 
 	@Override
@@ -43,30 +60,6 @@ public class TabSearchActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.tab_search, menu);
 		return true;
-	}
-	
-	/**
-	 * Handles event when button with id button_east is pressed
-	 * - Text on button button_west will be replaced by text on button button_center
-	 * - Text on button button_center will be replaced by text on button button_east
-	 * - Text on button button_east will be replaced by text of 'next' tag
-	 * @param view the button that invoked the onClick method
-	 */
-	public void moveForwards(View view){
-		Button button = (Button)view;
-		button.setText("Hej");
-	}
-	
-	/**
-	 * Handles event when button with id button_west is pressed
-	 * - Text on button button_west will be replaced by text of 'previous' tag
-	 * - Text on button button_center will be replaced by text on button button_west
-	 * - Text on button button_east will be replaced by text on button button_center
-	 * @param view the button that invoked the onClick method
-	 */
-	public void moveBackwards(View view){
-		Button button = (Button)view;
-		button.setText("Ho");
 	}
 	
 	/**
@@ -86,6 +79,9 @@ public class TabSearchActivity extends Activity {
 		
 		// replace text of center tag button
 		this.replaceTagButtonText(oCenterButton, sTag);
+		
+		// populate tag buttons around the tag button in the middle
+		this.populateCenterSurroundingButtons(sTag);
 	}
 	
 	/**
@@ -186,8 +182,7 @@ public class TabSearchActivity extends Activity {
 		EditText editView = (EditText)this.findViewById(R.id.edit_search);
 		
 		// parse tags selected for search together with search free text
-		SearchController searchController = new SearchController(getBaseContext());
-		String returnedText = searchController.parseTagSearchString(selectedTags, editView.getText().toString());
+		String returnedText = oSearchController.parseTagSearchString(selectedTags, editView.getText().toString());
 		
 		Toast toast = Toast.makeText(this.getApplicationContext(), returnedText, Toast.LENGTH_LONG);
 		toast.show();
@@ -202,14 +197,21 @@ public class TabSearchActivity extends Activity {
 		EditText editView = (EditText)this.findViewById(R.id.edit_tag_search);
 		
 		// get tag by name
-		SearchController oSearchController = new SearchController(getBaseContext());
 		String sNewCenterTag = oSearchController.getTagByName(editView.getText().toString());
 		
 		// get center tag button and replace its text
 		Button oCenterButton = (Button)this.findViewById(R.id.button_center);
 		this.replaceTagButtonText(oCenterButton, sNewCenterTag);
 		
-		// populate top related tags
+		// populate buttons around center button
+		this.populateCenterSurroundingButtons(sNewCenterTag);
+	}
+	
+	/**
+	 * Populates tag buttons around the center tag button
+	 * @param sNewCenterTag the new tag button in the middle
+	 */
+	private void populateCenterSurroundingButtons(String sNewCenterTag){
 		Button oNorthWestButton = (Button)this.findViewById(R.id.button_northwest);
 		this.replaceTagButtonText(oNorthWestButton, "");
 		Button oNorthEastButton = (Button)this.findViewById(R.id.button_northeast);
@@ -218,7 +220,14 @@ public class TabSearchActivity extends Activity {
 		this.replaceTagButtonText(oSouthWestButton, "");
 		Button oSouthEastButton = (Button)this.findViewById(R.id.button_southeast);
 		this.replaceTagButtonText(oSouthEastButton, "");
+		
+		Button oWestButton = (Button)this.findViewById(R.id.button_west);
+		this.replaceTagButtonText(oWestButton, "");
+		Button oEastButton = (Button)this.findViewById(R.id.button_east);
+		this.replaceTagButtonText(oEastButton, "");
+		
 		if(!"".equals(sNewCenterTag)){
+			// populate top related tags
 			ArrayList<String> oTopRelatedTags = oSearchController.getTopRelatedTags(sNewCenterTag);	
 			if(oTopRelatedTags.size() > 0){
 				this.replaceTagButtonText(oNorthWestButton, oTopRelatedTags.get(0));
@@ -235,9 +244,11 @@ public class TabSearchActivity extends Activity {
 			if(oTopRelatedTags.size() > 3){
 				this.replaceTagButtonText(oSouthEastButton, oTopRelatedTags.get(3));
 			}	
+			
+			// populate neighbour tags
+			ArrayList<String> oNeighbourTags = oSearchController.getNextAndPreviousTags(sNewCenterTag);
+			this.replaceTagButtonText(oEastButton, oNeighbourTags.get(0));
+			this.replaceTagButtonText(oWestButton, oNeighbourTags.get(1));	
 		}
-		
-		// TODO: populate neighbar tags
 	}
-	
 }
