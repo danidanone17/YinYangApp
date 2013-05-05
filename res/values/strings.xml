@@ -47,6 +47,7 @@
     <string name="TestText">Test the different functionality</string>
     <string name="TestQuestionView1">Test the question view</string>
     <string name="TestQuestionView2">Test the question view (no answer)</string>
+    <string name="Users">Users</string>
 
     <!-- FreeTextSearchActivity -->
     <string name="title_activity_free_text_search">Search for posts</string>
@@ -71,13 +72,15 @@
     <string name="button_add">+</string>
     <string name="your_answer">Your answer</string>
     <string name="no_answer">There exists no accepted answers yet.</string>
-    
-    <!-- SearchResultActivity--> 
+
+    <!-- SearchResultActivity -->
     <string name="TestSearchResult">Test Search Result</string>
-    
+
     <!-- TabSearchActivity -->
     <string name="tag_search">Search tag</string>
-    
-   <!--  <string name="title_activity_search_result">Test Search Result</string> -->
+
+	<!-- UserListActivity -->
+    <string name="title_activity_user_list">UserListActivity</string>
+    <string name="user_search">Search user</string>
 
 </resources>

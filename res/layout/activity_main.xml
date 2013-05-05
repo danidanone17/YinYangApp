@@ -20,6 +20,12 @@
         android:layout_height="wrap_content"
         android:onClick="testUserProfile"
         android:text="@string/TestUserProfile" />
+    
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="showUserList"
+        android:text="@string/Users" />
 
     <Button
         android:layout_width="match_parent"
