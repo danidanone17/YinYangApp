@@ -26,7 +26,9 @@ public class UserProfileActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setupActionBar();
 		Intent intent = getIntent();
+		//Set the userId to -1 if EXTRA_USERID is not included in the intent
 		userId = intent.getIntExtra(EXTRA_USERID, -1);
+		//Get the user, if the user does not exist show a toast to the user and close the activity
 		try {
 			controller = new UserProfileController(this, userId);
 		} catch (NullPointerException e) {
@@ -52,7 +54,7 @@ public class UserProfileActivity extends Activity {
 		getMenuInflater().inflate(R.menu.user_profile, menu);
 		return true;
 	}
-
+	
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -138,7 +140,7 @@ public class UserProfileActivity extends Activity {
 		Intent intent = new Intent(this, NotImplementedActivity.class);
 		startActivity(intent);
 	}
-
+	
 	public void reputationView(View view) {
 
 		Intent intent = new Intent(this, NotImplementedActivity.class);

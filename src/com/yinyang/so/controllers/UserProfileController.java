@@ -1,19 +1,17 @@
-	/**
- * 
- */
 package com.yinyang.so.controllers;
 
 import java.util.Calendar;
-import java.util.Date;
 
+import android.R;
 import android.content.Context;
 
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.databaseentities.User;
 
 /**
- * @author Fredrik
- * 
+ * Controller for the UserProfileActivity. Handles the connection with the
+ * datebase adapter. Provide information about one user to the
+ * UserProfileActivity.
  */
 public class UserProfileController {
 	private DatabaseAdapter mDbHelper;
@@ -23,9 +21,12 @@ public class UserProfileController {
 	private User user;
 
 	/**
+	 * Fetches information from the database about a specified user.
 	 * 
 	 * @param context
+	 *            The Context associated with the controller
 	 * @param userId
+	 *            The userId for the user
 	 */
 	public UserProfileController(Context context, int userId) {
 		mDbHelper = new DatabaseAdapter(context);
@@ -52,31 +53,59 @@ public class UserProfileController {
 		mDbHelper.close();
 
 	}
-
+	
+	//Escapes all citaions marks in the text 
 	private String updateHtmlDescription(String text) {
 		return text.replaceAll("\"", "\\\"");
 	}
-
+	
+	/**
+	 * Returns the reputation for the specified user
+	 * @return An int
+	 */
 	public int getReputationText() {
 		return user.getReputation();
 	}
-
+	
+	/**
+	 * Returns the name for the specified user
+	 * @return A String
+	 */
 	public String getUserName() {
 		return user.getDisplayName();
 	}
-
+	
+	/**
+	 * Returns the id of a specified user 
+	 * @return An int
+	 */
 	public int getUserId() {
 		return user.getId();
 	}
-
+	
+	/**
+	 * Returns the time since the user created the profile
+	 * E.g. "today" or "two years" 
+	 * @return A String
+	 */
 	public String getTimeSinceCreation() {
 		return timeSinceCreated;
 	}
 
+	/**
+	 * Returns the time since the user last accessed the profile
+	 * E.g. "today", "4 hours" or "2 month"
+	 * @return A String
+	 */
 	public String getTimeSinceAccess() {
 		return timeSinceLastAccess;
 	}
-
+	
+	/**
+	 * Returns the associated user's website. Returns an empty string if it is "NULL" in the database.
+	 * 
+	 * @return A String
+	 */
 	public String getWebsite() {
 		String web = user.getWebsiteUrl();
 		if (web.equals("NULL"))
@@ -84,7 +113,12 @@ public class UserProfileController {
 		else
 			return web;
 	}
-
+	
+	/**
+	 * Returns the associated user's location. Returns an empty string if it is "NULL" in the database.
+	 * 
+	 * @return A String
+	 */
 	public String getLocation() {
 		String loc = user.getLocation();
 		if (loc == "NULL")
@@ -94,9 +128,9 @@ public class UserProfileController {
 	}
 
 	/**
-	 * Returns "" if the field is empty in the database
+	 * Returns the string representation of the user's age. Returns an empty string if the field is 0 in the database
 	 * 
-	 * @return
+	 * @return A String
 	 */
 	public String getAge() {
 		int age = user.getAge();
@@ -115,10 +149,11 @@ public class UserProfileController {
 	}
 
 	/**
+	 * Calculates the difference between a given date and today. Outputs the difference in text like "2 year" or "4 days".
 	 * 
 	 * @param date
 	 *            String with date on "yyyy-MM-dd"
-	 * @return
+	 * @return A String
 	 */
 
 	private String getTimeSinceDate(String date) {
