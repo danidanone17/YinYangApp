@@ -2,6 +2,8 @@ package com.yinyang.so.test;
 
 import java.util.ArrayList;
 
+import junit.framework.Assert;
+
 import com.yinyang.so.controllers.QuestionController;
 import com.yinyang.so.databaseentities.DatabaseType;
 import com.yinyang.so.databaseentities.Post;
@@ -60,6 +62,34 @@ public class QuestionControllerValidation extends
 	// TODO: Make it independent
 	public void testGetAcceptedAnswer() {
 		assertEquals(qc.getAcceptedAnswer(8414075).getId(), 8414247);
+	}
+	
+	/**
+	 * Tests up-voting a post
+	 */
+	public void testUpVotePost(){
+		int postId = 386341;
+		Post post = qc.getPost(postId);
+		
+		int newScore = post.getScore() + 1;
+		qc.updatePostScore(newScore, postId);
+		
+		post = qc.getPost(postId);
+		Assert.assertEquals(newScore, post.getScore());
+	}
+	
+	/**
+	 * Tests down-voting a post
+	 */
+	public void testDownVotePost(){
+		int postId = 386341;
+		Post post = qc.getPost(postId);
+		
+		int newScore = post.getScore() - 1;
+		qc.updatePostScore(newScore, postId);
+		
+		post = qc.getPost(postId);
+		Assert.assertEquals(newScore, post.getScore());
 	}
 
 }

@@ -4,10 +4,6 @@
 package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
-
-import android.util.Log;
-
-import com.yinyang.so.databaseentities.DatabaseType;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
 
@@ -73,7 +69,9 @@ public class QuestionModel {
 	 * @return an int representing the updated score
 	 */
 	public int voteQuestion(int i) {
-		return questionScore = questionScore + i;
+		questionScore = questionScore + i;
+		qController.updatePostScore(questionScore, question.getId());
+		return questionScore;
 	}
 
 	/**
@@ -84,7 +82,9 @@ public class QuestionModel {
 	 * @return an int representing the updated score
 	 */
 	public int voteActiveAnswer(int i) {
-		return answerScore = answerScore + i;
+		answerScore = answerScore + i;
+		qController.updatePostScore(answerScore, activeAnswer.getId());
+		return answerScore;
 	}
 
 	/**

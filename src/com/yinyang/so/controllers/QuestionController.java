@@ -4,6 +4,7 @@
 package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 
@@ -82,6 +83,21 @@ public class QuestionController {
 		Post post = dbAdapter.getPost(answerId);
 		dbAdapter.close();
 		return post;
+	}
+	
+	/**
+	 * Updates the score of a post
+	 * @param newScore new score
+	 * @param postId post id
+	 */
+	public void updatePostScore(int newScore, int postId){
+		dbAdapter.open();
+		
+		HashMap<String, String> columnValues = new HashMap<String, String>();
+		columnValues.put(Post.KEY_SCORE, Integer.toString(newScore));
+		String whereClause = Post.KEY_ID + " = " + postId;
+		
+		dbAdapter.updateSql(Post.TABLE_NAME, columnValues, whereClause);
 	}
 
 }
