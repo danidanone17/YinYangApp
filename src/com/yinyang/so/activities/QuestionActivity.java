@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.QuestionController;
-import com.yinyang.so.controllers.QuestionModel;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
 
@@ -27,7 +26,6 @@ public class QuestionActivity extends Activity {
 	private TextView textViewQuestionScore;
 	private TextView textViewAnswerScore;
 	private QuestionController qController;
-	private QuestionModel question;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +35,7 @@ public class QuestionActivity extends Activity {
 		setupActionBar();
 		Intent intent = getIntent();
 		int questionId = intent.getIntExtra(EXTRA_QUESTIONID, -1);
-		qController = new QuestionController(this);
-		question = new QuestionModel(qController, questionId);
+		qController = new QuestionController(this,questionId);
 		updateUI();
 	}
 
@@ -81,7 +78,7 @@ public class QuestionActivity extends Activity {
 	 *            the view that caused the event
 	 */
 	public void upVoteQuestion(View view) {
-		this.textViewQuestionScore.setText(Integer.toString(this.question
+		this.textViewQuestionScore.setText(Integer.toString(this.qController
 				.voteQuestion(1)));
 	}
 
@@ -93,7 +90,7 @@ public class QuestionActivity extends Activity {
 	 *            the view that caused the event
 	 */
 	public void downVoteQuestion(View view) {
-		this.textViewQuestionScore.setText(Integer.toString(this.question
+		this.textViewQuestionScore.setText(Integer.toString(this.qController
 				.voteQuestion(-1)));
 	}
 
@@ -105,7 +102,7 @@ public class QuestionActivity extends Activity {
 	 *            the view that caused the event
 	 */
 	public void upVoteAnswer(View view) {
-		this.textViewAnswerScore.setText(Integer.toString(this.question
+		this.textViewAnswerScore.setText(Integer.toString(this.qController
 				.voteActiveAnswer(1)));
 	}
 
@@ -117,7 +114,7 @@ public class QuestionActivity extends Activity {
 	 *            the view that caused the event
 	 */
 	public void downVoteAnswer(View view) {
-		this.textViewAnswerScore.setText(Integer.toString(this.question
+		this.textViewAnswerScore.setText(Integer.toString(this.qController
 				.voteActiveAnswer(-1)));
 	}
 	/**
@@ -153,24 +150,24 @@ public class QuestionActivity extends Activity {
 	private void fillAnswerView() {
 		// fill answer content
 		TextView textViewTemp = (TextView) findViewById(R.id.answer_content);
-		textViewTemp.setText(Html.fromHtml(question.getAnswerContent()));
+		textViewTemp.setText(Html.fromHtml(qController.getAnswerContent()));
 		
 		// fill answer score
 		this.textViewAnswerScore = (TextView) findViewById(R.id.answer_score);
-		this.textViewAnswerScore.setText(Integer.toString(question
+		this.textViewAnswerScore.setText(Integer.toString(qController
 				.getAnswerScore()));
 		
 		// fill date question was answered at
 		textViewTemp = (TextView) findViewById(R.id.answered_at);
-		textViewTemp.setText(question.getAnswerDate());
+		textViewTemp.setText(qController.getAnswerDate());
 		
 		// fill name of answering user
 		textViewTemp = (TextView) findViewById(R.id.answer_user_name);
-		textViewTemp.setText(question.getAnswerAuthorName());
+		textViewTemp.setText(qController.getAnswerAuthorName());
 		
 		// fill score of answering user
 		textViewTemp = (TextView) findViewById(R.id.answer_user_score);
-		textViewTemp.setText(Integer.toString(question
+		textViewTemp.setText(Integer.toString(qController
 				.getAnswerAuthorReputation()));
 		
 	}
@@ -183,35 +180,35 @@ public class QuestionActivity extends Activity {
 
 		// fill question title
 		TextView textViewTemp = (TextView) findViewById(R.id.question_title);
-		textViewTemp.setText(question.getQuestionTitle());
+		textViewTemp.setText(qController.getQuestionTitle());
 		
 		// fill question content
 		textViewTemp = (TextView) findViewById(R.id.question_content);
-		textViewTemp.setText(Html.fromHtml(question.getQuestionBody()));
+		textViewTemp.setText(Html.fromHtml(qController.getQuestionBody()));
 		
 		// fill question score
 		textViewQuestionScore = (TextView) findViewById(R.id.question_score);
-		textViewQuestionScore.setText(Integer.toString(question
+		textViewQuestionScore.setText(Integer.toString(qController
 				.getQuestionScore()));
 		
 		// fill date question was asked at
 		textViewTemp = (TextView) findViewById(R.id.asked_at);
-		textViewTemp.setText(question.getQuestionDate());
+		textViewTemp.setText(qController.getQuestionDate());
 		
 		// fill name of asking user
 		textViewTemp = (TextView) findViewById(R.id.question_user_name);
-		textViewTemp.setText(question.getAuthorName());
+		textViewTemp.setText(qController.getAuthorName());
 		
 		// fill score of asking user
 		textViewTemp = (TextView) findViewById(R.id.question_user_score);
-		textViewTemp.setText(Integer.toString(question.getAuthorReputation()));
+		textViewTemp.setText(Integer.toString(qController.getAuthorReputation()));
 		
 		// add number of answers
 		textViewTemp = (TextView) findViewById(R.id.nr_of_answers);
-		textViewTemp.setText(Integer.toString(question.getNrOfAnswers()) + " "
+		textViewTemp.setText(Integer.toString(qController.getNrOfAnswers()) + " "
 				+ R.string.nr_of_answers);
 		
-		if (question.existsAnswer()) {
+		if (qController.existsAnswer()) {
 			enableAnswerView();
 			fillAnswerView();
 		} else {
