@@ -2,7 +2,8 @@
 /gen
 /Thumbs.db
 /README.md
-/project.properties
+/.classpath
+/.project
 /proguard-project.txt
 /tests/bin
 /tests/gen
