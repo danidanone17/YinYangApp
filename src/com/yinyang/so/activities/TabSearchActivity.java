@@ -21,6 +21,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class TabSearchActivity extends Activity {
+
+	// necessary for putting tags from the outside
+	public final static String EXTRA_TAGSTRING = "com.example.YingYangApp.TAGSTRING";
+
 	/**
 	 * List of tags that are currently selected for search
 	 */
@@ -41,15 +45,23 @@ public class TabSearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tab_search);
 		
+		String inputTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
 		oSearchController = new SearchController(this.getBaseContext());
+		ArrayList<String> oTags = new ArrayList<String>();
 		
-		Button button = (Button)this.findViewById(R.id.button_center);
-		button.getBackground().setColorFilter(0xA0149EE3, PorterDuff.Mode.MULTIPLY);
-		
-		ArrayList<String> oTags = oSearchController.getThreeTagsInAlphabeticalOrder();
+		// if there is a value passed to this class with intent, use
+		// that as the center tag, otherwise get the three first tags alphabetically
+		if (inputTag != null) {
+			oTags.addAll(oSearchController.getNextAndPreviousTags(inputTag));
+			oTags.add(1, inputTag);
+		} else
+		{
+			oTags = oSearchController.getThreeTagsInAlphabeticalOrder();
+		}
 		
 		// get center tag button and replace its text
 		Button oCenterButton = (Button)this.findViewById(R.id.button_center);
+		oCenterButton.getBackground().setColorFilter(0xA0149EE3, PorterDuff.Mode.MULTIPLY);
 		this.replaceTagButtonText(oCenterButton, oTags.get(1));
 		
 		// populate buttons around center button
