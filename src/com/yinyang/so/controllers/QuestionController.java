@@ -39,6 +39,14 @@ public class QuestionController {
 		fetchAnswers();		
 		
 	}
+	
+	/**
+	 * New constructor created due to an error in QuestionControllerValidation in setUp
+	 */
+	public QuestionController(Context con) {
+		dbAdapter = new DatabaseAdapter(con);
+		dbAdapter.createDatabase();		
+	}
 
 	/**
 	 * Fetches a post from the database based on its id Opens and closes the
