@@ -1,27 +1,22 @@
 package com.yinyang.so.activities;
 
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.QuestionController;
-import com.yinyang.so.databaseentities.Post;
-import com.yinyang.so.databaseentities.User;
 import com.yinyang.so.extras.PredicateLayout;
 
 @SuppressLint("NewApi")
@@ -30,9 +25,7 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
 	private TextView textViewQuestionScore;
 	private TextView textViewAnswerScore;
-	private Button buttonTag1;
-	private Button buttonTag2;
-	private Button buttonTag3;
+
 	private QuestionController qController;
 
 	@Override
@@ -228,13 +221,18 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		// fill tag buttons
 		PredicateLayout questionTagButtons = (PredicateLayout) this.findViewById(R.id.question_tag_buttons);
 		// dynamically create new buttons for each tag
-		for (String tagString : qController.getQuestionTags()) {
+		for (final String tagString : qController.getQuestionTags()) {
 			Button tagButton = (Button) getLayoutInflater().inflate(R.layout.selected_tag_button, null);
 			tagButton.setText(tagString);
+	
+			// add listener to the button (onClick) that will open the
+			// TabSearchActivity using the tag string as input
 			tagButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Button tagButton = (Button)view;
+				Intent intent = new Intent(QuestionActivity.this, TabSearchActivity.class);
+				intent.putExtra(TabSearchActivity.EXTRA_TAGSTRING, tagString);
+				startActivity(intent);
 				// TODO: do something
 			}
 			});
