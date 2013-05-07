@@ -213,6 +213,15 @@ public class QuestionController {
 	}
 
 	/**
+	 * Get the question tags
+	 * 
+	 * @return a String
+	 */
+	public String[] getQuestionTags() {
+		return question.getTags();
+	}
+	
+	/**
 	 * Get the authors name
 	 * 
 	 * @return a String
