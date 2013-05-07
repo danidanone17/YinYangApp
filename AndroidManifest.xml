@@ -28,7 +28,7 @@
             android:label="@string/title_activity_user_profile" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.MainActivity" />
+                android:value="com.yinyang.so.activities.UserListActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.FreeTextSearchActivity"
@@ -62,7 +62,11 @@
         </activity>
         <activity
             android:name="com.yinyang.so.activities.UserListActivity"
-            android:label="@string/title_activity_user_list" >
+            android:label="@string/title_activity_user_list"
+            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.yinyang.so.MainActivity" />
         </activity>
     </application>
 

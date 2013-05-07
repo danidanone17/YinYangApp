@@ -80,7 +80,7 @@
     <string name="tag_search">Search tag</string>
 
 	<!-- UserListActivity -->
-    <string name="title_activity_user_list">UserListActivity</string>
+    <string name="title_activity_user_list">Users</string>
     <string name="user_search">Search user</string>
 
 </resources>

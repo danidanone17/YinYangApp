@@ -42,17 +42,7 @@ public class MainActivity extends Activity {
 			text += p.getTitle() + "\n";
 		}
 		text01.setText(text);
-	}
-		
-	// Called when you click the testUserProfileButton
-	// Go to the user profile view for the specified user id 106
-	public void testUserProfile(View _) {
-		Intent intent = new Intent(this, UserProfileActivity.class);
-		intent.putExtra(UserProfileActivity.EXTRA_USERID, 62);
-		startActivity(intent);
-	}
-	
-	
+	}	
 	
 	public void freeTextSearch(View _) {
 		Intent intent = new Intent(this, FreeTextSearchActivity.class);

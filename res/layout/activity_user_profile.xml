@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/user_picture_description"
-            android:src="@drawable/user_picture" />
+            android:src="@drawable/ic_user2" />
         <!-- Buttons -->
 
 
