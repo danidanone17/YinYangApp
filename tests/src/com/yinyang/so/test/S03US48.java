@@ -11,24 +11,37 @@ import android.test.InstrumentationTestCase;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-public class S03US48 extends InstrumentationTestCase {
+public class S03US48 extends android.test.InstrumentationTestCase {
+	
+	private DatabaseAdapter db;
+	
+	//setUp the DatabaseAdapter
+	protected void setUp() throws Exception {
+	    super.setUp();
+	    db = new DatabaseAdapter(this.getInstrumentation().getTargetContext().
+	    		getApplicationContext());
+		db.createDatabase();
+		db.open();
+	}
+	
+	//destroy the DatabaseAdapter
+	protected void tearDown() throws Exception {
+	    super.tearDown();
+		db.close();
+	}
 	
 	/**
 	 * Test if a tag which exists in the tags column from the post table also exists and has the correct count in the tags table
 	 */
 	public void testInsertedTagAndTagCount(){
-		String tagName = "java";
-		int nrAppearances = 409;
-		
-		DatabaseAdapter da = new DatabaseAdapter(this.getInstrumentation().getTargetContext().getApplicationContext());
-		da.createDatabase();
-		da.open();
+		String tagName = "c++";
+		int nrAppearances = 192;
 		
 		//get the tag object based on the provided tag name
-		Tag oTag = da.getTagObjectByName(tagName);
+		Tag oTag = db.getTagObjectByName(tagName);
 		
 		//verify if the oTag object contains the same nr of appearances as the provided nr of appearances
+		System.out.println("toString - TagName: " + oTag.getTag() + ", count: " + oTag.getCountAppearance());
 		Assert.assertTrue(oTag.getCountAppearance()==nrAppearances);
-		da.close();
 	}
 }
