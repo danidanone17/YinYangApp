@@ -787,4 +787,33 @@ public class DatabaseAdapter {
 		}
 		return tag;
 	}
+	
+	public ArrayList<Post> getQuestionsByFreeSearchAndTagCombination(String[] oWords, String[] tags){
+		String sSqlMessage;
+		int i;
+		
+		// create sql statement
+		sSqlMessage = "SELECT * FROM " + TableType.posts;
+		sSqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
+				
+		for(i = 0; i < oWords.length; i++)
+		{ 
+			// search for the text in the body and title
+			sSqlMessage += " AND (" + Post.KEY_TITLE + " LIKE '%" + oWords[i] + "%'";
+			sSqlMessage += " OR " + Post.KEY_BODY + " LIKE '%" + oWords[i] + "%')";
+		}
+		
+		for (i = 0; i < tags.length; i++) {
+			// search for the tags
+			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%<" + tags[i] + ">%'";
+		}
+				
+		// execute sql statement
+		Cursor oCursor = this.getCursor(sSqlMessage);
+				
+		// convert result to  an array list of Posts
+		ArrayList<Post> oQuestions = this.getPostsFromCursor(oCursor);		
+				
+		return oQuestions;
+	}
 }
