@@ -487,10 +487,24 @@ public class DatabaseAdapter {
 	}
 	
 	/**
-	 * Get questions where the given words are contained in either the title or the body
+	 * Get questions where 
+	 * - the given words are contained in either the title or the body
 	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
+	 * @return questions
 	 */
-	public ArrayList<Post> getQuestionsByFreeText(String[] oWords)
+	public ArrayList<Post> getQuestionsByFreeText(String[] oWords){
+		return this.getQuestionsByFreeTextAndTags(oWords, new ArrayList<String>());
+	}
+	
+	/**
+	 * Get questions where 
+	 * - the given words are contained in either the title or the body and
+	 * - there is a relation to all of the provided tags	
+	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
+	 * @param oTags tags the returned questions should be related to
+	 * @return questions
+	 */
+	public ArrayList<Post> getQuestionsByFreeTextAndTags(String[] oWords, ArrayList<String> oTags)
 	{
 		// create sql statement
 		String sSqlMessage = "SELECT * FROM " + TableType.posts;
@@ -501,6 +515,10 @@ public class DatabaseAdapter {
 			sSqlMessage += " OR " + Post.KEY_BODY + " LIKE '%" + oWords[i] + "%')";
 		}
 		
+		for(String sTag : oTags){
+			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%" + sTag + "%'";
+		}
+		
 		// execute sql statement
 		Cursor oCursor = this.getCursor(sSqlMessage);
 		
@@ -508,8 +526,7 @@ public class DatabaseAdapter {
 		ArrayList<Post> oQuestions = this.getPostsFromCursor(oCursor);		
 		
 		return oQuestions;
-	}
-	
+	}	
 
 	/**
 	 * Get the alphabetically next and previous tags (US51) 

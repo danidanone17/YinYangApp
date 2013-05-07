@@ -6,7 +6,6 @@ import android.content.Context;
 
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.databaseentities.Post;
-import com.yinyang.so.databaseentities.Tag;
 
 public class SearchController {
 	private DatabaseAdapter dbAdapter;
@@ -18,25 +17,6 @@ public class SearchController {
 	public SearchController(Context con) {
 		dbAdapter = new DatabaseAdapter(con);
 		dbAdapter.createDatabase();
-	}
-	
-	/**
-	 * Parses tags selected as search criteria with search free text
-	 * @param tags the tags selected as search criteria
-	 * @param freeText the search free text
-	 * @return parsed tags selected as search criteria with search free text
-	 */
-	public String parseTagSearchString(ArrayList<String> tags, String freeText){ 
-		String searchString = "";
-		
-		// add tags selected as search criteria to beginning of parsed string surrounded by []
-		for(String tag : tags){
-			searchString += "[" + tag + "] ";
-		}
-		
-		// add search free text to parsed string
-		searchString += freeText;
-		return searchString;
 	}
 	
 	/**
@@ -84,5 +64,24 @@ public class SearchController {
 	public ArrayList<String> getThreeTagsInAlphabeticalOrder(){
 		dbAdapter.open();
 		return dbAdapter.getTagsInAlphabeticalOrder(3);	
+	}
+	
+	/**
+	 * Get questions where 
+	 * - the given words are contained in either the title or the body and
+	 * - there is a relation to all of the provided tags	
+	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
+	 * @param oTags tags the returned questions should be related to
+	 * @return questions
+	 */
+	public ArrayList<Post> freeTextAndTagSearch(String sFreeText, ArrayList<String> oTags){
+		dbAdapter.open();
+		
+		if(!"".equals(sFreeText)){
+			return dbAdapter.getQuestionsByFreeTextAndTags(sFreeText.split(" "), oTags);
+		}
+		else{
+			return dbAdapter.getPostsByTags(oTags);
+		}			
 	}
 }
