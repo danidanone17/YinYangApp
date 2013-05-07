@@ -1,8 +1,11 @@
 package com.yinyang.so.databaseentities;
 
+import java.util.ArrayList;
+
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class Post extends DatabaseType implements Parcelable{
 	private int mData;
@@ -292,8 +295,26 @@ public class Post extends DatabaseType implements Parcelable{
 		this.title = title;
 	}
 
-	public String getTags() {
+	/**
+	 * Returns the tag string of the post, i.e. containing all
+	 * the tags, together with braces. Use Post.getTags() instead
+	 * @return a dumb string
+	 */
+	public String getTagString() {
 		return tags;
+	}
+	
+	/**
+	 * Returns the tags parsed from the tags string
+	 * @return String[] of tags
+	 */
+	public String[] getTags() {
+		if (!tags.isEmpty()) {
+			String regex = "[<>]+";
+			String[] tagsString = tags.replaceFirst("<", "").split(regex);
+			return tagsString;
+		}
+		return new String[0];
 	}
 
 	public void setTags(String tags) {

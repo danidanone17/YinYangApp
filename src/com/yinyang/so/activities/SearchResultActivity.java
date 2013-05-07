@@ -106,7 +106,7 @@ public class SearchResultActivity extends Activity {
 				
 				// dynamically add tag buttons
 				PredicateLayout layout = (PredicateLayout) v.findViewById(R.id.tag_button_layout);
-				ArrayList<String> oTags = this.convertTagStringToList(o.getTags());
+				ArrayList<String> oTags = this.convertTagStringToList(o.getTagString());
 				for(String tag : oTags)
 				{
 					Button button = new Button(getContext());

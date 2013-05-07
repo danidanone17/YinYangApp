@@ -79,7 +79,7 @@ public class TagMapping {
 
 			if (post != null) {
 				// get the content of the column tags for the selected row
-				tagLine = post.getTags();
+				tagLine = post.getTagString();
 
 				if (!tagLine.isEmpty() && tagLine != "" && tagLine != "NULL") {
 					tagLine.replace("<", "");
@@ -215,7 +215,7 @@ public class TagMapping {
 
 			if (post != null) {
 				// get the content of the column tags for the selected row
-				tagLine = post.getTags();
+				tagLine = post.getTagString();
 
 				if (!tagLine.isEmpty() && tagLine != ""
 						&& tagLine.equals("NULL") != true) {

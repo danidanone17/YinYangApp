@@ -12,12 +12,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.QuestionController;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
+import com.yinyang.so.extras.PredicateLayout;
 
 @SuppressLint("NewApi")
 public class QuestionActivity extends Activity {
@@ -25,6 +28,9 @@ public class QuestionActivity extends Activity {
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
 	private TextView textViewQuestionScore;
 	private TextView textViewAnswerScore;
+	private Button buttonTag1;
+	private Button buttonTag2;
+	private Button buttonTag3;
 	private QuestionController qController;
 
 	@Override
@@ -202,6 +208,22 @@ public class QuestionActivity extends Activity {
 		// fill score of asking user
 		textViewTemp = (TextView) findViewById(R.id.question_user_score);
 		textViewTemp.setText(Integer.toString(qController.getAuthorReputation()));
+		
+		// fill tag buttons
+		PredicateLayout questionTagButtons = (PredicateLayout) this.findViewById(R.id.question_tag_buttons);
+		// dynamically create new buttons for each tag
+		for (String tagString : qController.getQuestionTags()) {
+			Button tagButton = (Button) getLayoutInflater().inflate(R.layout.selected_tag_button, null);
+			tagButton.setText(tagString);
+			tagButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Button tagButton = (Button)view;
+				// TODO: do something
+			}
+			});
+			questionTagButtons.addView(tagButton);
+		}		
 		
 		// add number of answers
 		textViewTemp = (TextView) findViewById(R.id.nr_of_answers);
