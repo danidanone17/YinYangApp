@@ -42,7 +42,8 @@
     <string name="user_description">Some descriprion here</string>
 
     <!-- Main Acitivty View -->
-    <string name="TestUserProfile">Test the user profile view</string>
+    <string name="TestUserProfile1">Existing user</string>
+    <string name="TestUserProfile2">Non-existing user</string>
     <string name="TestSearch">Test to get information from the database</string>
     <string name="TestText">Test the different functionality</string>
     <string name="TestQuestionView1">Test the question view</string>
@@ -56,8 +57,6 @@
     <string name="FreeTextSearch">Free text search</string>
     <string name="title_activity_tab_search">Tab Search</string>
     <string name="TagSearch">Tag search</string>
-
-    <color name="dark_grey">#555555</color>
 
     <string name="TestSearchTopTags">Test top related tags</string>
     <string name="title_activity_top_related_tags">TopRelatedTagsActivity</string>
@@ -82,5 +81,10 @@
 	<!-- UserListActivity -->
     <string name="title_activity_user_list">Users</string>
     <string name="user_search">Search user</string>
+
+    <string name="title_activity_not_implemented">Not implemented</string>
+    
+    <!--  Not implemented activity -->
+    <string name="not_implemented">This view is not implemented... yet</string>
 
 </resources>

@@ -279,12 +279,17 @@ public class DatabaseAdapter {
 
 	/**
 	 * Return a single User from the database by id
+	 * Return null if no user with given id can be found
 	 * @param id
 	 * @return a single User
 	 **/
 	public User getUser(int id) {
 		Cursor cursor = this.getCursor("SELECT * FROM users WHERE (id='" + id + "')");
-		return getUsersFromCursor(cursor).get(0);
+		ArrayList<User> users = getUsersFromCursor(cursor);
+		if (users.isEmpty())
+			return null;
+		else
+			return users.get(0);
 	}
 
 	/**

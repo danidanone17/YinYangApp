@@ -58,8 +58,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
         </activity>
-        <activity 
-            android:name="com.yinyang.so.activities.SearchResultActivity" 
+        <activity
+            android:name="com.yinyang.so.activities.SearchResultActivity"
             android:label="@string/title_activity_searchResult" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -72,6 +72,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.yinyang.so.activities.NotImplementedActivity"
+            android:label="@string/title_activity_not_implemented" >
         </activity>
     </application>
 

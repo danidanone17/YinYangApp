@@ -34,10 +34,6 @@ public class User extends DatabaseType {
 	private int upVotes;
 	private int downVotes;
 	
-	public int getId() {
-		return id;
-	}
-	
 	public User(Cursor cursor){
 		super(cursor);
 		this.setId(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)));
@@ -55,9 +51,14 @@ public class User extends DatabaseType {
 		this.setDownVotes(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_DOWN_VOTES)));
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public int getReputation() {
 		return reputation;
 	}

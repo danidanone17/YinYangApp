@@ -1,22 +1,20 @@
 package com.yinyang.so.activities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.TextView;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.Controller;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.TagMapping;
 import com.yinyang.so.databaseentities.DatabaseType;
-import com.yinyang.so.databaseentities.MapTags;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.Tag;
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
-import android.view.Menu;
-import android.widget.TextView;
 
 public class TopRelatedTagsActivity extends Activity {
 	
@@ -58,14 +56,14 @@ public class TopRelatedTagsActivity extends Activity {
 		//controller.testInsertTags(getBaseContext());
 		
 		//ArrayList<DatabaseType> tag = controller.testSearchMapTags(getBaseContext());
-		ArrayList<Tag> tag = controller.testSearchTags(getBaseContext());
+		ArrayList<Tag> tags = controller.testSearchTags(getBaseContext());
 		
-		System.out.println("toString(result): " + tag.toString());
+		System.out.println("toString(result): " + tags.toString());
 		
 		TextView textView = (TextView) findViewById(R.id.textView1);
 
 		String text="";
-		for(DatabaseType u : tag) {
+		for(DatabaseType u : tags) {
 			Tag tagObj = (Tag) u;
 			text+="TAG:" + tagObj.getTag() + ", COUNT: " + tagObj.getCountAppearance() + "\n";
 			//MapTags tagObj = (MapTags) u;

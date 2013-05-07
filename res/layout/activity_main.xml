@@ -14,12 +14,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/TestText" />
-    
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="showUserList"
         android:text="@string/Users" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="1dp"
+            android:layout_weight="1"
+            android:onClick="testUserProfile1"
+            android:text="@string/TestUserProfile1" />
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="1dp"
+            android:layout_weight="1"
+            android:onClick="testUserProfile2"
+            android:text="@string/TestUserProfile2" />
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
@@ -30,10 +50,10 @@
 
     <TextView
         android:id="@+id/text01"
-        android:textIsSelectable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_purple" />
+        android:textColor="@android:color/holo_purple"
+        android:textIsSelectable="true" />
 
     <Button
         android:layout_width="match_parent"
