@@ -225,6 +225,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 			Button tagButton = (Button) getLayoutInflater().inflate(R.layout.selected_tag_button, null);
 			tagButton.setText(tagString);
 	
+			// add listener to the button (onClick) that will open the
+			// TabSearchActivity using the tag string as input
 			tagButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
