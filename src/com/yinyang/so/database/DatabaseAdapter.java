@@ -772,4 +772,19 @@ public class DatabaseAdapter {
 		
 		return oTags;
 	}
+
+	public Tag getTagObjectByName(String tagName) {
+		Tag tag = null;
+		String sqlQuery = "SELECT * FROM " + Tag.TABLE_NAME + " WHERE (tag='" + tagName + "')";
+		try {
+			Cursor cursor = this.getCursor(sqlQuery);
+			ArrayList<Tag> tagDBTs = getTagsFromCursor(cursor);
+			
+			tag = tagDBTs.get(0);
+		} catch (Exception e) {
+			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
+			//e.printStackTrace();
+		}
+		return tag;
+	}
 }
