@@ -788,6 +788,12 @@ public class DatabaseAdapter {
 		return tag;
 	}
 	
+	/**
+	 * S04-US54 - get only questions based on free text search and a combination of tags
+	 * @param oWords
+	 * @param tags
+	 * @return
+	 */
 	public ArrayList<Post> getQuestionsByFreeSearchAndTagCombination(String[] oWords, String[] tags){
 		String sSqlMessage;
 		int i;
