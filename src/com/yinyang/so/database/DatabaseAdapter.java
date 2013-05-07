@@ -786,5 +786,25 @@ public class DatabaseAdapter {
 			//e.printStackTrace();
 		}
 		return tag;
+	}	
+	
+	/**
+	 * Returns users
+	 * @param name if not empty only users that have the given are returned
+	 * @return users
+	 */
+	public ArrayList<User> getUsersOrderedByReputation(String name){
+		ArrayList<User> users = new ArrayList<User>();
+		String sqlMessage;
+		
+		sqlMessage = "SELECT * FROM " + User.TABLE_NAME;
+		if(!name.isEmpty()){
+			sqlMessage += " WHERE " + User.KEY_DISPLAY_NAME + " = '" + name + "'";
+		}
+		sqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC";
+		
+		Cursor cursor = this.getCursor(sqlMessage);
+		users = getUsersFromCursor(cursor);		
+		return users;
 	}
 }
