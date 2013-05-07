@@ -3,7 +3,6 @@ package com.yinyang.so.activities;
 import java.util.ArrayList;
 
 import com.yinyang.so.R;
-import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.controllers.UserController;
 import com.yinyang.so.databaseentities.User;
 
@@ -26,6 +25,7 @@ public class UserListActivity extends Activity {
 	private UserController userController;
 	private ArrayList<User> users;
 	private UserArrayAdapter userArrayAdapter;
+	private final int MAXIMUM_DISPLAYED_USERS = 100;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +33,9 @@ public class UserListActivity extends Activity {
 		setContentView(R.layout.activity_user_list);
 		setupActionBar();
 		
-		userController = new UserController(this);		
-		users = userController.getUsersOrderedByReputation();
-		
-		// initialize user array adapter
-		userArrayAdapter = new UserArrayAdapter(this,
-				R.layout.user_list_layout, users);
-		
-		// set post array adapter for list view
-		ListView listView = (ListView) findViewById(R.id.user_list);
-		listView.setAdapter(userArrayAdapter);
+		userController = new UserController(this);
+				
+		fillListView("", false);
 	}
 
 	@Override
@@ -135,13 +128,47 @@ public class UserListActivity extends Activity {
 	 * Handles event when search user button is pressed
 	 * @param view the button that invoked the onClick method
 	 */
-	public void performUserSearch(View view){
+	public void performUserSearch(View view){		
 		// get user search text
 		EditText editView = (EditText)this.findViewById(R.id.edit_user_search);
 		
-		users = userController.getUsersOrderedByReputation(editView.getText().toString());
+		// fill list view with users
+		fillListView(editView.getText().toString(), false);
+	}
 	
-		// re-initialize user array adapter
+	/**
+	 * Handles event when button to show next users is clicked
+	 * @param view the button that invoked the onClick method
+	 */
+	public void showNextUsers(View view){
+		// get user search text
+		// if there is any
+		EditText editView = (EditText)this.findViewById(R.id.edit_user_search);
+		
+		// fill list view with next users
+		fillListView(editView.getText().toString(), true);
+	}
+	
+	/**
+	 * Fills list view with users
+	 * @param 
+	 */
+	private void fillListView(String userSearch, boolean showNext){
+		if(!showNext){
+			// either activity is opened for the first time or the search button has been pressed
+			users = userController.getUsersOrderedByReputation(MAXIMUM_DISPLAYED_USERS, userSearch);
+		}
+		else{
+			if(users != null && users.size() > 0){
+				// button to show next users has been pressed
+				User lastUser = users.get(users.size() - 1);
+				int lastUserReputation = lastUser.getReputation();
+				String lastUserName = lastUser.getDisplayName();
+				users = userController.getUsersOrderByReputation(MAXIMUM_DISPLAYED_USERS, userSearch, lastUserReputation, lastUserName);
+			}
+		}
+		
+		// initialize user array adapter
 		userArrayAdapter = new UserArrayAdapter(this,
 				R.layout.user_list_layout, users);
 		

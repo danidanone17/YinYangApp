@@ -82,5 +82,6 @@
 	<!-- UserListActivity -->
     <string name="title_activity_user_list">Users</string>
     <string name="user_search">Search user</string>
+    <string name="show_next_users">Show next users</string>
 
 </resources>
