@@ -75,4 +75,14 @@ public class SearchController {
 		dbAdapter.open();
 		return dbAdapter.getTopRelatedTags(sName);
 	}
+	
+	/**
+	 * Returns three tags in alphabetical order
+	 * @param iLimit limits number of returned tags
+	 * @return three tags in alphabetical order
+	 */
+	public ArrayList<String> getThreeTagsInAlphabeticalOrder(){
+		dbAdapter.open();
+		return dbAdapter.getTagsInAlphabeticalOrder(3);	
+	}
 }

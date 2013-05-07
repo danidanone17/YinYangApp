@@ -747,5 +747,29 @@ public class DatabaseAdapter {
 		} catch (Exception e) {
 			System.out.println("ERROR IN UPDATE: " + e.getMessage());
 		}
-	}	
+	}
+	
+	/**
+	 * Returns tags in alphabetical order
+	 * @param iLimit limits number of returned tags
+	 * @return tags in alphabetical order
+	 */
+	public ArrayList<String> getTagsInAlphabeticalOrder(int iLimit){
+		String sSqlMessage;
+
+		sSqlMessage = "SELECT " + Tag.KEY_TAG + " FROM " + TableType.tags;
+		sSqlMessage += " ORDER BY " +  Tag.KEY_TAG + " ASC";
+		if(iLimit > 0){
+			sSqlMessage += " LIMIT " +  iLimit;
+		}
+
+		Cursor oCursor = this.getCursor(sSqlMessage);
+		oCursor.moveToFirst();
+		ArrayList<String> oTags = new ArrayList<String>();
+		while(oCursor.moveToNext()){
+			oTags.add(oCursor.getString(0));
+		}
+		
+		return oTags;
+	}
 }
