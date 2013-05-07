@@ -222,6 +222,15 @@ public class QuestionController {
 	}
 	
 	/**
+	 * Get the authors id
+	 * 
+	 * @return a String
+	 */
+	public int getAuthorId() {
+		return questionAuthor.getId();
+	}
+	
+	/**
 	 * Get the authors name
 	 * 
 	 * @return a String
@@ -275,6 +284,15 @@ public class QuestionController {
 		return activeAnswer.getCreationDate();
 	}
 
+	/**
+	 * Get the id of the answer
+	 * 
+	 * @return a String
+	 */
+	public int getAnswerAuthorId() {
+		return answerAuthor.getId();
+	}	
+	
 	/**
 	 * Get the name of the author of the answer
 	 * 

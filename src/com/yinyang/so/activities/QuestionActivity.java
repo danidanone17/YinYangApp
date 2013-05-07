@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
@@ -23,7 +25,7 @@ import com.yinyang.so.databaseentities.User;
 import com.yinyang.so.extras.PredicateLayout;
 
 @SuppressLint("NewApi")
-public class QuestionActivity extends Activity {
+public class QuestionActivity extends Activity implements OnClickListener {
 
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
 	private TextView textViewQuestionScore;
@@ -37,6 +39,8 @@ public class QuestionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question);
+		// Sets up the profile picture listeners
+		setupProfilePictures();
 		// Show the Up button in the action bar.
 		setupActionBar();
 		Intent intent = getIntent();
@@ -50,6 +54,18 @@ public class QuestionActivity extends Activity {
 	 */
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
+	/**
+	 * Sets up listeners for question and answer profile pictures
+	 */
+	
+	private void setupProfilePictures() {
+		ImageButton questionProfilePicture = (ImageButton)findViewById(R.id.question_user_image);
+		questionProfilePicture.setOnClickListener(this);
+		
+		ImageButton answerProfilePicture = (ImageButton)findViewById(R.id.answer_user_image);
+		answerProfilePicture.setOnClickListener(this);
 	}
 
 	@Override
@@ -137,7 +153,7 @@ public class QuestionActivity extends Activity {
 		findViewById(R.id.answer_user_image).setVisibility(View.VISIBLE);
 	}
 	/**
-	 * Hide the view associated with an aswer to the given question
+	 * Hide the view associated with an answer to the given question
 	 */
 	private void disableAnswerView(){
 		findViewById(R.id.answer_content).setVisibility(View.GONE);
@@ -237,5 +253,27 @@ public class QuestionActivity extends Activity {
 			disableAnswerView();
 		}
 	}
+	
+	//Called when you click the user profile picture, switches to the user profile activity
+	public void testUserProfile(int id) {
+		Intent intent = new Intent(this, UserProfileActivity.class);
+		intent.putExtra(UserProfileActivity.EXTRA_USERID, id);
+		startActivity(intent);
+	}
+	
+	//Clears out what profile picture is being pressed
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
 
+		int id = v.getId();
+		  	switch (id) {
+		  		case R.id.question_user_image:
+		  			testUserProfile(qController.getAuthorId());
+		  		break;
+		  		case R.id.answer_user_image:
+		  			testUserProfile(qController.getAnswerAuthorId());
+		  		break;
+		  	}
+	}
 }
