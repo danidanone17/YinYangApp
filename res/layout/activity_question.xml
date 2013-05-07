@@ -127,6 +127,7 @@
                 android:textSize="10dp" />
 
             <ImageButton
+                android:id="@+id/question_user_image"                
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.7"
@@ -238,7 +239,7 @@
                 android:id="@+id/answer_user_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
+                android:layout_weight="0.7"                
                 android:src="@drawable/ic_user2" />
 
             <TextView
