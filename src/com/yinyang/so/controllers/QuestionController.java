@@ -23,6 +23,14 @@ public class QuestionController {
 	private int answerScore = 0;
 	private ArrayList<Post> answers = new ArrayList<Post>();
 	
+	/**
+	 * Communicates with the database through a DatabaseAdapter Fetches
+	 * information for the question model
+	 */
+	public QuestionController(Context con) {
+		dbAdapter = new DatabaseAdapter(con);
+		dbAdapter.createDatabase();
+	}
 	
 	/**
 	 * Communicates with the database through a DatabaseAdapter Fetches
@@ -38,14 +46,6 @@ public class QuestionController {
 		fetchAuthors();
 		fetchAnswers();		
 		
-	}
-	
-	/**
-	 * New constructor created due to an error in QuestionControllerValidation in setUp
-	 */
-	public QuestionController(Context con) {
-		dbAdapter = new DatabaseAdapter(con);
-		dbAdapter.createDatabase();		
 	}
 
 	/**

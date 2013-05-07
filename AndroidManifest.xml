@@ -58,7 +58,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
         </activity>
-        <activity android:name="com.yinyang.so.activities.SearchResultActivity" >
+        <activity 
+            android:name="com.yinyang.so.activities.SearchResultActivity" 
+            android:label="@string/title_activity_searchResult" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.yinyang.so.activities.TabSearchActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.UserListActivity"

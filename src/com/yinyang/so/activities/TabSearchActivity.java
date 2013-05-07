@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.Tag;
 import com.yinyang.so.extras.PredicateLayout;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -181,11 +184,12 @@ public class TabSearchActivity extends Activity {
 		// get search free text
 		EditText editView = (EditText)this.findViewById(R.id.edit_search);
 		
-		// parse tags selected for search together with search free text
-		String returnedText = oSearchController.parseTagSearchString(selectedTags, editView.getText().toString());
+		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags);
 		
-		Toast toast = Toast.makeText(this.getApplicationContext(), returnedText, Toast.LENGTH_LONG);
-		toast.show();
+		// invoke search result activity
+		Intent oIntent = new Intent(this, SearchResultActivity.class);
+		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) oPosts);
+		startActivity(oIntent);
 	}
 	
 	/**

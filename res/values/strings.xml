@@ -54,7 +54,7 @@
     <string name="string_search">Search text</string>
     <string name="search_command">Search</string>
     <string name="FreeTextSearch">Free text search</string>
-    <string name="title_activity_tab_search">TabSearchActivity</string>
+    <string name="title_activity_tab_search">Tab Search</string>
     <string name="TagSearch">Tag search</string>
 
     <color name="dark_grey">#555555</color>
@@ -63,7 +63,7 @@
     <string name="title_activity_top_related_tags">TopRelatedTagsActivity</string>
 
     <!-- Question Activity -->
-    <string name="title_activity_question">QnA</string>
+    <string name="title_activity_question">Question and answers</string>
     <string name="button_tag1">tag1</string>
     <string name="button_tag2">tag2</string>
     <string name="button_tag3">tag3</string>
@@ -72,10 +72,10 @@
     <string name="button_add">+</string>
     <string name="your_answer">Your answer</string>
     <string name="no_answer">There exists no accepted answers yet.</string>
-
-    <!-- SearchResultActivity -->
-    <string name="TestSearchResult">Test Search Result</string>
-
+    
+    <!-- SearchResultActivity--> 
+    <string name="title_activity_searchResult">Search tag</string>
+    
     <!-- TabSearchActivity -->
     <string name="tag_search">Search tag</string>
 
