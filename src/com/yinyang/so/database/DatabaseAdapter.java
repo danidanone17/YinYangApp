@@ -114,7 +114,7 @@ public class DatabaseAdapter {
 
 				break;
 
-			case 2:
+			case 3:
 				while (cursor.moveToNext()) {
 					Tag vote = new Tag(cursor);
 					list.add(vote);
@@ -542,6 +542,23 @@ public class DatabaseAdapter {
 			cursor.moveToFirst();
 			
 			tag = cursor.getString(0);
+		} catch (Exception e) {
+			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
+			//e.printStackTrace();
+		}
+		return tag;
+	}
+	
+	public Tag getTagObjectByName(String tagName) {
+		Tag tag = null;
+		String sqlQuery = "SELECT * FROM " + Tag.TABLE_NAME + " WHERE (tag='" + tagName + "')";
+		try {
+			Cursor cursor = this.getCursor(sqlQuery);
+			ArrayList<DatabaseType> tagDBTs = cursorToArrayList(cursor);
+			
+			for (DatabaseType tagDBT : tagDBTs) {
+				tag = (Tag) tagDBT;
+			}
 		} catch (Exception e) {
 			Log.e("Method getTag in DatabaseAdaptor", "Tag not found" + e.getMessage());
 			//e.printStackTrace();
