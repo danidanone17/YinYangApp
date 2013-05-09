@@ -86,10 +86,23 @@ public class DatabaseAdapterValidation extends
 				
 				//Test that the posts is presented in descending order
 				for (int i=1; i < postsByQuestionByUser.size(); i++){
-					assertTrue(postsByQuestionByUser.get(i-1).getScore() > postsByQuestionByUser.get(i).getScore());
+					assertTrue(postsByQuestionByUser.get(i-1).getScore() >= postsByQuestionByUser.get(i).getScore());
 				}
 			}
 		}
 
 	}
+	
+	public void testDesc(){
+		ArrayList<String> tags = new ArrayList<String>();
+		tags.add("php");
+		String[] searchWords = {"php"}; 
+		ArrayList<Post> posts = db.getQuestionsByFreeTextAndTags(searchWords, tags);
+		
+		
+		for (int i = 1; i < posts.size(); i++){
+			assertTrue(posts.get(i-1).getScore() >= posts.get(i).getScore());
+		}	
+	}
+	
 }
