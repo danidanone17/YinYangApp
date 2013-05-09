@@ -73,8 +73,10 @@
     <string name="no_answer">There exists no accepted answers yet.</string>
     
     <!-- SearchResultActivity--> 
-    <string name="title_activity_searchResult">Search tag</string>
-    
+
+    <string name="title_activity_searchResult">Search Results</string>
+
+  
     <!-- TabSearchActivity -->
     <string name="tag_search">Search tag</string>
 

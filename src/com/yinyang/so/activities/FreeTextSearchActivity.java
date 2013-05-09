@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
@@ -15,11 +16,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
+import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
 import com.yinyang.so.databaseentities.DatabaseType;
 import com.yinyang.so.databaseentities.Post;
+
 
 public class FreeTextSearchActivity extends Activity {
 
@@ -65,18 +68,32 @@ public class FreeTextSearchActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/*
+	 * Old searchFreeText method
+	 */
 	public void searchFreeText(View view) {
+		/*part of old search
 		EditText editText = (EditText) findViewById(R.id.stringSearch);
-
+				
 		textSearch = editText.getText().toString();
 		ArrayList<Post> oPosts = performSearch(textSearch);
+		*/
+		
+		// free text to search for
+		EditText editText = (EditText) findViewById(R.id.stringSearch);
+		textSearch = editText.getText().toString();
+		
+		// execute search
+		SearchController oSearchController = new SearchController(getBaseContext());	
+		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch);
 
 		// invoke search result activity
 		Intent oIntent = new Intent(FreeTextSearchActivity.this,SearchResultActivity.class);
-		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) oPosts);
+		//Intent oIntent = new Intent(this,SearchResultActivity.class);
+		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) postsFound);
 		startActivity(oIntent);
 	}
-
+	
 	// for testing, append on the text view the result, each on a different line
 	public void testSearch(ArrayList<DatabaseType> postsFound) {
 		TextView textView = (TextView) findViewById(R.id.searchResults);

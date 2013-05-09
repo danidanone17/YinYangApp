@@ -511,6 +511,7 @@ public class DatabaseAdapter {
 	 */
 	public ArrayList<Post> getQuestionsByFreeTextAndTags(String[] oWords, ArrayList<String> oTags)
 	{
+		
 		// create sql statement
 		String sSqlMessage = "SELECT * FROM " + TableType.posts;
 		sSqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
@@ -523,7 +524,8 @@ public class DatabaseAdapter {
 		for(String sTag : oTags){
 			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%" + sTag + "%'";
 		}
-		
+		sSqlMessage += "ORDER BY " + Post.KEY_SCORE + " DESC LIMIT 20";
+
 		// execute sql statement
 		Cursor oCursor = this.getCursor(sSqlMessage);
 		
