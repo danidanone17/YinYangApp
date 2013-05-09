@@ -504,10 +504,12 @@ public class DatabaseAdapter {
 	/**
 	 * Get questions where 
 	 * - the given words are contained in either the title or the body and
-	 * - there is a relation to all of the provided tags	
+	 * - there is a relation to all of the provided tags
+	 * Currently ordered by descending order and limited the results to 100 posts only 	
 	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
 	 * @param oTags tags the returned questions should be related to
 	 * @return questions
+	 *
 	 */
 	public ArrayList<Post> getQuestionsByFreeTextAndTags(String[] oWords, ArrayList<String> oTags)
 	{
@@ -524,7 +526,7 @@ public class DatabaseAdapter {
 		for(String sTag : oTags){
 			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%" + sTag + "%'";
 		}
-		sSqlMessage += "ORDER BY " + Post.KEY_SCORE + " DESC LIMIT 20";
+		sSqlMessage += "ORDER BY " + Post.KEY_SCORE + " DESC LIMIT 100";
 
 		// execute sql statement
 		Cursor oCursor = this.getCursor(sSqlMessage);
