@@ -53,8 +53,10 @@ public class DatabaseAdapterValidation extends
 	}
 
 	/**
-	 * Tests: -that the posts fetched are indeed created by the user -that the
-	 * right number of questions is fetched
+	 * Tests:
+	 * -that the posts fetched are indeed created by the user
+	 * -that the right number of questions is fetched
+	 * -that the post is in descending order
 	 */
 	public void testGetQuestionByUser() {
 		//Picked from the database
@@ -65,23 +67,26 @@ public class DatabaseAdapterValidation extends
 			User user = db.getUser(userId);
 			if (user != null) {
 				ArrayList<SearchEntity> criteria = new ArrayList<SearchEntity>();
-				criteria.add(new SearchEntity(Post.KEY_OWNER_USER_ID, Integer
-						.toString(userId), MeanOfSearch.exact));
+				criteria.add(new SearchEntity(Post.KEY_OWNER_USER_ID, 
+						Integer.toString(userId), MeanOfSearch.exact));
 				criteria.add(new SearchEntity(Post.KEY_POST_TYPE_ID, "1",
 						MeanOfSearch.exact));
-				ArrayList<Post> postsByCriteria = db
-						.getPostsByCriteria(criteria);
-				ArrayList<Post> postsByQuesionByUser = db
-						.getQuestionsByUser(userId);
+				ArrayList<Post> postsByCriteria = db.getPostsByCriteria(criteria);
+				ArrayList<Post> postsByQuestionByUser = db.getQuestionsByUser(userId);
 				// check that both way of fetching information gives the same
 				// number of results
 				// Should only return the first 100 questions
 				assertTrue(postsByCriteria.size() > 100
-						|| postsByCriteria.size() == postsByQuesionByUser
+						|| postsByCriteria.size() == postsByQuestionByUser
 								.size());
-				for (Post post : postsByQuesionByUser) {
+				for (Post post : postsByQuestionByUser) {
 					// check that each post actually have the right creator
 					assertTrue(post.getOwnerUserId() == userId);
+				}
+				
+				//Test that the posts is presented in descending order
+				for (int i=1; i < postsByQuestionByUser.size(); i++){
+					assertTrue(postsByQuestionByUser.get(i-1).getScore() > postsByQuestionByUser.get(i).getScore());
 				}
 			}
 		}
