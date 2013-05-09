@@ -53,4 +53,15 @@ public class DatabaseAdapterValidation extends
 		assertTrue(firstIndex < lastIndex);
 	}
 	
+	public void testDesc(){
+		ArrayList<String> tags = new ArrayList<String>();
+		tags.add("php");
+		ArrayList<Post> posts = db.getQuestionsByFreeTextAndTags({"php"}), tags);
+		
+		
+		for (int i= 1; i < posts.size(); i++){
+			assertTrue(posts.get(i-1) > posts.get(i).getScore());
+			}	
+		}
+	
 }
