@@ -217,7 +217,7 @@ public class QuestionController {
 	 * 
 	 * @return a String
 	 */
-	public String[] getQuestionTags() {
+	public ArrayList<String> getQuestionTags() {
 		return question.getTags();
 	}
 	
