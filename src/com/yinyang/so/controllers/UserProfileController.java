@@ -1,11 +1,14 @@
 package com.yinyang.so.controllers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.R;
 import android.content.Context;
+import android.content.Intent;
 
+import com.yinyang.so.activities.SearchResultActivity;
 import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
 
 /**
@@ -146,6 +149,15 @@ public class UserProfileController {
 
 	public int getProfileViews() {
 		return user.getViews();
+	}
+	
+	public void gotoUserQuestionView(Context context){
+		Intent intent = new Intent(context, SearchResultActivity.class);
+		mDbHelper.open();
+		ArrayList<Post> posts = mDbHelper.getQuestionsByUser(user.getId());
+		mDbHelper.close();
+		intent.putParcelableArrayListExtra("POSTS", posts);		
+		context.startActivity(intent);
 	}
 
 	/**

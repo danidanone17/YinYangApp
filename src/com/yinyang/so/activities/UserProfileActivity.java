@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -136,43 +137,9 @@ public class UserProfileActivity extends Activity {
 		textView.setText(Integer.toString(controller.getProfileViews()));
 	}
 
-	public void favoriteQuestionsView(View view) {
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-	
-	public void reputationView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
-	public void answersView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
 	public void questionsView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
+		Log.e("USER", "IN QUESTION METHOD");
+		controller.gotoUserQuestionView(this);
 	}
 
-	public void tagsView(View view) {
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
-	public void badgesView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
-	public void activitiesView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
 }
