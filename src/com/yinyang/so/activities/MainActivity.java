@@ -38,11 +38,11 @@ public class MainActivity extends Activity {
 	}	
 	
 	// Called when you click the testUserProfileButton
-	// Go to the user profile view for the specified user id 106
+	// Go to the user profile view for the specified user id 769366
 	public void testUserProfile1(View _) {
 		try {
 			Intent intent = new Intent(this, UserProfileActivity.class);
-			intent.putExtra(UserProfileActivity.EXTRA_USERID, 106);
+			intent.putExtra(UserProfileActivity.EXTRA_USERID, 769366);
 			startActivity(intent);
 		} catch (Exception e) {
 			e.printStackTrace();
