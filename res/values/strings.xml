@@ -73,11 +73,9 @@
     <string name="no_answer">There exists no accepted answers yet.</string>
     
     <!-- SearchResultActivity--> 
-    <string name="TestSearchResult">Test Search Result</string>
+    <string name="SearchResult">Search Results</string>
     
     <!-- TabSearchActivity -->
     <string name="tag_search">Search tag</string>
-    
-   <!--  <string name="title_activity_search_result">Test Search Result</string> -->
 
 </resources>

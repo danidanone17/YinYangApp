@@ -7,7 +7,7 @@
     <uses-sdk
 
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="20" />
 
     <application
         android:allowBackup="true"
@@ -60,7 +60,12 @@
                 android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
-            android:name="com.yinyang.so.activities.SearchResultActivity">
+            android:name="com.yinyang.so.activities.SearchResultActivity"
+            android:label="@string/SearchResult"
+            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.yinyang.so.MainActivity" />
         </activity>
     </application>
 
