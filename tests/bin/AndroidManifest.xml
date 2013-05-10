@@ -6,6 +6,7 @@
 
     <uses-sdk android:minSdkVersion="10" />
 
+
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="com.yinyang.so" />
