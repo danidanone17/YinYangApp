@@ -141,7 +141,7 @@ public class DatabaseAdapter {
 	 **/
 	private ArrayList<History> getHistoryFromCursor(Cursor cursor) {
 		ArrayList<History> history = new ArrayList<History>();
-		for (DatabaseType db : cursorToArrayList(cursor, TableType.history)) {
+		for (DatabaseType db : cursorToArrayList(cursor, TableType.user_history)) {
 			history.add((History) db); }
 		return history; }
 
@@ -196,8 +196,15 @@ public class DatabaseAdapter {
 
 			case tags:
 				while (cursor.moveToNext()) {
-					Tag vote = new Tag(cursor);
-					list.add(vote);
+					Tag tag = new Tag(cursor);
+					list.add(tag);
+				}
+				break;
+				
+			case user_history:
+				while (cursor.moveToNext()) {
+					History history = new History(cursor);
+					list.add(history);
 				}
 				break;
 
@@ -703,6 +710,7 @@ public class DatabaseAdapter {
 		try {
 			id = this.getLastIndex(TableType.valueOf(tableName)) + 1;
 		} catch (Exception e) {
+			e.printStackTrace();
 			id = 1;
 		}
 

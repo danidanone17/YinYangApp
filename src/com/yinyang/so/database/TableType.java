@@ -15,7 +15,7 @@ public enum TableType {
 	votes(Vote.TABLE_NAME),
 	tags(Tag.TABLE_NAME),
 	mapping_tags(MapTags.TABLE_NAME),
-	history(History.TABLE_NAME);
+	user_history(History.TABLE_NAME);
 	
 	private final String value;
 	

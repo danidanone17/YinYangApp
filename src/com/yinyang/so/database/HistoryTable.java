@@ -53,13 +53,14 @@ public class HistoryTable {
 				// check if the tag already exists in the history
 				historyLine = mdbHelper.getTagFromHistory(tagsArray[i]);
 
-				if (historyLine != null) {
+				if (historyLine == null) {
 					// it does not exist, thus insert the tag into history
 					HashMap<String, String> columnValues = new HashMap<String, String>();
 					columnValues.put(History.KEY_TAG, tagsArray[i]);
 					columnValues.put(History.KEY_NR_VIEWS, "1");
 
 					mdbHelper.insertSql(History.TABLE_NAME, columnValues);
+					
 				}
 
 				else {
