@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import com.yinyang.so.databaseentities.Comment;
 import com.yinyang.so.databaseentities.DatabaseType;
+import com.yinyang.so.databaseentities.History;
 import com.yinyang.so.databaseentities.MapTags;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.Tag;
@@ -132,6 +133,17 @@ public class DatabaseAdapter {
 		for (DatabaseType db : cursorToArrayList(cursor, TableType.mapping_tags)) {
 			mapTags.add((MapTags) db); }
 		return mapTags; }
+	
+	/**
+	 * Wrapper for cursorToArrayList() that returns an ArrayList of History
+	 * @param cursor	A cursor pointing to the db
+	 * @return an ArrayList of <History>
+	 **/
+	private ArrayList<History> getHistoryFromCursor(Cursor cursor) {
+		ArrayList<History> history = new ArrayList<History>();
+		for (DatabaseType db : cursorToArrayList(cursor, TableType.history)) {
+			history.add((History) db); }
+		return history; }
 
 	/**
 	 * Converts cursor to ArrayList of elements depending on a given TableType
@@ -786,5 +798,22 @@ public class DatabaseAdapter {
 			//e.printStackTrace();
 		}
 		return tag;
+	}
+
+
+	public History getTagFromHistory(String tagName) {
+		History historyLine = null;
+		String sqlQuery = "SELECT * FROM " + History.TABLE_NAME + " WHERE " + History.KEY_TAG + " = '" + tagName + "'";
+		
+		try {
+			Cursor cursor = this.getCursor(sqlQuery);
+			historyLine = getHistoryFromCursor(cursor).get(0);
+			
+		} catch (Exception e) {
+			Log.e("Method getTag in DatabaseAdaptor", "History for the tag: " + tagName + ". Error message: " + e.getMessage());
+			//e.printStackTrace();
+		}
+		
+		return historyLine;
 	}
 }

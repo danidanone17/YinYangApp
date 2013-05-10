@@ -1,6 +1,7 @@
 package com.yinyang.so.database;
 
 import com.yinyang.so.databaseentities.Comment;
+import com.yinyang.so.databaseentities.History;
 import com.yinyang.so.databaseentities.MapTags;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.Tag;
@@ -13,7 +14,8 @@ public enum TableType {
 	comments(Comment.TABLE_NAME),
 	votes(Vote.TABLE_NAME),
 	tags(Tag.TABLE_NAME),
-	mapping_tags(MapTags.TABLE_NAME);
+	mapping_tags(MapTags.TABLE_NAME),
+	history(History.TABLE_NAME);
 	
 	private final String value;
 	

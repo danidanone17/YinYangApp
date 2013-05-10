@@ -51,8 +51,7 @@ public class HistoryTable {
 
 			for (int i = 0; i < tagsArray.length; i++) {
 				// check if the tag already exists in the history
-				historyLine = mdbHelper.getTagFromHistory(mdbHelper,
-						tagsArray[i]);
+				historyLine = mdbHelper.getTagFromHistory(tagsArray[i]);
 
 				if (historyLine != null) {
 					// it does not exist, thus insert the tag into history
