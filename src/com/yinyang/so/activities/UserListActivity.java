@@ -72,21 +72,21 @@ public class UserListActivity extends Activity {
 	private class UserArrayAdapter extends ArrayAdapter<User> {
 
 		private ArrayList<User> users;
+		private final Context context;
 		
 		public UserArrayAdapter(Context context, int resource, ArrayList<User> users) {
 			super(context, resource, users);
+			this.context = context;
 			this.users = users;
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			
+		    LayoutInflater inflater = (LayoutInflater) context
+		            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		    View v = inflater.inflate(R.layout.user_list_layout, parent, false);
 
-			View v = convertView;
-
-			if (v == null) {	
-				LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = vi.inflate(R.layout.user_list_layout, null);
-			} 
 			
 			User o = users.get(position);
 
@@ -106,6 +106,8 @@ public class UserListActivity extends Activity {
 						}
 						});
 				}
+				
+		
 			
 				// set location
 				TextView location = (TextView) v.findViewById(R.id.location);
@@ -113,11 +115,11 @@ public class UserListActivity extends Activity {
 					location.setText(o.getLocation());
 				}
 				
-				// set location
+				// set reputation
 				TextView reputation = (TextView) v.findViewById(R.id.reputation);
 				if (reputation != null) {
 					reputation.setText(Integer.toString(o.getReputation()));
-				}				
+				}
 			}
 				
 			return v;
