@@ -1,12 +1,14 @@
 package com.yinyang.so.test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
 import com.yinyang.so.database.TableType;
 import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.Tag;
 import com.yinyang.so.databaseentities.User;
 
 public class DatabaseAdapterValidation extends
@@ -105,4 +107,88 @@ public class DatabaseAdapterValidation extends
 		}	
 	}
 	
+	/** test for searchName = null, lastUserReputation = -1, lastUserName = "" and limit = 2
+	 * in order to get the top 2 users
+	 */
+	public void testGetUsersOrderedByReputation1(){
+		int [] expectedUserIds = {22656, 29407};
+		int [] resultedUserIds = new int[100];
+		int i=0;
+		ArrayList<User> users = db.getUsersOrderedByReputation(2, "", -1, "");
+		
+		for (User user : users) {
+			resultedUserIds[i] = user.getId();
+			i++;
+		}
+		
+		for (i = 0; i < expectedUserIds.length; i++) {
+			assertTrue(expectedUserIds[i]==resultedUserIds[i]);
+		}
+	}
+	
+	/** test for searchName = null, lastUserReputation = 343191, lastUserName = "Darin Dimitrov" and limit = 2
+	 * in order to get the top 2 users
+	 */
+	public void testGetUsersOrderedByReputation2(){
+		int [] expectedUserIds = {23354, 157882};
+		int [] resultedUserIds = new int[2];
+		int i=0;
+		ArrayList<User> users = db.getUsersOrderedByReputation(2, "", 343191, "Darin Dimitrov");
+		
+		for (User user : users) {
+			resultedUserIds[i] = user.getId();
+			i++;
+		}
+		
+		for (i = 0; i < expectedUserIds.length; i++) {
+			assertTrue(expectedUserIds[i]==resultedUserIds[i]);
+		}
+	}
+	
+	/** test for searchName = "Darin Dimitrov", lastUserReputation = -1, lastUserName = "" and limit = 1
+	 * in order to get the top 2 users
+	 */
+	public void testGetUsersOrderedByReputation3(){
+		int [] expectedUserIds = {29407};
+		int [] resultedUserIds = new int[1];
+		int i=0;
+		ArrayList<User> users = db.getUsersOrderedByReputation(1, "Darin Dimitrov", -1, "");
+		
+		for (User user : users) {
+			resultedUserIds[i] = user.getId();
+			i++;
+		}
+		
+		for (i = 0; i < expectedUserIds.length; i++) {
+			assertTrue(expectedUserIds[i]==resultedUserIds[i]);
+		}
+	}
+	
+	/**
+	 * test the getTagObjectByName(String tagName) method in DatabaseAdapter
+	 */
+	public void testGetTagObjectByName(){
+		int expectedTagId = 54;
+		
+		Tag resultedTag= db.getTagObjectByName("java");
+		
+		assertEquals(expectedTagId, resultedTag.getId());
+		
+	}
+	
+	/**
+	 * test the getTagsInAlphabeticalOrder(int iLimit) method in DatabaseAdapter
+	 */
+	//not done here yet, small error, talk to Dani
+	public void testGetTagsInAlphabeticalOrder(){
+		String [] expectedTags = {".htaccess", ".net", ".net-2.0"};
+		int i=0;
+		
+		ArrayList<String> resultedTags = db.getTagsInAlphabeticalOrder(3);
+		
+		for (String resultedTag : resultedTags) {
+			assertEquals(expectedTags[i], resultedTag);
+			i++;
+		}
+	}
 }
