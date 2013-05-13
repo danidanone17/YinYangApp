@@ -58,7 +58,6 @@
     <string name="FreeTextSearch">Free text search</string>
     <string name="title_activity_tab_search">Tab Search</string>
     <string name="TagSearch">Tag search</string>
-
     <string name="TestSearchTopTags">Test top related tags</string>
     <string name="title_activity_top_related_tags">TopRelatedTagsActivity</string>
 
@@ -72,23 +71,25 @@
     <string name="button_add">+</string>
     <string name="your_answer">Your answer</string>
     <string name="no_answer">There exists no accepted answers yet.</string>
-    
-    <!-- SearchResultActivity--> 
+
+    <!-- SearchResultActivity -->
 
     <string name="title_activity_searchResult">Search Results</string>
 
-  
     <!-- TabSearchActivity -->
     <string name="tag_search">Search tag</string>
 
-	<!-- UserListActivity -->
+    <!-- UserListActivity -->
     <string name="title_activity_user_list">Users</string>
     <string name="user_search">Search user</string>
     <string name="show_next_users">Show next users</string>
-
     <string name="title_activity_not_implemented">Not implemented</string>
-    
-    <!--  Not implemented activity -->
+
+    <!-- Not implemented activity -->
     <string name="not_implemented">This view is not implemented... yet</string>
+    <string name="title_activity_sorted_search_result">SortedSearchResultActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>
