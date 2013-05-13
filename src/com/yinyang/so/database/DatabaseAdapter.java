@@ -812,22 +812,38 @@ public class DatabaseAdapter {
 			//e.printStackTrace();
 		}
 		return tag;
-	}	
+	}
 	
 	/**
 	 * Returns users
-	 * @param name if not empty only users that have the given are returned
+	 * @param limit the maximum number of users that are returned
+	 * @param searchName if not empty only users that have the given are returned
+	 * @param lastUserReputation reputation of user who is currently last in list
+	 * @param lastUserName name of user who is currently last in list
 	 * @return users
 	 */
-	public ArrayList<User> getUsersOrderedByReputation(String name){
+	public ArrayList<User> getUsersOrderedByReputation(int limit, String searchName, int lastUserReputation, String lastUserName){
 		ArrayList<User> users = new ArrayList<User>();
 		String sqlMessage;
 		
 		sqlMessage = "SELECT * FROM " + User.TABLE_NAME;
-		if(!name.isEmpty()){
-			sqlMessage += " WHERE " + User.KEY_DISPLAY_NAME + " = '" + name + "'";
+		if(!searchName.isEmpty()){
+			sqlMessage += " WHERE " + User.KEY_DISPLAY_NAME + " = '" + searchName + "'";
+			
+			if(lastUserReputation > 0 && !lastUserName.equals("")){
+				sqlMessage += " AND " + User.KEY_REPUTATION + " <= " + lastUserReputation;
+				sqlMessage += " AND " + User.KEY_DISPLAY_NAME + " NOT LIKE '" + lastUserName + "'"; 
+			}
+		}
+		else
+		{
+			if(lastUserReputation > 0 && !lastUserName.equals("")){
+				sqlMessage += " WHERE " + User.KEY_REPUTATION + " <= " + lastUserReputation;
+				sqlMessage += " AND " + User.KEY_DISPLAY_NAME + " NOT LIKE '" + lastUserName + "'"; 
+			}
 		}
 		sqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC";
+		sqlMessage += " LIMIT " + limit;
 		
 		Cursor cursor = this.getCursor(sqlMessage);
 		users = getUsersFromCursor(cursor);		
