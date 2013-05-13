@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.databaseentities.DatabaseType;
@@ -86,11 +87,10 @@ public class QuestionController {
 	 *            an int representing the question id
 	 * @return an ArrayList with Posts (DatabaseType)
 	 */
-	public ArrayList<Post> getAnswers(int questionId) {
-		dbAdapter.open();
-		ArrayList<Post> answers = dbAdapter.getAnswers(questionId);
-		dbAdapter.close();
-		return answers;
+	public ArrayList<Post> getAnswers() {
+		fetchAnswers();
+		Log.e("GETAnswers", "Returning answers : " + answers.size());
+		return this.answers;
 	}
 
 	/**
@@ -147,7 +147,10 @@ public class QuestionController {
 	 * Get all answers to a question from the database
 	 */
 	private void fetchAnswers() {
-		answers = this.getAnswers(question.getId());
+		dbAdapter.open();
+		Log.e("FETCH", "Fetching answers to question : " + question.getId());
+		answers = dbAdapter.getAnswers(question.getId());
+		dbAdapter.close();
 	}
 
 	/**

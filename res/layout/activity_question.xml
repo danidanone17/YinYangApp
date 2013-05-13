@@ -142,107 +142,15 @@
         android:textSize="16dp"
         android:textStyle="bold" />
 
-    <!-- Horizontal - Vote buttons - Contents of answer - User info -->
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp" >
-
-        <!-- Vote buttons -->
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="left"
-            android:orientation="vertical"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp" >
-
-            <ImageButton
-                android:id="@+id/up_vote_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="upVoteAnswer"
-                android:src="@drawable/ic_uparrow" />
-
-            <TextView
-                android:id="@+id/answer_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="10dp" />
-
-            <ImageButton
-                android:id="@+id/down_vote_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="downVoteAnswer"
-                android:src="@drawable/ic_downarrow" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp" >
-
-            <TextView
-                android:id="@+id/answer_content"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="left"
-                android:layout_weight="0.9" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="right"
-            android:orientation="vertical"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp" >
-
-            <TextView
-                android:id="@+id/answered_at"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="left"
-                android:layout_weight="0.7"
-                android:textSize="10dp" />
-
-            <ImageButton
-                android:id="@+id/answer_user_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"                
-                android:src="@drawable/ic_user2" />
-
-            <TextView
-                android:id="@+id/answer_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="left"
-                android:layout_weight="0.7"
-                android:textSize="10dp" />
-
-            <TextView
-                android:id="@+id/answer_user_score"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="left"
-                android:layout_weight="0.7"
-                android:textSize="10dp" />
-        </LinearLayout>
-    </LinearLayout>
-
+    <!-- Answers list -->
+    
+    <ListView
+    	android:id="@+id/answers_list_view"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"/>
+    
+    <!-- Your answer view -->
+    
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

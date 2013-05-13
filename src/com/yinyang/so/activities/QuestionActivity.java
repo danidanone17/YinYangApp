@@ -1,5 +1,7 @@
 package com.yinyang.so.activities;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -7,16 +9,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.QuestionController;
+import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.extras.PredicateLayout;
 
 @SuppressLint("NewApi")
@@ -24,7 +33,7 @@ public class QuestionActivity extends Activity implements OnClickListener {
 
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
 	private TextView textViewQuestionScore;
-	private TextView textViewAnswerScore;
+	private ListView listViewAnswers;
 
 	private QuestionController qController;
 
@@ -38,6 +47,7 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		setupActionBar();
 		Intent intent = getIntent();
 		int questionId = intent.getIntExtra(EXTRA_QUESTIONID, -1);
+		Log.e("Question ID", "Question ID : " + questionId);
 		qController = new QuestionController(this,questionId);
 		updateUI();
 	}
@@ -56,9 +66,6 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	private void setupProfilePictures() {
 		ImageButton questionProfilePicture = (ImageButton)findViewById(R.id.question_user_image);
 		questionProfilePicture.setOnClickListener(this);
-		
-		ImageButton answerProfilePicture = (ImageButton)findViewById(R.id.answer_user_image);
-		answerProfilePicture.setOnClickListener(this);
 	}
 
 	@Override
@@ -117,8 +124,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 *            the view that caused the event
 	 */
 	public void upVoteAnswer(View view) {
-		this.textViewAnswerScore.setText(Integer.toString(this.qController
-				.voteActiveAnswer(1)));
+		//this.textViewAnswerScore.setText(Integer.toString(this.qController
+		//		.voteActiveAnswer(1)));
 	}
 
 	/**
@@ -129,62 +136,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 *            the view that caused the event
 	 */
 	public void downVoteAnswer(View view) {
-		this.textViewAnswerScore.setText(Integer.toString(this.qController
-				.voteActiveAnswer(-1)));
-	}
-	/**
-	 * Show the views associated with an answer to the given question
-	 */
-	private void enableAnswerView(){
-		findViewById(R.id.answer_content).setVisibility(View.VISIBLE);
-		findViewById(R.id.answer_score).setVisibility(View.VISIBLE);
-		findViewById(R.id.answered_at).setVisibility(View.VISIBLE);
-		findViewById(R.id.answer_user_name).setVisibility(View.VISIBLE);
-		findViewById(R.id.answer_user_score).setVisibility(View.VISIBLE);
-		findViewById(R.id.up_vote_answer).setVisibility(View.VISIBLE);
-		findViewById(R.id.down_vote_answer).setVisibility(View.VISIBLE);
-		findViewById(R.id.answer_user_image).setVisibility(View.VISIBLE);
-	}
-	/**
-	 * Hide the view associated with an answer to the given question
-	 */
-	private void disableAnswerView(){
-		findViewById(R.id.answer_content).setVisibility(View.GONE);
-		findViewById(R.id.answer_score).setVisibility(View.GONE);
-		findViewById(R.id.answered_at).setVisibility(View.GONE);
-		findViewById(R.id.answer_user_name).setVisibility(View.GONE);
-		findViewById(R.id.answer_user_score).setVisibility(View.GONE);
-		findViewById(R.id.up_vote_answer).setVisibility(View.GONE);
-		findViewById(R.id.down_vote_answer).setVisibility(View.GONE);
-		findViewById(R.id.answer_user_image).setVisibility(View.GONE);
-	}
-	
-	/**
-	 * Fill the views associated with an answer with data
-	 */
-	private void fillAnswerView() {
-		// fill answer content
-		TextView textViewTemp = (TextView) findViewById(R.id.answer_content);
-		textViewTemp.setText(Html.fromHtml(qController.getAnswerContent()));
-		
-		// fill answer score
-		this.textViewAnswerScore = (TextView) findViewById(R.id.answer_score);
-		this.textViewAnswerScore.setText(Integer.toString(qController
-				.getAnswerScore()));
-		
-		// fill date question was answered at
-		textViewTemp = (TextView) findViewById(R.id.answered_at);
-		textViewTemp.setText(qController.getAnswerDate());
-		
-		// fill name of answering user
-		textViewTemp = (TextView) findViewById(R.id.answer_user_name);
-		textViewTemp.setText(qController.getAnswerAuthorName());
-		
-		// fill score of answering user
-		textViewTemp = (TextView) findViewById(R.id.answer_user_score);
-		textViewTemp.setText(Integer.toString(qController
-				.getAnswerAuthorReputation()));
-		
+		//this.textViewAnswerScore.setText(Integer.toString(this.qController
+		//		.voteActiveAnswer(-1)));
 	}
 
 	/**
@@ -233,7 +186,6 @@ public class QuestionActivity extends Activity implements OnClickListener {
 				Intent intent = new Intent(QuestionActivity.this, TabSearchActivity.class);
 				intent.putExtra(TabSearchActivity.EXTRA_TAGSTRING, tagString);
 				startActivity(intent);
-				// TODO: do something
 			}
 			});
 			questionTagButtons.addView(tagButton);
@@ -243,13 +195,15 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		textViewTemp = (TextView) findViewById(R.id.nr_of_answers);
 		textViewTemp.setText(Integer.toString(qController.getNrOfAnswers()) + " "
 				+ R.string.nr_of_answers);
+		List<Post> answers = qController.getAnswers();
+
+		Log.e("# ANS", "# of Answers : " + answers.size());
 		
-		if (qController.existsAnswer()) {
-			enableAnswerView();
-			fillAnswerView();
-		} else {
-			disableAnswerView();
-		}
+		// set up list view + adapter
+		listViewAnswers = (ListView) findViewById(R.id.answers_list_view);
+		final AnswerAdapter adapter = new AnswerAdapter(this,
+		        android.R.layout.simple_list_item_1, answers);
+		listViewAnswers.setAdapter(adapter);
 	}
 	
 	//Called when you click the user profile picture, switches to the user profile activity
@@ -274,4 +228,52 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		  		break;
 		  	}
 	}
+	
+	
+	// an adapter for the answers list
+	private class AnswerAdapter extends ArrayAdapter<Post> {
+		
+		private List<Post> answers;
+		
+		public AnswerAdapter(Context context, int resource, List<Post> answers) {
+			super (context, resource, answers);
+			this.answers = answers;
+		}
+		
+		@Override
+		public View getView(int position, View view, ViewGroup parent) {
+			View listView = view;
+			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			listView = inflater.inflate(R.layout.layout_answer_view, parent, false);
+
+			ImageButton answerProfilePicture = (ImageButton) listView.findViewById(R.id.answer_user_image);
+			Post currentAnswer = answers.get(position);
+			
+			//answerProfilePicture.setOnClickListener(this);
+
+			// fill answer content
+			TextView textViewTemp = (TextView) listView.findViewById(R.id.answer_content);
+			textViewTemp.setText(Html.fromHtml(currentAnswer.getBody()));
+			
+			// fill answer score
+			TextView textViewAnswerScore = (TextView) listView.findViewById(R.id.answer_score);
+			textViewAnswerScore.setText(Integer.toString(currentAnswer.getScore()));
+			
+			// fill date question was answered at
+			textViewTemp = (TextView) listView.findViewById(R.id.answered_at);
+			textViewTemp.setText(currentAnswer.getCreationDate());
+			
+			// fill name of answering user
+			textViewTemp = (TextView) listView.findViewById(R.id.answer_user_name);
+			textViewTemp.setText(currentAnswer.getLastEditorDisplayName());
+			// TODO: get author name, not last editor's
+			
+			// fill score of answering user
+			textViewTemp = (TextView) listView.findViewById(R.id.answer_user_score);
+			textViewTemp.setText(Integer.toString(currentAnswer.getScore()));
+			// TODO: get author reputation, not score
+
+			return listView;
+		}
+	}	
 }

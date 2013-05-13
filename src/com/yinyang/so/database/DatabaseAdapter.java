@@ -563,8 +563,8 @@ public class DatabaseAdapter {
 	 * @return an ArrayList<Post> with answers
 	 */
 	public ArrayList<Post> getAnswers(int questionId) {
-		String sqlQuery = "SELECT * FROM " + TableType.posts + " WHERE ('"
-				+ Post.KEY_PARENT_ID + "'='" + questionId + "')";
+		String sqlQuery = "SELECT * FROM " + TableType.posts + " WHERE "
+				+ Post.KEY_PARENT_ID + " = " + questionId;
 		Cursor cursor = this.getCursor(sqlQuery);
 		return getPostsFromCursor(cursor);
 	}
