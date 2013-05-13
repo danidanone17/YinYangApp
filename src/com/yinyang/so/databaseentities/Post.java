@@ -1,11 +1,12 @@
 package com.yinyang.so.databaseentities;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 public class Post extends DatabaseType implements Parcelable{
 	private int mData;
@@ -306,15 +307,15 @@ public class Post extends DatabaseType implements Parcelable{
 	
 	/**
 	 * Returns the tags parsed from the tags string
-	 * @return String[] of tags
+	 * @return ArrayList of tags
 	 */
-	public String[] getTags() {
+	public ArrayList<String> getTags() {
 		if (!tags.isEmpty()) {
 			String regex = "[<>]+";
 			String[] tagsString = tags.replaceFirst("<", "").split(regex);
-			return tagsString;
+			return new ArrayList<String>(Arrays.asList(tagsString));
 		}
-		return new String[0];
+		return new ArrayList<String>();
 	}
 
 	public void setTags(String tags) {

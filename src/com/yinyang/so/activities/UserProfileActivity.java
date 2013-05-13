@@ -136,43 +136,8 @@ public class UserProfileActivity extends Activity {
 		textView.setText(Integer.toString(controller.getProfileViews()));
 	}
 
-	public void favoriteQuestionsView(View view) {
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-	
-	public void reputationView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
-	public void answersView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
 	public void questionsView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
+		controller.gotoUserQuestionView(this);
 	}
 
-	public void tagsView(View view) {
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
-	public void badgesView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
-
-	public void activitiesView(View view) {
-
-		Intent intent = new Intent(this, NotImplementedActivity.class);
-		startActivity(intent);
-	}
 }

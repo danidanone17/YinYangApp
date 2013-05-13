@@ -40,6 +40,7 @@
     <string name="profile_views">2</string>
     <string name="user_description_label">User description: </string>
     <string name="user_description">Some descriprion here</string>
+    <string name="no_question_by_user">User haven\'t posted any questions</string>
 
     <!-- Main Acitivty View -->
     <string name="TestUserProfile1">Existing user</string>

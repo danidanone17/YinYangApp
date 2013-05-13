@@ -1,11 +1,16 @@
 package com.yinyang.so.controllers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.R;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.yinyang.so.activities.SearchResultActivity;
 import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
 
 /**
@@ -146,6 +151,26 @@ public class UserProfileController {
 
 	public int getProfileViews() {
 		return user.getViews();
+	}
+	
+	/**
+	 * Shows the question posted by a user in the SearchResultActivity
+	 * @param context
+	 */
+	public void gotoUserQuestionView(Context context){
+		mDbHelper.open();
+		ArrayList<Post> posts = mDbHelper.getQuestionsByUser(user.getId());
+		mDbHelper.close();
+		if(posts.isEmpty()){
+			String text = "No question written by user";
+			Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+			toast.show();
+		}
+		else{
+			Intent intent = new Intent(context, SearchResultActivity.class);
+			intent.putParcelableArrayListExtra("POSTS", posts);		
+			context.startActivity(intent);
+		}
 	}
 
 	/**
