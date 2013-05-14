@@ -8,6 +8,7 @@ import java.util.Date;
 import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.User;
 
 import android.test.InstrumentationTestCase;
 import junit.framework.Assert;
@@ -56,6 +57,21 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		
 		boolean bValid = isValidFreeTextSearchResult(sFreeText, oPosts);
 		boolean bProperlySorted = isSortedByAnswerCount(oPosts);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
+	} 
+	
+	/**
+	 * Tests free text search
+	 * - search result should be sorted by user reputation
+	 */
+	public void testFreeTextSearchSortedByUserReputation(){
+		String sFreeText = "convert string to long";
+		
+		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
+		ArrayList<Post> oPosts = oSearchController.freeTextSearch(sFreeText, SearchResultSortingAlgorithm.UserReputationAlgorithm);
+		
+		boolean bValid = isValidFreeTextSearchResult(sFreeText, oPosts);
+		boolean bProperlySorted = isSortedByUserReputation(oPosts, oSearchController);
 		Assert.assertEquals(true, bValid && bProperlySorted);	
 	} 
 	
@@ -124,6 +140,24 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		boolean bProperlySorted = isSortedByAnswerCount(oPosts);
 		Assert.assertEquals(true, bValid && bProperlySorted);	
 	}
+	
+	/**
+	 * Tests free text search
+	 * - search result should be sorted by user reputation
+	 */
+	public void testFreeTextAndTagSearchSortedByUserReputation(){
+		String sFreeText = "convert string to long";
+		ArrayList<String> oTags = new ArrayList<String>();
+		oTags.add("c#");
+		oTags.add("rsa");
+		
+		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
+		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(sFreeText, oTags, SearchResultSortingAlgorithm.UserReputationAlgorithm);
+		
+		boolean bValid = isValidFreeTextAndTagSearchResult(sFreeText, oTags, oPosts);
+		boolean bProperlySorted = isSortedByUserReputation(oPosts, oSearchController);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
+	}
 
 
 	/**
@@ -173,6 +207,24 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 	private boolean isSortedByAnswerCount(ArrayList<Post> oPosts){
 		for (int i = 1; i < oPosts.size(); i++){
 			if(oPosts.get(i-1).getAnswerCount() < oPosts.get(i).getAnswerCount()){
+				return false;
+			}
+		}	
+		
+		return true;
+	}
+	
+	/**
+	 * Checks whether the given list of posts is sorted by user reputation
+	 * @param oPosts list of posts that has to be checked
+	 * @param oSearchController the search controller
+	 * @return true if the given list of posts is actually sorted by user reputation
+	 */
+	private boolean isSortedByUserReputation(ArrayList<Post> oPosts, SearchController oSearchController){
+		for (int i = 1; i < oPosts.size(); i++){
+			User userPrev = oSearchController.getUser(oPosts.get(i-1).getOwnerUserId());
+			User userCurr = oSearchController.getUser(oPosts.get(i).getOwnerUserId());
+			if(userPrev.getReputation() < userCurr.getReputation()){
 				return false;
 			}
 		}	
