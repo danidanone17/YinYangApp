@@ -34,7 +34,8 @@ public class DatabaseAdapter {
 	public enum SearchResultSortingAlgorithm{
 		QuestionScoreAlgorithm,
 		CreationDateAlgorithm,
-		AnswerCountAlgotithm
+		AnswerCountAlgotithm,
+		UserReputationAlgorithm
 	}
 
 	public DatabaseAdapter(Context context) {
@@ -608,6 +609,12 @@ public class DatabaseAdapter {
 
 		// create sql statement
 		String sSqlMessage = "SELECT * FROM " + TableType.posts;
+		
+		// if UserReputationAlgorithm is set
+		// join with users table
+		if(eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm){
+			sSqlMessage += " JOIN " + TableType.users + " u ON " + Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID; 
+		}
 		sSqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
 		for (int i = 0; i < oWords.length; i++) {
 			sSqlMessage += " AND (" + Post.KEY_TITLE + " LIKE '%" + oWords[i]
@@ -631,13 +638,16 @@ public class DatabaseAdapter {
 		case AnswerCountAlgotithm:
 			sSqlMessage += " ORDER BY " + Post.KEY_ANSWER_COUNT + " DESC";
 			break;
+		case UserReputationAlgorithm:
+			sSqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC";
+			break;
 		default:
 			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
 			break;
 		}
 		
 		// add search result limit
-		sSqlMessage += " LIMIT 100";
+		sSqlMessage += " LIMIT 10";
 
 		// execute sql statement
 		Cursor oCursor = this.getCursor(sSqlMessage);
