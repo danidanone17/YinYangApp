@@ -34,7 +34,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
 	private ListView listViewAnswers;
-
+	private View header;
+	
 	private QuestionController qController;
 
 	@Override
@@ -60,8 +61,6 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	/**
 	 * Sets up listeners for question and answer profile pictures
 	 */
-	
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -94,8 +93,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 *            the view that caused the event
 	 */
 	public void upVoteQuestion(View view) {
-		//this.textViewQuestionScore.setText(Integer.toString(this.qController
-		//		.voteQuestion(1)));
+		//View textViewQuestionScore = header.findViewById(R.id.question_score);
+		//textViewQuestionScore.setText(Integer.toString(this.qController.voteQuestion(1)));
 	}
 
 	/**
@@ -137,11 +136,12 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	/**
 	 * Fills/completes TextViews of activity with dynamic content by the help of
 	 * the database
+	 * Creates views for the question and answers
 	 */
 	private void updateUI() {
 
 		// create header (question view)
-		View header = View.inflate(this, R.layout.layout_question_view, null);
+		header = View.inflate(this, R.layout.layout_question_view, null);
 		
 		// fill question title
 		TextView textViewTemp = (TextView) header.findViewById(R.id.question_title);
@@ -167,6 +167,11 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		textViewTemp = (TextView) header.findViewById(R.id.question_user_score);
 		textViewTemp.setText(Integer.toString(qController.getAuthorReputation()));
 
+		ImageButton upVoteQuestion = (ImageButton) header.findViewById(R.id.up_vote_question);
+		upVoteQuestion.setOnClickListener(this);
+		ImageButton downVoteQuestion = (ImageButton) header.findViewById(R.id.down_vote_question);
+		downVoteQuestion.setOnClickListener(this);
+		
 		ImageButton questionProfilePicture = (ImageButton)header.findViewById(R.id.question_user_image);
 		questionProfilePicture.setOnClickListener(this);
 		
@@ -214,16 +219,18 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	//Clears out what profile picture is being pressed
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
+		TextView questionScore = (TextView) header.findViewById(R.id.question_score);
 		int id = v.getId();
 		  	switch (id) {
 		  		case R.id.question_user_image:
 		  			testUserProfile(qController.getAuthorId());
 		  		break;
-		  		case R.id.answer_user_image:
-		  			testUserProfile(qController.getAnswerAuthorId());
-		  		break;
+		  		case R.id.up_vote_question:
+		  			questionScore.setText(Integer.toString(this.qController.voteQuestion(1)));
+	  			break;
+		  		case R.id.down_vote_question:
+		  			questionScore.setText(Integer.toString(this.qController.voteQuestion(-1)));
+	  			break;
 		  	}
 	}
 	
@@ -244,18 +251,41 @@ public class QuestionActivity extends Activity implements OnClickListener {
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			listView = inflater.inflate(R.layout.layout_answer_view, parent, false);
 
-			ImageButton answerProfilePicture = (ImageButton) listView.findViewById(R.id.answer_user_image);
-			Post currentAnswer = answers.get(position);
 			
-			//answerProfilePicture.setOnClickListener(this);
+			final Post currentAnswer = answers.get(position);
 
+			// add image
+			ImageButton answerProfilePicture = (ImageButton) listView.findViewById(R.id.answer_user_image);
+			answerProfilePicture.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					testUserProfile(qController.getPostAuthor(currentAnswer).getId());
+				}
+				});
+				
+			// add upp and down-voting buttons
+			// fill answer score
+			final TextView textViewAnswerScore = (TextView) listView.findViewById(R.id.answer_score);
+			textViewAnswerScore.setText(Integer.toString(currentAnswer.getScore()));
+			
+			ImageButton upVoteAnswer = (ImageButton) listView.findViewById(R.id.up_vote_answer);
+			upVoteAnswer.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					textViewAnswerScore.setText(Integer.toString(qController.voteAnswer(currentAnswer, 1)));
+				}
+			});
+			ImageButton downVoteAnswer = (ImageButton) listView.findViewById(R.id.down_vote_answer);
+			downVoteAnswer.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					textViewAnswerScore.setText(Integer.toString(qController.voteAnswer(currentAnswer, -1)));
+				}
+			});
+			
 			// fill answer content
 			TextView textViewTemp = (TextView) listView.findViewById(R.id.answer_content);
 			textViewTemp.setText(Html.fromHtml(currentAnswer.getBody()));
-			
-			// fill answer score
-			TextView textViewAnswerScore = (TextView) listView.findViewById(R.id.answer_score);
-			textViewAnswerScore.setText(Integer.toString(currentAnswer.getScore()));
 			
 			// fill date question was answered at
 			textViewTemp = (TextView) listView.findViewById(R.id.answered_at);
@@ -263,13 +293,11 @@ public class QuestionActivity extends Activity implements OnClickListener {
 			
 			// fill name of answering user
 			textViewTemp = (TextView) listView.findViewById(R.id.answer_user_name);
-			textViewTemp.setText(currentAnswer.getLastEditorDisplayName());
-			// TODO: get author name, not last editor's
+			textViewTemp.setText(qController.getPostAuthor(currentAnswer).getDisplayName());
 			
 			// fill score of answering user
 			textViewTemp = (TextView) listView.findViewById(R.id.answer_user_score);
-			textViewTemp.setText(Integer.toString(currentAnswer.getScore()));
-			// TODO: get author reputation, not score
+			textViewTemp.setText(Integer.toString(qController.getPostAuthor(currentAnswer).getReputation()));
 
 			return listView;
 		}
