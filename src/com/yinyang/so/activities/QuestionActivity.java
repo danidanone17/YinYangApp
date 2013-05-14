@@ -84,54 +84,6 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * Handles event when the ImageButton up_vote_question has been pressed -
-	 * increases score of question by 1
-	 * 
-	 * @param view
-	 *            the view that caused the event
-	 */
-	public void upVoteQuestion(View view) {
-		//View textViewQuestionScore = header.findViewById(R.id.question_score);
-		//textViewQuestionScore.setText(Integer.toString(this.qController.voteQuestion(1)));
-	}
-
-	/**
-	 * Handles event when the ImageButton up_vote_question has been pressed -
-	 * decreases score of question by 1
-	 * 
-	 * @param view
-	 *            the view that caused the event
-	 */
-	public void downVoteQuestion(View view) {
-		//this.textViewQuestionScore.setText(Integer.toString(this.qController
-		//		.voteQuestion(-1)));
-	}
-
-	/**
-	 * Handles event when the ImageButton up_vote_answer has been pressed -
-	 * increases score of answer by 1
-	 * 
-	 * @param view
-	 *            the view that caused the event
-	 */
-	public void upVoteAnswer(View view) {
-		//this.textViewAnswerScore.setText(Integer.toString(this.qController
-		//		.voteActiveAnswer(1)));
-	}
-
-	/**
-	 * Handles event when the ImageButton down_vote_answer has been pressed -
-	 * decreases score of answer by 1
-	 * 
-	 * @param view
-	 *            the view that caused the event
-	 */
-	public void downVoteAnswer(View view) {
-		//this.textViewAnswerScore.setText(Integer.toString(this.qController
-		//		.voteActiveAnswer(-1)));
-	}
-
-	/**
 	 * Fills/completes TextViews of activity with dynamic content by the help of
 	 * the database
 	 * Creates views for the question and answers
@@ -165,6 +117,7 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		textViewTemp = (TextView) header.findViewById(R.id.question_user_score);
 		textViewTemp.setText(Integer.toString(qController.getAuthorReputation()));
 
+		// upvote/downvote question
 		ImageButton upVoteQuestion = (ImageButton) header.findViewById(R.id.up_vote_question);
 		upVoteQuestion.setOnClickListener(this);
 		ImageButton downVoteQuestion = (ImageButton) header.findViewById(R.id.down_vote_question);
@@ -266,6 +219,7 @@ public class QuestionActivity extends Activity implements OnClickListener {
 			final TextView textViewAnswerScore = (TextView) listView.findViewById(R.id.answer_score);
 			textViewAnswerScore.setText(Integer.toString(currentAnswer.getScore()));
 			
+			// upvote/downvote answer
 			ImageButton upVoteAnswer = (ImageButton) listView.findViewById(R.id.up_vote_answer);
 			upVoteAnswer.setOnClickListener(new View.OnClickListener() {
 				@Override
