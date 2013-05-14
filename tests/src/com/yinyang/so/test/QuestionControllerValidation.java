@@ -43,19 +43,6 @@ public class QuestionControllerValidation extends
 		assertEquals(qc.getUser(13).getViews(), 3347);
 	}
 	
-	// Tests getAnswers()
-	// Note: HARDCODED VALUES... If this test fails,
-	// it may depend on changes in the db...
-	// TODO: Make it independent
-	public void testGetAnswers() {
-		ArrayList<Post> answers = qc.getAnswers(8414075);
-		assertEquals(answers.size(), 2);
-		Post ans1 = answers.get(0);
-		Post ans2 = answers.get(1);
-		assertEquals(ans1.getId(), 8414109);
-		assertEquals(ans2.getId(), 8414247);
-	}
-	
 	// Tests getAcceptedAnswer()
 	// Note: HARDCODED VALUES... If this test fails,
 	// it may depend on changes in the db...

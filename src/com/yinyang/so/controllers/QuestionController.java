@@ -43,6 +43,21 @@ public class QuestionController {
 	}
 
 	/**
+	 * Fetches a post from the database based on its id Opens and closes the
+	 * database
+	 * 
+	 * @param id
+	 *            an int representing the id for a post
+	 * @return a Post
+	 */
+	public Post getPost(int id) {
+		dbAdapter.open();
+		Post post = dbAdapter.getPost(id);
+		dbAdapter.close();
+		return post;
+	}
+	
+	/**
 	 * Fetches a user from the database based on its id Opens and closes the
 	 * database
 	 * 
