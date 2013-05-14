@@ -32,9 +32,6 @@
          android:layout_toRightOf="@id/a_c"
          android:layout_marginLeft="20dp"
          android:layout_below="@id/title">
-      <!--    
-         android:paddingLeft="0dp"
-         android:paddingRight="0dp">  -->
     </com.yinyang.so.extras.PredicateLayout>
     
 </RelativeLayout>

@@ -67,8 +67,8 @@
             android:layout_weight="0.6"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp" >
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
 
             <TextView
                 android:id="@+id/question_content"
@@ -76,7 +76,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="left"
                 android:layout_weight="0.9"
-                android:textSize="6sp" />
+                android:textSize="14.5sp" />
 
             
                 <com.yinyang.so.extras.PredicateLayout
