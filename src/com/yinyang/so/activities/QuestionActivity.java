@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +45,6 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		setupActionBar();
 		Intent intent = getIntent();
 		int questionId = intent.getIntExtra(EXTRA_QUESTIONID, -1);
-		Log.e("Question ID", "Question ID : " + questionId);
 		qController = new QuestionController(this,questionId);
 		updateUI();
 	}

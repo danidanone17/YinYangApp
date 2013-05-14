@@ -8,10 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.yinyang.so.database.DatabaseAdapter;
-import com.yinyang.so.databaseentities.DatabaseType;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
 
@@ -41,25 +39,7 @@ public class QuestionController {
 	public QuestionController(Context con, int questionId) {
 		dbAdapter = new DatabaseAdapter(con);
 		dbAdapter.createDatabase();
-		
-		question = this.getPost(questionId);
-		questionScore = question.getScore();
-		fetchData();
-	}
-
-	/**
-	 * Fetches a post from the database based on its id Opens and closes the
-	 * database
-	 * 
-	 * @param id
-	 *            an int representing the id for a post
-	 * @return a Post
-	 */
-	public Post getPost(int id) {
-		dbAdapter.open();
-		Post post = dbAdapter.getPost(id);
-		dbAdapter.close();
-		return post;
+		this.fetchData(questionId);
 	}
 
 	/**
@@ -122,9 +102,12 @@ public class QuestionController {
 	/**
 	 * Fetch answers + authors from the database
 	 */
-	private void fetchData() {
+	private void fetchData(int questionId) {
 		dbAdapter.open();
 		
+		// get question + score
+		question = dbAdapter.getPost(questionId);
+		questionScore = question.getScore();
 		// get question author
 		questionAuthor = dbAdapter.getUser(question.getOwnerUserId());
 		// get answers
@@ -261,7 +244,6 @@ public class QuestionController {
 	 */
 	public User getPostAuthor(Post answer) {
 		int index = answers.indexOf(answer);
-		Log.e("ANS", "getAnswerAuthorsName : " + index + ", answerAuthors.size : " + answerAuthors.size());
 		return answerAuthors.get(index);
 	}
 	
