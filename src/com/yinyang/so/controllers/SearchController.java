@@ -3,13 +3,17 @@ package com.yinyang.so.controllers;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 
+import com.yinyang.so.activities.SearchResultActivity;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
 
 public class SearchController {
 	private DatabaseAdapter dbAdapter;
+	private Context con;
 
 	/**
 	 * Communicates with the database through a DatabaseAdapter Fetches
@@ -18,6 +22,8 @@ public class SearchController {
 	public SearchController(Context con) {
 		dbAdapter = new DatabaseAdapter(con);
 		dbAdapter.createDatabase();
+		
+		this.con = con;
 	}
 	
 	/**
@@ -86,5 +92,49 @@ public class SearchController {
 		else{
 			return dbAdapter.getPostsByTags(oTags);
 		}			
+	}
+	
+	/**
+	 * Searches posts that contain the given text in either its title or body sorted by
+	 *  - question score
+	 *  - creation date
+	 * Invokes the search result activity
+	 * @param textSearch text that has been search for
+	 */
+	public void performFreeTextSearch(String textSearch){
+		// invoke search result activity
+		Intent oIntent = new Intent(con,SearchResultActivity.class);
+				
+		// pass posts sorted by question score to search result activity
+		ArrayList<Post> postsFound = freeTextSearch(textSearch, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_QUESTION_SCORE", (ArrayList<? extends Parcelable>) postsFound);
+		
+		// pass posts sorted by creation date to search result activity
+		postsFound = freeTextSearch(textSearch, SearchResultSortingAlgorithm.CreationDateAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) postsFound);
+		
+		con.startActivity(oIntent);
+	}
+	
+	/**
+	 * Searches posts that are related to the given tags and contain the given text in either its title or body sorted by
+	 *  - question score
+	 *  - creation date
+	 * @param textSearch text that has been search for
+	 * @param selectedTags tags that the posts should be related to
+	 */
+	public void performFreeTextAndTagSearch(String textSearch, ArrayList<String> selectedTags){
+		// invoke search result activity
+		Intent oIntent = new Intent(con, SearchResultActivity.class);
+				
+		// pass posts sorted by question score to search result activity
+		ArrayList<Post> oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_QUESTION_SCORE", (ArrayList<? extends Parcelable>) oPosts);
+		
+		// pass posts sorted by creation date to search result activity
+		oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.CreationDateAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) oPosts);
+		
+		con.startActivity(oIntent);
 	}
 }

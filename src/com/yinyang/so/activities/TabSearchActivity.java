@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.SearchController;
-import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
-import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.extras.PredicateLayout;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +41,7 @@ public class TabSearchActivity extends Activity {
 		setContentView(R.layout.activity_tab_search);
 		
 		String inputTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
-		oSearchController = new SearchController(this.getBaseContext());
+		oSearchController = new SearchController(this);
 		ArrayList<String> oTags = new ArrayList<String>();
 		
 		// if there is a value passed to this class with intent, use
@@ -194,19 +190,10 @@ public class TabSearchActivity extends Activity {
 	public void performSearch(View view){
 		// get search free text
 		EditText editView = (EditText)this.findViewById(R.id.edit_search);
+		String textSearch = editView.getText().toString();
 		
-		// invoke search result activity
-		Intent oIntent = new Intent(this, SearchResultActivity.class);
-				
-		// pass posts sorted by question score to search result activity
-		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
-		oIntent.putParcelableArrayListExtra("POSTS_QUESTION_SCORE", (ArrayList<? extends Parcelable>) oPosts);
-		
-		// pass posts sorted by creation date to search result activity
-		oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags, SearchResultSortingAlgorithm.CreationDateAlgorithm);
-		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) oPosts);
-		
-		startActivity(oIntent);
+		// perform free text and tag search
+		oSearchController.performFreeTextAndTagSearch(textSearch, selectedTags);
 	}
 	
 	/**
