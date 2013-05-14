@@ -33,7 +33,8 @@ public class DatabaseAdapter {
 	 */
 	public enum SearchResultSortingAlgorithm{
 		QuestionScoreAlgorithm,
-		CreationDateAlgorithm
+		CreationDateAlgorithm,
+		AnswerCountAlgotithm
 	}
 
 	public DatabaseAdapter(Context context) {
@@ -626,6 +627,9 @@ public class DatabaseAdapter {
 			break;
 		case CreationDateAlgorithm:
 			sSqlMessage += " ORDER BY " + Post.KEY_CREATION_DATE + " DESC";
+			break;
+		case AnswerCountAlgotithm:
+			sSqlMessage += " ORDER BY " + Post.KEY_ANSWER_COUNT + " DESC";
 			break;
 		default:
 			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";

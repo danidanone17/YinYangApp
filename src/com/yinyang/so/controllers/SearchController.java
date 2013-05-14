@@ -113,6 +113,10 @@ public class SearchController {
 		postsFound = freeTextSearch(textSearch, SearchResultSortingAlgorithm.CreationDateAlgorithm);
 		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) postsFound);
 		
+		// pass posts sorted by answer count to search result activity
+		postsFound = freeTextSearch(textSearch, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
+		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT", (ArrayList<? extends Parcelable>) postsFound);
+		
 		con.startActivity(oIntent);
 	}
 	
@@ -134,6 +138,10 @@ public class SearchController {
 		// pass posts sorted by creation date to search result activity
 		oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.CreationDateAlgorithm);
 		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) oPosts);
+		
+		// pass posts sorted by answer count to search result activity
+		oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
+		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT", (ArrayList<? extends Parcelable>) oPosts);
 		
 		con.startActivity(oIntent);
 	}

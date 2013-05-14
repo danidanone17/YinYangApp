@@ -45,6 +45,21 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 	} 
 	
 	/**
+	 * Tests free text search
+	 * - search result should be sorted by answer count
+	 */
+	public void testFreeTextSearchSortedByAnswerCount(){
+		String sFreeText = "convert string to long";
+		
+		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
+		ArrayList<Post> oPosts = oSearchController.freeTextSearch(sFreeText, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
+		
+		boolean bValid = isValidFreeTextSearchResult(sFreeText, oPosts);
+		boolean bProperlySorted = isSortedByAnswerCount(oPosts);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
+	} 
+	
+	/**
 	 * Tests tag search
 	 */
 	public void testTagSearch(){
@@ -91,6 +106,24 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		boolean bProperlySorted = isSortedByCreationDate(oPosts);
 		Assert.assertEquals(true, bValid && bProperlySorted);	
 	}
+	
+	/**
+	 * Tests free text search
+	 * - search result should be sorted by answer count
+	 */
+	public void testFreeTextAndTagSearchSortedByAnswerCount(){
+		String sFreeText = "convert string to long";
+		ArrayList<String> oTags = new ArrayList<String>();
+		oTags.add("c#");
+		oTags.add("rsa");
+		
+		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
+		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(sFreeText, oTags, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
+		
+		boolean bValid = isValidFreeTextAndTagSearchResult(sFreeText, oTags, oPosts);
+		boolean bProperlySorted = isSortedByAnswerCount(oPosts);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
+	}
 
 
 	/**
@@ -125,6 +158,21 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 				}
 			}
 			catch(ParseException ex){
+				return false;
+			}
+		}	
+		
+		return true;
+	}
+	
+	/**
+	 * Checks whether the given list of posts is sorted by the answer count
+	 * @param oPosts list of posts that has to be checked
+	 * @return true if the given list of posts is actually sorted by the answer count
+	 */
+	private boolean isSortedByAnswerCount(ArrayList<Post> oPosts){
+		for (int i = 1; i < oPosts.size(); i++){
+			if(oPosts.get(i-1).getAnswerCount() < oPosts.get(i).getAnswerCount()){
 				return false;
 			}
 		}	
