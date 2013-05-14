@@ -441,4 +441,49 @@ public class DatabaseAdapterValidation extends
 			assertEquals(true, foundPostId);
 		}
 	}
+	
+	/**
+	 * test ArrayList<Post> getAnswers(int questionId)
+	 */
+	public void testGetAnswers(){
+		boolean foundPostId;
+		int questionId = 8452989;
+		int [] expectedPostIds = {8453025};
+		
+		ArrayList<Post> resultedPosts = db.getAnswers(questionId);
+		
+		for (Post post : resultedPosts) {
+			foundPostId = false;
+			for (int i = 0; i < expectedPostIds.length; i++) {
+				if (expectedPostIds[i] == post.getId()){
+					foundPostId = true;
+				}
+			}
+			assertEquals(true, foundPostId);
+		}
+		
+	}
+	
+	/** 
+	 * test ArrayList<String> getTopRelatedTags(String referenceTag)
+	 */
+	public void testGetTopRelatedTags(){
+		boolean foundTag;
+		String referenceTag = "browser";
+		String [] expectedResult = {"javascript", "c++", "safari", "webkit"};
+		
+		ArrayList<String> resultedTags = db.getTopRelatedTags(referenceTag);
+		
+		for (String resultedTag : resultedTags) {
+			foundTag = false;
+			for (int i = 0; i < expectedResult.length; i++) {
+				if(expectedResult[i].equals(resultedTag)){
+					foundTag = true;
+				}
+			}
+			assertEquals(true, foundTag);
+		}
+	}
+	
+	
 }
