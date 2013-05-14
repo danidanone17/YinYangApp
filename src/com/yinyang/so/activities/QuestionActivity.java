@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,7 +33,6 @@ import com.yinyang.so.extras.PredicateLayout;
 public class QuestionActivity extends Activity implements OnClickListener {
 
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
-	private TextView textViewQuestionScore;
 	private ListView listViewAnswers;
 
 	private QuestionController qController;
@@ -41,8 +41,6 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question);
-		// Sets up the profile picture listeners
-		setupProfilePictures();
 		// Show the Up button in the action bar.
 		setupActionBar();
 		Intent intent = getIntent();
@@ -63,10 +61,6 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 * Sets up listeners for question and answer profile pictures
 	 */
 	
-	private void setupProfilePictures() {
-		ImageButton questionProfilePicture = (ImageButton)findViewById(R.id.question_user_image);
-		questionProfilePicture.setOnClickListener(this);
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,8 +94,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 *            the view that caused the event
 	 */
 	public void upVoteQuestion(View view) {
-		this.textViewQuestionScore.setText(Integer.toString(this.qController
-				.voteQuestion(1)));
+		//this.textViewQuestionScore.setText(Integer.toString(this.qController
+		//		.voteQuestion(1)));
 	}
 
 	/**
@@ -112,8 +106,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 *            the view that caused the event
 	 */
 	public void downVoteQuestion(View view) {
-		this.textViewQuestionScore.setText(Integer.toString(this.qController
-				.voteQuestion(-1)));
+		//this.textViewQuestionScore.setText(Integer.toString(this.qController
+		//		.voteQuestion(-1)));
 	}
 
 	/**
@@ -146,33 +140,38 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 */
 	private void updateUI() {
 
+		// create header (question view)
+		View header = View.inflate(this, R.layout.layout_question_view, null);
+		
 		// fill question title
-		TextView textViewTemp = (TextView) findViewById(R.id.question_title);
+		TextView textViewTemp = (TextView) header.findViewById(R.id.question_title);
 		textViewTemp.setText(qController.getQuestionTitle());
 		
 		// fill question content
-		textViewTemp = (TextView) findViewById(R.id.question_content);
+		textViewTemp = (TextView) header.findViewById(R.id.question_content);
 		textViewTemp.setText(Html.fromHtml(qController.getQuestionBody()));
 		
 		// fill question score
-		textViewQuestionScore = (TextView) findViewById(R.id.question_score);
-		textViewQuestionScore.setText(Integer.toString(qController
-				.getQuestionScore()));
+		textViewTemp = (TextView) header.findViewById(R.id.question_score);
+		textViewTemp.setText(Integer.toString(qController.getQuestionScore()));
 		
 		// fill date question was asked at
-		textViewTemp = (TextView) findViewById(R.id.asked_at);
+		textViewTemp = (TextView) header.findViewById(R.id.asked_at);
 		textViewTemp.setText(qController.getQuestionDate());
 		
 		// fill name of asking user
-		textViewTemp = (TextView) findViewById(R.id.question_user_name);
+		textViewTemp = (TextView) header.findViewById(R.id.question_user_name);
 		textViewTemp.setText(qController.getAuthorName());
 		
 		// fill score of asking user
-		textViewTemp = (TextView) findViewById(R.id.question_user_score);
+		textViewTemp = (TextView) header.findViewById(R.id.question_user_score);
 		textViewTemp.setText(Integer.toString(qController.getAuthorReputation()));
+
+		ImageButton questionProfilePicture = (ImageButton)header.findViewById(R.id.question_user_image);
+		questionProfilePicture.setOnClickListener(this);
 		
 		// fill tag buttons
-		PredicateLayout questionTagButtons = (PredicateLayout) this.findViewById(R.id.question_tag_buttons);
+		PredicateLayout questionTagButtons = (PredicateLayout) header.findViewById(R.id.question_tag_buttons);
 		// dynamically create new buttons for each tag
 		for (final String tagString : qController.getQuestionTags()) {
 			Button tagButton = (Button) getLayoutInflater().inflate(R.layout.selected_tag_button, null);
@@ -192,17 +191,16 @@ public class QuestionActivity extends Activity implements OnClickListener {
 		}		
 		
 		// add number of answers
-		textViewTemp = (TextView) findViewById(R.id.nr_of_answers);
+		textViewTemp = (TextView) header.findViewById(R.id.nr_of_answers);
 		textViewTemp.setText(Integer.toString(qController.getNrOfAnswers()) + " "
 				+ R.string.nr_of_answers);
-		List<Post> answers = qController.getAnswers();
-
-		Log.e("# ANS", "# of Answers : " + answers.size());
 		
 		// set up list view + adapter
+		List<Post> answers = qController.getAnswers();
 		listViewAnswers = (ListView) findViewById(R.id.answers_list_view);
 		final AnswerAdapter adapter = new AnswerAdapter(this,
 		        android.R.layout.simple_list_item_1, answers);
+		listViewAnswers.addHeaderView(header);
 		listViewAnswers.setAdapter(adapter);
 	}
 	
