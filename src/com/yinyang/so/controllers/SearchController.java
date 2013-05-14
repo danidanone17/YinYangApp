@@ -10,6 +10,7 @@ import com.yinyang.so.activities.SearchResultActivity;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
+import com.yinyang.so.databaseentities.User;
 
 public class SearchController {
 	private DatabaseAdapter dbAdapter;
@@ -118,6 +119,10 @@ public class SearchController {
 		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT", (ArrayList<? extends Parcelable>) postsFound);
 		oIntent.putExtra("TEXT_SEARCH", textSearch);
 		
+		// pass posts sorted by answer count to search result activity
+		postsFound = freeTextSearch(textSearch, SearchResultSortingAlgorithm.UserReputationAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_USER_REPUTATION", (ArrayList<? extends Parcelable>) postsFound);
+		
 		con.startActivity(oIntent);
 	}
 	
@@ -144,6 +149,20 @@ public class SearchController {
 		oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
 		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT", (ArrayList<? extends Parcelable>) oPosts);
 		
+		// pass posts sorted by user reputation to search result activity
+		oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.UserReputationAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_USER_REPUTATION", (ArrayList<? extends Parcelable>) oPosts);
+		
 		con.startActivity(oIntent);
+	}
+	
+	/**
+	 * Gets a user by id
+	 * @param id user id
+	 * @return found user
+	 */
+	public User getUser(int id){
+		dbAdapter.open();
+		return dbAdapter.getUser(id);
 	}
 }
