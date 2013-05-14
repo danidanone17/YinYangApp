@@ -113,6 +113,8 @@ public class SearchController {
 		postsFound = freeTextSearch(textSearch, SearchResultSortingAlgorithm.CreationDateAlgorithm);
 		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) postsFound);
 		
+		oIntent.putExtra("TEXT_SEARCH", textSearch);
+		
 		con.startActivity(oIntent);
 	}
 	

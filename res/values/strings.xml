@@ -75,7 +75,7 @@
     
     <!-- SearchResultActivity--> 
 
-    <string name="title_activity_searchResult">Search Results</string>
+    <string name="title_activity_searchResult">Search Results :</string>
 
   
     <!-- TabSearchActivity -->
