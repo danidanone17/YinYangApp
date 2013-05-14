@@ -501,15 +501,16 @@ public class DatabaseAdapter {
 
 	/**
 	 * Get the four top-related tags of a tag (US39)
+	 * Returns tag name and number of occurences in a HashMap
 	 * 
 	 * @param refrerenceTag
 	 *            tag
-	 * @return ArrayList of Strings
+	 * @return HashMap of Strings and integers
 	 **/
-	public ArrayList<String> getTopRelatedTags(String referenceTag) {
+	public ArrayList<KeyValuePair> getTopRelatedTags(String referenceTag) {
 
 		String sqlQuery;
-		ArrayList<String> relatedTags = new ArrayList<String>();
+		ArrayList<KeyValuePair> tagNamesOccurences = new ArrayList<KeyValuePair>();
 
 		sqlQuery = "SELECT * FROM " + TableType.mapping_tags
 				+ " WHERE (TAG1 LIKE '" + referenceTag + "' "
@@ -523,13 +524,13 @@ public class DatabaseAdapter {
 
 			for (MapTags relatedMapTag : tagsDBType) {
 				if (referenceTag.equals(relatedMapTag.getTag2())) {
-					relatedTags.add(relatedMapTag.getTag1());
+					tagNamesOccurences.add(new KeyValuePair(relatedMapTag.getTag1(), relatedMapTag.getCountAppearance()));
 				} else {
-					relatedTags.add(relatedMapTag.getTag2());
+					tagNamesOccurences.add(new KeyValuePair(relatedMapTag.getTag2(), relatedMapTag.getCountAppearance()));
 				}
 			}
 			Log.v("DEBUG", "Tag_1.4.1");
-			return relatedTags;
+			return tagNamesOccurences;
 		} catch (Exception e) {
 			Log.e("SQLite EXCEPTION",
 					"DatabaseAdapter.getTopRelatedTags(String) : " + sqlQuery

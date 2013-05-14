@@ -1,6 +1,7 @@
 package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import java.util.HashMap;
 
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import android.content.Context;
 
 import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.database.KeyValuePair;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
 import com.yinyang.so.database.TableType;
@@ -164,10 +166,12 @@ public class Controller {
 		mDbHelper.open();
 
 		String referenceTag;
-		ArrayList<String> relatedTags;
+		ArrayList<String> relatedTags = new ArrayList<String>();
 
 		referenceTag = "mysql";
-		relatedTags = mDbHelper.getTopRelatedTags(referenceTag);
+		for (KeyValuePair kvp : mDbHelper.getTopRelatedTags(referenceTag)) {
+			relatedTags.add(kvp.getKey());
+		}
 		return relatedTags;
 	}
 

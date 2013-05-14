@@ -1,6 +1,7 @@
 package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Parcelable;
 import com.yinyang.so.activities.SearchResultActivity;
 import com.yinyang.so.database.DatabaseAdapter;
 import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
+import com.yinyang.so.database.KeyValuePair;
 import com.yinyang.so.databaseentities.Post;
 
 public class SearchController {
@@ -55,11 +57,11 @@ public class SearchController {
 	}	
 	
 	/**
-	 * Returns the four top related tags
+	 * Returns the four top related tags and number of occurences
 	 * @param sName tag the returned tags are top related to
 	 * @return the four top related tags
 	 */
-	public ArrayList<String> getTopRelatedTags(String sName){
+	public ArrayList<KeyValuePair> getTopRelatedTags(String sName){
 		dbAdapter.open();
 		return dbAdapter.getTopRelatedTags(sName);
 	}
