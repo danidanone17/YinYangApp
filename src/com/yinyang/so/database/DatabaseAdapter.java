@@ -27,6 +27,14 @@ public class DatabaseAdapter {
 	private final Context mContext;
 	private SQLiteDatabase mDb;
 	private SoData mDbHelper;
+	
+	/**
+	 * Enumeration that defines possible search result sorting algorithms
+	 */
+	public enum SearchResultSortingAlgorithm{
+		QuestionScoreAlgorithm,
+		CreationDateAlgorithm
+	}
 
 	public DatabaseAdapter(Context context) {
 		this.mContext = context;
@@ -576,11 +584,11 @@ public class DatabaseAdapter {
 	 * @param oWords
 	 *            the words that have to be contained in a question's title or
 	 *            body to be returned by this method
+	 * @param eSearchResultSortingAlgorithm chosen search result algorithm
 	 * @return questions
 	 */
-	public ArrayList<Post> getQuestionsByFreeText(String[] oWords) {
-		return this.getQuestionsByFreeTextAndTags(oWords,
-				new ArrayList<String>());
+	public ArrayList<Post> getQuestionsByFreeText(String[] oWords, SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
+		return this.getQuestionsByFreeTextAndTags(oWords, new ArrayList<String>(), eSearchResultSortingAlgorithm);
 	}
 
 	/**
@@ -590,11 +598,12 @@ public class DatabaseAdapter {
 	 * Currently ordered by descending order and limited the results to 100 posts only 	
 	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
 	 * @param oTags tags the returned questions should be related to
+	 * @param eSearchResultSortingAlgorithm chosen search result algorithm
 	 * @return questions
 	 *
 	 */
 	public ArrayList<Post> getQuestionsByFreeTextAndTags(String[] oWords,
-			ArrayList<String> oTags) {
+			ArrayList<String> oTags, SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
 
 		// create sql statement
 		String sSqlMessage = "SELECT * FROM " + TableType.posts;
@@ -609,7 +618,22 @@ public class DatabaseAdapter {
 		for (String sTag : oTags) {
 			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%" + sTag + "%'";
 		}
-		sSqlMessage += "ORDER BY " + Post.KEY_SCORE + " DESC LIMIT 100";
+		
+		// add order by statement
+		switch(eSearchResultSortingAlgorithm){
+		case QuestionScoreAlgorithm: 
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
+			break;
+		case CreationDateAlgorithm:
+			sSqlMessage += " ORDER BY " + Post.KEY_CREATION_DATE + " DESC";
+			break;
+		default:
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
+			break;
+		}
+		
+		// add search result limit
+		sSqlMessage += " LIMIT 100";
 
 		// execute sql statement
 		Cursor oCursor = this.getCursor(sSqlMessage);
