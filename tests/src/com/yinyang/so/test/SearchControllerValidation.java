@@ -3,26 +3,27 @@ package com.yinyang.so.test;
 import java.util.ArrayList;
 
 import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
-import com.yinyang.so.databaseentities.Tag;
 
 import android.test.InstrumentationTestCase;
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 public class SearchControllerValidation extends InstrumentationTestCase {
 
 	/**
 	 * Tests free text search
+	 * - search result should be sorted by question score
 	 */
-	public void testFreeTextSearch(){
+	public void testFreeTextSearchSortedByQuestionScore(){
 		String sFreeText = "convert string to long";
 		
 		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
-		ArrayList<Post> oPosts = oSearchController.freeTextSearch(sFreeText);
+		ArrayList<Post> oPosts = oSearchController.freeTextSearch(sFreeText, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
 		
 		boolean bValid = isValidFreeTextSearchResult(sFreeText, oPosts);
-		Assert.assertEquals(true, bValid);	
+		boolean bProperlySorted = isSortedByQuestionScore(oPosts);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
 	}
 	
 	/**
@@ -39,18 +40,35 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 	
 	/**
 	 * Tests free text search
+	 * - search result should be sorted by question score
 	 */
-	public void testFreeTextAndTagSearch(){
+	public void testFreeTextAndTagSearchSortedByQuestionScore(){
 		String sFreeText = "convert string to long";
 		ArrayList<String> oTags = new ArrayList<String>();
 		oTags.add("c#");
 		oTags.add("rsa");
 		
 		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
-		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(sFreeText, oTags);
+		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(sFreeText, oTags, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
 		
 		boolean bValid = isValidFreeTextAndTagSearchResult(sFreeText, oTags, oPosts);
-		Assert.assertEquals(true, bValid);	
+		boolean bProperlySorted = isSortedByQuestionScore(oPosts);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
+	}
+
+	/**
+	 * Checks whether the given list of posts is sorted by the question score
+	 * @param oPosts list of posts that has to be checked
+	 * @return true if the given list of posts is actually sorted by the question score
+	 */
+	private boolean isSortedByQuestionScore(ArrayList<Post> oPosts){
+		for (int i = 1; i < oPosts.size(); i++){
+			if(oPosts.get(i-1).getScore() < oPosts.get(i).getScore()){
+				return false;
+			}
+		}	
+		
+		return true;
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package com.yinyang.so.test;
 import java.util.ArrayList;
 
 import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
 import com.yinyang.so.database.TableType;
@@ -91,18 +92,5 @@ public class DatabaseAdapterValidation extends
 			}
 		}
 
-	}
-	
-	public void testDesc(){
-		ArrayList<String> tags = new ArrayList<String>();
-		tags.add("php");
-		String[] searchWords = {"php"}; 
-		ArrayList<Post> posts = db.getQuestionsByFreeTextAndTags(searchWords, tags);
-		
-		
-		for (int i = 1; i < posts.size(); i++){
-			assertTrue(posts.get(i-1).getScore() >= posts.get(i).getScore());
-		}	
-	}
-	
+	}	
 }

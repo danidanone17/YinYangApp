@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 
 import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
 
 public class SearchController {
@@ -22,12 +23,13 @@ public class SearchController {
 	/**
 	 * Searches for posts where the title or body contains the given free text
 	 * @param sFreeText free text to search for in posts
+	 * @param eSearchResultSortingAlgorithm chosen search result algorithm
 	 * @return an array list of posts
 	 */
-	public ArrayList<Post> freeTextSearch(String sFreeText)
+	public ArrayList<Post> freeTextSearch(String sFreeText, SearchResultSortingAlgorithm eSearchResultSortingAlgorithm)
 	{
 		dbAdapter.open();
-		return dbAdapter.getQuestionsByFreeText(sFreeText.split(" "));
+		return dbAdapter.getQuestionsByFreeText(sFreeText.split(" "), eSearchResultSortingAlgorithm);
 	}
 
 	public ArrayList<String> getNextAndPreviousTags(String searchTag){
@@ -72,13 +74,14 @@ public class SearchController {
 	 * - there is a relation to all of the provided tags	
 	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
 	 * @param oTags tags the returned questions should be related to
+	 * @param eSearchResultSortingAlgorithm chosen search result algorithm
 	 * @return questions
 	 */
-	public ArrayList<Post> freeTextAndTagSearch(String sFreeText, ArrayList<String> oTags){
+	public ArrayList<Post> freeTextAndTagSearch(String sFreeText, ArrayList<String> oTags, SearchResultSortingAlgorithm eSearchResultSortingAlgorithm){
 		dbAdapter.open();
 		
 		if(!"".equals(sFreeText)){
-			return dbAdapter.getQuestionsByFreeTextAndTags(sFreeText.split(" "), oTags);
+			return dbAdapter.getQuestionsByFreeTextAndTags(sFreeText.split(" "), oTags, eSearchResultSortingAlgorithm);
 		}
 		else{
 			return dbAdapter.getPostsByTags(oTags);

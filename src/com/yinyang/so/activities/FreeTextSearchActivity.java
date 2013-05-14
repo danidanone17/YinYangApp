@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
 import com.yinyang.so.databaseentities.DatabaseType;
@@ -85,7 +85,7 @@ public class FreeTextSearchActivity extends Activity {
 		
 		// execute search
 		SearchController oSearchController = new SearchController(getBaseContext());	
-		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch);
+		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
 
 		// invoke search result activity
 		Intent oIntent = new Intent(FreeTextSearchActivity.this,SearchResultActivity.class);

@@ -4,15 +4,14 @@ import java.util.ArrayList;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
-import com.yinyang.so.databaseentities.Tag;
 import com.yinyang.so.extras.PredicateLayout;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -196,7 +195,7 @@ public class TabSearchActivity extends Activity {
 		// get search free text
 		EditText editView = (EditText)this.findViewById(R.id.edit_search);
 		
-		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags);
+		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
 		
 		// invoke search result activity
 		Intent oIntent = new Intent(this, SearchResultActivity.class);
