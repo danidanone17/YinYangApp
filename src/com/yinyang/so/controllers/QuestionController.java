@@ -5,11 +5,11 @@ package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 
 import com.yinyang.so.database.DatabaseAdapter;
-import com.yinyang.so.databaseentities.DatabaseType;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.databaseentities.User;
 
@@ -17,7 +17,7 @@ public class QuestionController {
 	private DatabaseAdapter dbAdapter;
 	private Post question;
 	private User questionAuthor;
-	private User answerAuthor;
+	private List<User> answerAuthors;
 	private Post activeAnswer;
 	private int questionScore = 0;
 	private int answerScore = 0;
@@ -39,28 +39,7 @@ public class QuestionController {
 	public QuestionController(Context con, int questionId) {
 		dbAdapter = new DatabaseAdapter(con);
 		dbAdapter.createDatabase();
-		
-		question = this.getPost(questionId);
-		questionScore = question.getScore();
-		fetchAnswer();
-		fetchAuthors();
-		fetchAnswers();		
-		
-	}
-
-	/**
-	 * Fetches a post from the database based on its id Opens and closes the
-	 * database
-	 * 
-	 * @param id
-	 *            an int representing the id for a post
-	 * @return a Post
-	 */
-	public Post getPost(int id) {
-		dbAdapter.open();
-		Post post = dbAdapter.getPost(id);
-		dbAdapter.close();
-		return post;
+		this.fetchData(questionId);
 	}
 
 	/**
@@ -86,11 +65,8 @@ public class QuestionController {
 	 *            an int representing the question id
 	 * @return an ArrayList with Posts (DatabaseType)
 	 */
-	public ArrayList<Post> getAnswers(int questionId) {
-		dbAdapter.open();
-		ArrayList<Post> answers = dbAdapter.getAnswers(questionId);
-		dbAdapter.close();
-		return answers;
+	public ArrayList<Post> getAnswers() {
+		return this.answers;
 	}
 
 	/**
@@ -124,30 +100,25 @@ public class QuestionController {
 	}
 
 	/**
-	 * Get the author/user from the database
+	 * Fetch answers + authors from the database
 	 */
-	private void fetchAuthors() {
-		questionAuthor = this.getUser(question.getOwnerUserId());
-		if (activeAnswer != null)
-			answerAuthor = this.getUser(activeAnswer.getOwnerUserId());
-	}
-
-	/**
-	 * Get the accepted answer to a question from the database
-	 */
-	private void fetchAnswer() {
-		int id = question.getAcceptedAnswerId();
-		if (id > 0) {
-			activeAnswer = this.getAcceptedAnswer(id);
-			answerScore = activeAnswer.getScore();
+	private void fetchData(int questionId) {
+		dbAdapter.open();
+		
+		// get question + score
+		question = dbAdapter.getPost(questionId);
+		questionScore = question.getScore();
+		// get question author
+		questionAuthor = dbAdapter.getUser(question.getOwnerUserId());
+		// get answers
+		answers = dbAdapter.getAnswers(question.getId());
+		// get authors to answers
+		List<User> authors = new ArrayList<User>();
+		for (Post answer : answers) {
+			authors.add(dbAdapter.getUser(answer.getOwnerUserId()));
 		}
-	}
-
-	/**
-	 * Get all answers to a question from the database
-	 */
-	private void fetchAnswers() {
-		answers = this.getAnswers(question.getId());
+		answerAuthors = authors;
+		dbAdapter.close();
 	}
 
 	/**
@@ -170,9 +141,9 @@ public class QuestionController {
 	 *            change the score by this value
 	 * @return an int representing the updated score
 	 */
-	public int voteActiveAnswer(int i) {
-		answerScore = answerScore + i;
-		this.updatePostScore(answerScore, activeAnswer.getId());
+	public int voteAnswer(Post answer, int i) {
+		answerScore = answer.getScore() + i;
+		this.updatePostScore(answerScore, answer.getId());
 		return answerScore;
 	}
 
@@ -222,7 +193,7 @@ public class QuestionController {
 	}
 	
 	/**
-	 * Get the authors id
+	 * Get the question author's id
 	 * 
 	 * @return a String
 	 */
@@ -240,7 +211,7 @@ public class QuestionController {
 	}
 
 	/**
-	 * Get the authors reputation
+	 * Get the question author's reputation
 	 * 
 	 * @return an int
 	 */
@@ -267,6 +238,16 @@ public class QuestionController {
 	}
 
 	/**
+	 * Get a post's author
+	 * 
+	 * @return User
+	 */
+	public User getPostAuthor(Post answer) {
+		int index = answers.indexOf(answer);
+		return answerAuthors.get(index);
+	}
+	
+	/**
 	 * Get the score for the accepted answer
 	 * 
 	 * @return an int
@@ -282,33 +263,6 @@ public class QuestionController {
 	 */
 	public String getAnswerDate() {
 		return activeAnswer.getCreationDate();
-	}
-
-	/**
-	 * Get the id of the answer
-	 * 
-	 * @return a String
-	 */
-	public int getAnswerAuthorId() {
-		return answerAuthor.getId();
-	}	
-	
-	/**
-	 * Get the name of the author of the answer
-	 * 
-	 * @return
-	 */
-	public String getAnswerAuthorName() {
-		return answerAuthor.getDisplayName();
-	}
-
-	/**
-	 * Get teh reputation of the author of the answer
-	 * 
-	 * @return
-	 */
-	public int getAnswerAuthorReputation() {
-		return answerAuthor.getReputation();
 	}
 
 	/**
