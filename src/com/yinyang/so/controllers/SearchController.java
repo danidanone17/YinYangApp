@@ -116,6 +116,7 @@ public class SearchController {
 		// pass posts sorted by answer count to search result activity
 		postsFound = freeTextSearch(textSearch, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
 		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT", (ArrayList<? extends Parcelable>) postsFound);
+		oIntent.putExtra("TEXT_SEARCH", textSearch);
 		
 		con.startActivity(oIntent);
 	}

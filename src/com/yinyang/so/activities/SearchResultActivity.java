@@ -32,13 +32,14 @@ public class SearchResultActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_result);
-
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
 				
 		// get posts to display
 		Intent oIntent = getIntent();
 		posts = oIntent.getParcelableArrayListExtra("POSTS_QUESTION_SCORE");
+		setTitle(getTitle() + " " + oIntent.getStringExtra("TEXT_SEARCH"));
 		
 		// initialize post array adapter
 		postArrayAdapter = new PostArrayAdapter(this,
