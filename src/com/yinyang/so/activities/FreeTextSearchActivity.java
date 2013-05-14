@@ -83,14 +83,18 @@ public class FreeTextSearchActivity extends Activity {
 		EditText editText = (EditText) findViewById(R.id.stringSearch);
 		textSearch = editText.getText().toString();
 		
-		// execute search
-		SearchController oSearchController = new SearchController(getBaseContext());	
-		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
-
 		// invoke search result activity
 		Intent oIntent = new Intent(FreeTextSearchActivity.this,SearchResultActivity.class);
-		//Intent oIntent = new Intent(this,SearchResultActivity.class);
-		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) postsFound);
+				
+		// pass posts sorted by question score to search result activity
+		SearchController oSearchController = new SearchController(getBaseContext());	
+		ArrayList<Post> postsFound = oSearchController.freeTextSearch(textSearch, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_QUESTION_SCORE", (ArrayList<? extends Parcelable>) postsFound);
+		
+		// pass posts sorted by creation date to search result activity
+		postsFound = oSearchController.freeTextSearch(textSearch, SearchResultSortingAlgorithm.CreationDateAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) postsFound);
+		
 		startActivity(oIntent);
 	}
 	

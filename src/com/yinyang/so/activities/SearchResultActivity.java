@@ -38,7 +38,7 @@ public class SearchResultActivity extends Activity {
 				
 		// get posts to display
 		Intent oIntent = getIntent();
-		posts = oIntent.getParcelableArrayListExtra("POSTS");
+		posts = oIntent.getParcelableArrayListExtra("POSTS_QUESTION_SCORE");
 		
 		// initialize post array adapter
 		postArrayAdapter = new PostArrayAdapter(this,

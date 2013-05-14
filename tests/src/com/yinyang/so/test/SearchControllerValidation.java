@@ -1,6 +1,9 @@
 package com.yinyang.so.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
@@ -25,6 +28,21 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		boolean bProperlySorted = isSortedByQuestionScore(oPosts);
 		Assert.assertEquals(true, bValid && bProperlySorted);	
 	}
+	
+	/**
+	 * Tests free text search
+	 * - search result should be sorted by creation date
+	 */
+	public void testFreeTextSearchSortedByCreationDate(){
+		String sFreeText = "convert string to long";
+		
+		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
+		ArrayList<Post> oPosts = oSearchController.freeTextSearch(sFreeText, SearchResultSortingAlgorithm.CreationDateAlgorithm);
+		
+		boolean bValid = isValidFreeTextSearchResult(sFreeText, oPosts);
+		boolean bProperlySorted = isSortedByCreationDate(oPosts);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
+	} 
 	
 	/**
 	 * Tests tag search
@@ -55,6 +73,25 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		boolean bProperlySorted = isSortedByQuestionScore(oPosts);
 		Assert.assertEquals(true, bValid && bProperlySorted);	
 	}
+	
+	/**
+	 * Tests free text search
+	 * - search result should be sorted by creation date
+	 */
+	public void testFreeTextAndTagSearchSortedByCreationDate(){
+		String sFreeText = "convert string to long";
+		ArrayList<String> oTags = new ArrayList<String>();
+		oTags.add("c#");
+		oTags.add("rsa");
+		
+		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
+		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(sFreeText, oTags, SearchResultSortingAlgorithm.CreationDateAlgorithm);
+		
+		boolean bValid = isValidFreeTextAndTagSearchResult(sFreeText, oTags, oPosts);
+		boolean bProperlySorted = isSortedByCreationDate(oPosts);
+		Assert.assertEquals(true, bValid && bProperlySorted);	
+	}
+
 
 	/**
 	 * Checks whether the given list of posts is sorted by the question score
@@ -64,6 +101,30 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 	private boolean isSortedByQuestionScore(ArrayList<Post> oPosts){
 		for (int i = 1; i < oPosts.size(); i++){
 			if(oPosts.get(i-1).getScore() < oPosts.get(i).getScore()){
+				return false;
+			}
+		}	
+		
+		return true;
+	}
+	
+	/**
+	 * Checks whether the given list of posts is sorted by creation date
+	 * @param oPosts list of posts that has to be checked
+	 * @return true if the given list of posts is actually sorted by creation date
+	 */
+	private boolean isSortedByCreationDate(ArrayList<Post> oPosts){
+		for (int i = 1; i < oPosts.size(); i++){
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			try
+			{
+				Date creationDatePrev = dateFormat.parse(oPosts.get(i-1).getCreationDate());
+				Date creationDateCurr = dateFormat.parse(oPosts.get(i).getCreationDate());
+				if(creationDatePrev.before(creationDateCurr)){
+					return false;
+				}
+			}
+			catch(ParseException ex){
 				return false;
 			}
 		}	

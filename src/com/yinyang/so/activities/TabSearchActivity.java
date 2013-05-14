@@ -195,11 +195,17 @@ public class TabSearchActivity extends Activity {
 		// get search free text
 		EditText editView = (EditText)this.findViewById(R.id.edit_search);
 		
-		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
-		
 		// invoke search result activity
 		Intent oIntent = new Intent(this, SearchResultActivity.class);
-		oIntent.putParcelableArrayListExtra("POSTS", (ArrayList<? extends Parcelable>) oPosts);
+				
+		// pass posts sorted by question score to search result activity
+		ArrayList<Post> oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_QUESTION_SCORE", (ArrayList<? extends Parcelable>) oPosts);
+		
+		// pass posts sorted by creation date to search result activity
+		oPosts = oSearchController.freeTextAndTagSearch(editView.getText().toString(), selectedTags, SearchResultSortingAlgorithm.CreationDateAlgorithm);
+		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE", (ArrayList<? extends Parcelable>) oPosts);
+		
 		startActivity(oIntent);
 	}
 	

@@ -32,7 +32,8 @@ public class DatabaseAdapter {
 	 * Enumeration that defines possible search result sorting algorithms
 	 */
 	public enum SearchResultSortingAlgorithm{
-		QuestionScoreAlgorithm
+		QuestionScoreAlgorithm,
+		CreationDateAlgorithm
 	}
 
 	public DatabaseAdapter(Context context) {
@@ -621,10 +622,13 @@ public class DatabaseAdapter {
 		// add order by statement
 		switch(eSearchResultSortingAlgorithm){
 		case QuestionScoreAlgorithm: 
-			sSqlMessage += "ORDER BY " + Post.KEY_SCORE + " DESC";
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
+			break;
+		case CreationDateAlgorithm:
+			sSqlMessage += " ORDER BY " + Post.KEY_CREATION_DATE + " DESC";
 			break;
 		default:
-			sSqlMessage += "ORDER BY " + Post.KEY_SCORE + " DESC";
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
 			break;
 		}
 		
