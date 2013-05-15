@@ -557,7 +557,7 @@ public class DatabaseAdapter {
 			if (i > 0) {
 				sqlMessage += " AND ";
 			}
-			sqlMessage += Post.KEY_TAGS + " LIKE '%" + tag + "%'";
+			sqlMessage += Post.KEY_TAGS + " LIKE '%<" + tag + ">%'";
 			i++;
 		}
 		Cursor cursor = this.getCursor(sqlMessage);
@@ -858,7 +858,7 @@ public class DatabaseAdapter {
 	}
 
 	// for columnValues: key = columnName and values = columnValue
-	public void insertSql(String tableName, HashMap<String, String> columnValues) {
+	public boolean insertSql(String tableName, HashMap<String, String> columnValues) {
 		String sqlMessage, values;
 		int id;
 
@@ -888,14 +888,16 @@ public class DatabaseAdapter {
 		try {
 			System.out.println("INSERT STATEMENT: " + sqlMessage);
 			mDb.execSQL(sqlMessage);
+			return true;
 		} catch (Exception e) {
 			System.out.println("INSERT ERROR: " + e.getMessage());
+			return false;
 		}
 
 	}
 
 	// for columnValues: key = columnName and values = columnValue
-	public void updateSql(String tableName,
+	public boolean updateSql(String tableName,
 			HashMap<String, String> columnValues, String whereClause) {
 		String sqlMessage;
 
@@ -918,8 +920,10 @@ public class DatabaseAdapter {
 		try {
 			System.out.println("UPDATE MESSAGE: " + sqlMessage);
 			mDb.execSQL(sqlMessage);
+			return true;
 		} catch (Exception e) {
 			System.out.println("ERROR IN UPDATE: " + e.getMessage());
+			return false;
 		}
 	}
 
@@ -940,7 +944,7 @@ public class DatabaseAdapter {
 		}
 
 		Cursor oCursor = this.getCursor(sSqlMessage);
-		oCursor.moveToFirst();
+		
 		ArrayList<String> oTags = new ArrayList<String>();
 		while (oCursor.moveToNext()) {
 			oTags.add(oCursor.getString(0));
@@ -1007,3 +1011,4 @@ public class DatabaseAdapter {
 		return users;
 	}
 }
+
