@@ -86,6 +86,10 @@ public class SearchResultActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Connect the sorting selection button in the layout to sortButtons Set the
+	 * "sort by question score"-button as selected
+	 */
 	private void setupButtons() {
 		sortButtons[0] = (Button) findViewById(R.id.button_sort_by_user_reputation);
 		sortButtons[1] = (Button) findViewById(R.id.button_sort_by_question_score);
@@ -94,55 +98,96 @@ public class SearchResultActivity extends Activity {
 		setButtonColors(1);
 	}
 
-	// Input button id: 0-3
+	/**
+	 * Set the inputed button as selected by changing the colors to selected
+	 * colors Change the colors of the rest of the buttons to the unselected
+	 * colors
+	 * 
+	 * @param selectedButton
+	 *            id 0-3
+	 */
 	private void setButtonColors(int selectedButton) {
 		for (int i = 0; i < sortButtons.length; i++) {
-			if (selectedButton == i){
+			if (selectedButton == i) {
 				sortButtons[i].setTextColor(selectedButtonTextColor);
-				sortButtons[i].setBackgroundColor(selectedButtonBackgroundColor);
-			}
-			else {
+				sortButtons[i]
+						.setBackgroundColor(selectedButtonBackgroundColor);
+			} else {
 				sortButtons[i].setTextColor(unSelectedButtonTextColor);
-				sortButtons[i].setBackgroundColor(unSelectedButtonBackgroundColor);
+				sortButtons[i]
+						.setBackgroundColor(unSelectedButtonBackgroundColor);
 			}
-				
+
 		}
-		
+
 	}
 
+	/**
+	 * set the postArrayAdapter to the active set of posts connect it to the
+	 * list view
+	 */
 	private void initPostArrayAdapter() {
 		postArrayAdapter = new PostArrayAdapter(this,
 				R.layout.search_result_layout, activePosts);
 		mQuestionList.setAdapter(postArrayAdapter);
 	}
 
-	// User one of POSTS_USER_REPUTATION, POSTS_QUESTION_SCORE,
-	// POSTS_CREATION_DATE, POSTS_ANSWER_COUNT
+	/**
+	 * Fetch the the post ordering from the intent based on the inputed order
+	 * 
+	 * @param order
+	 *            - One of POSTS_USER_REPUTATION, POSTS_QUESTION_SCORE,
+	 *            POSTS_CREATION_DATE, POSTS_ANSWER_COUNT
+	 */
 	private void getPostByOrder(String order) {
 		activePosts = mIntent.getParcelableArrayListExtra(order);
 		initPostArrayAdapter();
 	}
 
+	/**
+	 * Order the questions by user reputation,
+	 * Called when clicking the user reputation button.
+	 * @param view
+	 */
 	public void sortByUserReputation(View view) {
 		getPostByOrder("POSTS_USER_REPUTATION");
 		setButtonColors(0);
 	}
 
+
+	/**
+	 * Order the questions by question score.
+	 * Called when clicking the question score button.
+	 * @param view
+	 */
 	public void sortByQuestionScore(View view) {
 		getPostByOrder("POSTS_QUESTION_SCORE");
 		setButtonColors(1);
 	}
 
+	/**
+	 * Order the questions by creation date.
+	 * Called when clicking the creation date button.
+	 * @param view
+	 */
 	public void sortByCreationDate(View view) {
 		getPostByOrder("POSTS_CREATION_DATE");
 		setButtonColors(2);
 	}
 
+	/**
+	 * Order the questions by answer count.
+	 * Called when clicking the answer count button.
+	 * @param view
+	 */
 	public void sortByAnswerCount(View view) {
 		getPostByOrder("POSTS_ANSWER_COUNT");
 		setButtonColors(3);
 	}
 
+	/**
+	 * The adapter helps adding the posts to the list view.
+	 */
 	private class PostArrayAdapter extends ArrayAdapter<Post> {
 
 		private ArrayList<Post> posts;
