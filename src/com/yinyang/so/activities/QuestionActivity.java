@@ -61,9 +61,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.question, menu);
-		return true;
+		//No menu used
+		return false;
 	}
 
 	@Override

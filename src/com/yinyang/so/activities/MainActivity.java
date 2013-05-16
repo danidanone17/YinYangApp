@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -94,6 +95,17 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		//Goto settings
+		case R.id.menu_goto_search:
+			startActivity(new Intent(this, FreeTextSearchActivity.class));
+			return true;			
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	public void searchResult(View _){

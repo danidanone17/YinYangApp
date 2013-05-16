@@ -2,15 +2,15 @@ package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
-import android.R.color;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +26,7 @@ import com.yinyang.so.R;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.extras.PredicateLayout;
 
-public class SearchResultActivity extends Activity {
+public class SearchResultActivity extends ShowSettingsActivity {
 
 	private PostArrayAdapter postArrayAdapter;
 	private ArrayList<Post> activePosts;
@@ -37,7 +37,7 @@ public class SearchResultActivity extends Activity {
 	private int unSelectedButtonTextColor = Color.DKGRAY;
 	private int unSelectedButtonBackgroundColor = Color.GRAY;
 	private Button[] sortButtons = new Button[4];
-	private boolean heatMapActive = false;
+	private boolean heatMapActive;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +46,10 @@ public class SearchResultActivity extends Activity {
 
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
 		setupButtons();
-
+		setupSettings();
+		
 		mQuestionList = (ListView) findViewById(R.id.activity_search_result);
 
 		// get posts to display
@@ -67,26 +69,25 @@ public class SearchResultActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.search_result, menu);
-		return true;
+		//Create the menu from the extended Activity
+		//use menu.add() to add more items to menu
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
+			//navigate up one level
 			NavUtils.navigateUpFromSameTask(this);
-			return true;
+			return true;		
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void setupSettings(){
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		heatMapActive = sharedPref.getBoolean("pref_heat_mapping", true);
 	}
 
 	/**

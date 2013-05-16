@@ -40,9 +40,8 @@ public class FreeTextSearchActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.free_text_search, menu);
-		return true;
+		//No menu used
+		return false;
 	}
 
 	@Override

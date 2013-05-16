@@ -50,11 +50,9 @@ public class UserProfileActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.user_profile, menu);
-		return true;
+		//No menu used
+		return false;
 	}
-	
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 

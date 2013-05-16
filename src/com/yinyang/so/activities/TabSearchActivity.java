@@ -1,26 +1,25 @@
 package com.yinyang.so.activities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import com.yinyang.so.R;
-import com.yinyang.so.controllers.SearchController;
-import com.yinyang.so.database.KeyValuePair;
-import com.yinyang.so.extras.PredicateLayout;
-
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class TabSearchActivity extends Activity {
+import com.yinyang.so.R;
+import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.database.KeyValuePair;
+import com.yinyang.so.extras.PredicateLayout;
 
-	private boolean heatMapping = false;
+public class TabSearchActivity extends ShowSettingsActivity {
+
+	private boolean heatMapping;
 
 	// necessary for putting tags from the outside
 	public final static String EXTRA_TAGSTRING = "com.example.YingYangApp.TAGSTRING";
@@ -44,6 +43,7 @@ public class TabSearchActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tab_search);
+		setupSettings();
 
 		String inputTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
 		oSearchController = new SearchController(this);
@@ -75,9 +75,9 @@ public class TabSearchActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.tab_search, menu);
-		return true;
+		//Create the menu from the extended Activity
+		//use menu.add() to add more items to menu
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	/**
@@ -270,7 +270,8 @@ public class TabSearchActivity extends Activity {
 				color = 0xA0FF0000;
 			}
 
-			button.getBackground().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+			button.getBackground().setColorFilter(color,
+					PorterDuff.Mode.MULTIPLY);
 		}
 	}
 
@@ -353,5 +354,10 @@ public class TabSearchActivity extends Activity {
 			this.replaceTagButtonText(oEastButton, oNeighbourTags.get(0));
 			this.replaceTagButtonText(oWestButton, oNeighbourTags.get(1));
 		}
+	}
+
+	private void setupSettings() {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		heatMapping = sharedPref.getBoolean("pref_heat_mapping", true);
 	}
 }

@@ -3,8 +3,6 @@
 
     <!-- Application -->
     <string name="app_name">YinYang</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
 
     <!-- User Profile -->
     <string name="title_activity_user_profile">User Profile</string>
@@ -58,7 +56,6 @@
     <string name="FreeTextSearch">Free text search</string>
     <string name="title_activity_tab_search">Tab Search</string>
     <string name="TagSearch">Tag search</string>
-
     <string name="TestSearchTopTags">Test top related tags</string>
     <string name="title_activity_top_related_tags">TopRelatedTagsActivity</string>
 
@@ -72,26 +69,34 @@
     <string name="button_add">+</string>
     <string name="your_answer">Your answer</string>
     <string name="no_answer">There exists no accepted answers yet.</string>
-    
-    <!-- SearchResultActivity--> 
+
+    <!-- SearchResultActivity -->
     <string name="title_activity_searchResult">Search Results :</string>
     <string name="button_sort_by_user_reputation">User reput.</string>
     <string name="button_sort_by_answer_count">Answer count</string>
     <string name="button_sort_by_creation_date">Creation date</string>
     <string name="button_sort_by_question_score">Question score</string>
 
-  
     <!-- TabSearchActivity -->
     <string name="tag_search">Search tag</string>
 
-	<!-- UserListActivity -->
+    <!-- UserListActivity -->
     <string name="title_activity_user_list">Users</string>
     <string name="user_search">Search user</string>
     <string name="show_next_users">Show next users</string>
-
     <string name="title_activity_not_implemented">Not implemented</string>
-    
-    <!--  Not implemented activity -->
+
+    <!-- Not implemented activity -->
     <string name="not_implemented">This view is not implemented... yet</string>
+
+    <!-- Settings -->
+    <string name="pref_heat_mapping">Relevance by heat</string>
+    <string name="pref_heat_mapping_summary">Colors show how hot the search result is.</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_toggle_heat">ToggleHeatActivity</string>
+
+    <!-- Menus -->
+    <string name="menu_action_search">Search</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

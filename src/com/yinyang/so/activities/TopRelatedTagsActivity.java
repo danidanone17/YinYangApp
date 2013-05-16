@@ -135,9 +135,8 @@ public class TopRelatedTagsActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.top_related_tags, menu);
-		return true;
+		//No menu used
+		return false;
 	}
 
 }
