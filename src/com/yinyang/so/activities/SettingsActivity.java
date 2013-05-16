@@ -4,7 +4,11 @@ import com.yinyang.so.fragments.SettingsFragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-
+/**
+ * 
+ * A screen showing only the settings fragment with available settings to toggle for the user
+ *
+ */
 public class SettingsActivity extends Activity {
 	  @Override
 	    protected void onCreate(Bundle savedInstanceState) {

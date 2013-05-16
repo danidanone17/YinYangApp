@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 /**
- * Extend if activity should be able to go to settings
+ * An activity handling the menu events for settings selection.
+ * Extend if activity should be able to go to settings.
  */
 public class ShowSettingsActivity extends Activity {
 

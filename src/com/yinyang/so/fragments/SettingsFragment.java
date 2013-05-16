@@ -1,14 +1,11 @@
 package com.yinyang.so.fragments;
 
 import com.yinyang.so.R;
-import com.yinyang.so.R.xml;
-
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass.
- * 
+ * A fragment to show the preference/settings
  */
 public class SettingsFragment extends PreferenceFragment {
   
