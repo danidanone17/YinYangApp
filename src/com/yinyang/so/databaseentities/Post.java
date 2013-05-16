@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.database.Cursor;
+import android.net.UrlQuerySanitizer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -225,7 +226,7 @@ public class Post extends DatabaseType implements Parcelable{
 	}
 
 	public String getBody() {
-		return body;
+		return formatText(body);
 	}
 
 	public void setBody(String body) {
@@ -344,5 +345,9 @@ public class Post extends DatabaseType implements Parcelable{
 
 	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
+	}
+	
+	public String formatText(String sUnformatted) {
+		return body.replace("\\n", " ");		
 	}
 }
