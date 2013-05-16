@@ -3,14 +3,15 @@ package com.yinyang.so.activities;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,8 +27,20 @@ import com.yinyang.so.R;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.extras.PredicateLayout;
 
-public class SearchResultActivity extends ShowSettingsActivity {
-
+/**
+ * Show the search result in a list with the possibilities to sort by user
+ * reputation, question score, creation date of post and by number of answers
+ * 
+ * Implements OnSharedPreferenceChangeListener to listen for changes in heat
+ * mapping choice
+ * 
+ * Extends ShowSettingsActivity to show menu with settings and handle menu
+ * selection
+ */
+public class SearchResultActivity extends ShowSettingsActivity{
+	// implements OnSharedPreferenceChangeListener
+//	public static final String KEY_PREF_HEAT_MAPPING = "pref_heat_mapping";
+	
 	private PostArrayAdapter postArrayAdapter;
 	private ArrayList<Post> activePosts;
 	private Intent mIntent;
@@ -43,19 +56,22 @@ public class SearchResultActivity extends ShowSettingsActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_result);
-
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
+
+		//Init the sort buttons 
 		setupButtons();
-		setupSettings();
+		//Setup the setting's listener and get the current toggle for heat mapping
+		heatMapActive = getSettings();
+		
 		
 		mQuestionList = (ListView) findViewById(R.id.activity_search_result);
 
 		// get posts to display
 		mIntent = getIntent();
 		getPostByOrder("POSTS_QUESTION_SCORE");
-		
+
 		setTitle(getTitle() + " " + mIntent.getStringExtra("TEXT_SEARCH"));
 	}
 
@@ -69,8 +85,8 @@ public class SearchResultActivity extends ShowSettingsActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//Create the menu from the extended Activity
-		//use menu.add() to add more items to menu
+		// Create the menu from the extended ShoWSettingsActivity
+		// use menu.add() to add more items to menu
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -78,18 +94,24 @@ public class SearchResultActivity extends ShowSettingsActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			//navigate up one level
+			// navigate up one level
 			NavUtils.navigateUpFromSameTask(this);
-			return true;		
+			return true;
 		}
+		// manage the settings menu in ShoWSettingsActivity
 		return super.onOptionsItemSelected(item);
 	}
-	
-	private void setupSettings(){
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		heatMapActive = sharedPref.getBoolean("pref_heat_mapping", true);
-	}
 
+	/**
+	 * Get the user's preference of showing heat map
+	 */
+/*	private void getSettings() {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		heatMapActive = sharedPref.getBoolean("pref_heat_mapping", true);
+		sharedPref.registerOnSharedPreferenceChangeListener(this);
+	}
+*/
 	/**
 	 * Connect the sorting selection button in the layout to sortButtons Set the
 	 * "sort by question score"-button as selected
@@ -149,8 +171,9 @@ public class SearchResultActivity extends ShowSettingsActivity {
 	}
 
 	/**
-	 * Order the questions by user reputation,
-	 * Called when clicking the user reputation button.
+	 * Order the questions by user reputation, Called when clicking the user
+	 * reputation button.
+	 * 
 	 * @param view
 	 */
 	public void sortByUserReputation(View view) {
@@ -158,10 +181,10 @@ public class SearchResultActivity extends ShowSettingsActivity {
 		setButtonColors(0);
 	}
 
-
 	/**
-	 * Order the questions by question score.
-	 * Called when clicking the question score button.
+	 * Order the questions by question score. Called when clicking the question
+	 * score button.
+	 * 
 	 * @param view
 	 */
 	public void sortByQuestionScore(View view) {
@@ -170,8 +193,9 @@ public class SearchResultActivity extends ShowSettingsActivity {
 	}
 
 	/**
-	 * Order the questions by creation date.
-	 * Called when clicking the creation date button.
+	 * Order the questions by creation date. Called when clicking the creation
+	 * date button.
+	 * 
 	 * @param view
 	 */
 	public void sortByCreationDate(View view) {
@@ -180,13 +204,25 @@ public class SearchResultActivity extends ShowSettingsActivity {
 	}
 
 	/**
-	 * Order the questions by answer count.
-	 * Called when clicking the answer count button.
+	 * Order the questions by answer count. Called when clicking the answer
+	 * count button.
+	 * 
 	 * @param view
 	 */
 	public void sortByAnswerCount(View view) {
 		getPostByOrder("POSTS_ANSWER_COUNT");
 		setButtonColors(3);
+	}
+	
+	/**
+	 * Called in extended activity when the heat map is toggled, inputs the new current toggle
+	 * 
+	 * @param heatMap
+	 */
+	@Override
+	protected void updateSettings(boolean heatMap) {
+		heatMapActive = heatMap;
+		postArrayAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -212,11 +248,13 @@ public class SearchResultActivity extends ShowSettingsActivity {
 
 			if (o != null) {
 				// set background color if heat map is activated
-				if(heatMapActive){
-					RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.listItemLayout);
-					relativeLayout.setBackgroundColor(getColorByHeat(o.getHeat()));
+				if (heatMapActive) {
+					RelativeLayout relativeLayout = (RelativeLayout) v
+							.findViewById(R.id.listItemLayout);
+					relativeLayout.setBackgroundColor(getColorByHeat(o
+							.getHeat()));
 				}
-				
+
 				// set answer count
 				TextView tt = (TextView) v.findViewById(R.id.a_c);
 				if (tt != null) {
@@ -273,14 +311,16 @@ public class SearchResultActivity extends ShowSettingsActivity {
 			}
 			return oTags;
 		}
-		
+
 		/**
 		 * Returns color determined by the given heat
-		 * @param heat determines the returned color
+		 * 
+		 * @param heat
+		 *            determines the returned color
 		 * @return color determined by the given heat
 		 */
-		public int getColorByHeat(int heat){
-			switch (heat){
+		public int getColorByHeat(int heat) {
+			switch (heat) {
 			case 1:
 				return 0xA0FF0000;
 			case 2:
@@ -291,10 +331,9 @@ public class SearchResultActivity extends ShowSettingsActivity {
 				return 0xA0ADFF2F;
 			case 5:
 				return 0xA000FF08;
-			default: 
+			default:
 				return 0xA0FF0000;
-			}	
+			}
 		}
 	}
-
 }

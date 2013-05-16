@@ -17,10 +17,18 @@ import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.database.KeyValuePair;
 import com.yinyang.so.extras.PredicateLayout;
 
+/**
+ * Search by tags and text search
+ * 
+ * Implements OnSharedPreferenceChangeListener to listen for changes in heat
+ * mapping choice
+ * 
+ * Extends ShowSettingsActivity to show menu with settings and handle menu
+ * selection
+ */
 public class TabSearchActivity extends ShowSettingsActivity {
-
-	private boolean heatMapping;
-
+	
+	
 	// necessary for putting tags from the outside
 	public final static String EXTRA_TAGSTRING = "com.example.YingYangApp.TAGSTRING";
 
@@ -38,12 +46,17 @@ public class TabSearchActivity extends ShowSettingsActivity {
 	 * Search controller
 	 */
 	private SearchController oSearchController;
+	
+	//Tells whether heat mapping shall be used
+	private boolean heatMapping;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tab_search);
-		setupSettings();
+		//Get user set settings
+		getSettings();
 
 		String inputTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
 		oSearchController = new SearchController(this);
@@ -146,7 +159,7 @@ public class TabSearchActivity extends ShowSettingsActivity {
 	 *            item to add to tags selected for search
 	 */
 	private void addTagToSelected(String tag) {
-		// If the maximum number of tags selected for serach has been exceeded,
+		// If the maximum number of tags selected for search has been exceeded,
 		// a toast will be displayed
 		if (!selectedTags.contains(tag)) {
 			if (selectedTags.size() >= MAXIMUM_NO_SELECTED_TAGS) {
@@ -355,9 +368,12 @@ public class TabSearchActivity extends ShowSettingsActivity {
 			this.replaceTagButtonText(oWestButton, oNeighbourTags.get(1));
 		}
 	}
-
-	private void setupSettings() {
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		heatMapping = sharedPref.getBoolean("pref_heat_mapping", true);
+	
+	@Override
+	protected void updateSettings(boolean isHeatMap) {
+		heatMapping = isHeatMap;
+		
+		
 	}
+
 }
