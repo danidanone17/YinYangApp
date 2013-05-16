@@ -27,15 +27,12 @@ public class DatabaseAdapter {
 	private final Context mContext;
 	private SQLiteDatabase mDb;
 	private SoData mDbHelper;
-	
+
 	/**
 	 * Enumeration that defines possible search result sorting algorithms
 	 */
-	public enum SearchResultSortingAlgorithm{
-		QuestionScoreAlgorithm,
-		CreationDateAlgorithm,
-		AnswerCountAlgotithm,
-		UserReputationAlgorithm
+	public enum SearchResultSortingAlgorithm {
+		QuestionScoreAlgorithm, CreationDateAlgorithm, AnswerCountAlgotithm, UserReputationAlgorithm
 	}
 
 	public DatabaseAdapter(Context context) {
@@ -581,39 +578,32 @@ public class DatabaseAdapter {
 
 	/**
 	 * Get questions where - the given words are contained in either the title
-	 * or the body
+	 * or the body and - there is a relation to all of the provided tags
+	 * Currently ordered by descending order and limited the results to 100
+	 * posts only
 	 * 
 	 * @param oWords
 	 *            the words that have to be contained in a question's title or
 	 *            body to be returned by this method
-	 * @param eSearchResultSortingAlgorithm chosen search result algorithm
+	 * @param oTags
+	 *            tags the returned questions should be related to
+	 * @param eSearchResultSortingAlgorithm
+	 *            chosen search result algorithm
 	 * @return questions
-	 */
-	public ArrayList<Post> getQuestionsByFreeText(String[] oWords, SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
-		return this.getQuestionsByFreeTextAndTags(oWords, new ArrayList<String>(), eSearchResultSortingAlgorithm);
-	}
-
-	/**
-	 * Get questions where 
-	 * - the given words are contained in either the title or the body and
-	 * - there is a relation to all of the provided tags
-	 * Currently ordered by descending order and limited the results to 100 posts only 	
-	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
-	 * @param oTags tags the returned questions should be related to
-	 * @param eSearchResultSortingAlgorithm chosen search result algorithm
-	 * @return questions
-	 *
+	 * 
 	 */
 	public ArrayList<Post> getQuestionsByFreeTextAndTags(String[] oWords,
-			ArrayList<String> oTags, SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
+			ArrayList<String> oTags,
+			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
 
 		// create sql statement
 		String sSqlMessage = "SELECT * FROM " + TableType.posts;
-		
+
 		// if UserReputationAlgorithm is set
 		// join with users table
-		if(eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm){
-			sSqlMessage += " JOIN " + TableType.users + " u ON " + Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID; 
+		if (eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm) {
+			sSqlMessage += " JOIN " + TableType.users + " u ON "
+					+ Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID;
 		}
 		sSqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
 		for (int i = 0; i < oWords.length; i++) {
@@ -624,12 +614,12 @@ public class DatabaseAdapter {
 		}
 
 		for (String sTag : oTags) {
-			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%" + sTag + "%'";
+			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%<" + sTag + ">%'";
 		}
-		
+
 		// add order by statement
-		switch(eSearchResultSortingAlgorithm){
-		case QuestionScoreAlgorithm: 
+		switch (eSearchResultSortingAlgorithm) {
+		case QuestionScoreAlgorithm:
 			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
 			break;
 		case CreationDateAlgorithm:
@@ -645,7 +635,7 @@ public class DatabaseAdapter {
 			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
 			break;
 		}
-		
+
 		// add search result limit
 		sSqlMessage += " LIMIT 10";
 
@@ -656,6 +646,138 @@ public class DatabaseAdapter {
 		ArrayList<Post> oQuestions = this.getPostsFromCursor(oCursor);
 
 		return oQuestions;
+	}
+
+	/**
+	 * Get questions where - the given words are contained in either the title
+	 * or the body and - there is a relation to all of the provided tags
+	 * Currently ordered by descending order and limited the results to 100
+	 * posts only
+	 * 
+	 * @param oWords
+	 *            the words that have to be contained in a question's title or
+	 *            body to be returned by this method
+	 * @param oTags
+	 *            tags the returned questions should be related to
+	 * @param eSearchResultSortingAlgorithm
+	 *            chosen search result algorithm
+	 * @param lastSortingElement
+	 *            depending on the type of sort, this string contains the value
+	 *            contained in the sort parameter of the last displayed element
+	 *            If we display the first page the value is "" or null
+	 * @lastQuestionIds list of the last displayed elements which have the same
+	 *                  value of the sort element
+	 * @return questions
+	 * 
+	 */
+	public ArrayList<Post> getQuestionsByFreeTextAndTagsWithLimits(
+			String[] oWords, ArrayList<String> oTags,
+			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
+			String lastSortingElement, int[] lastQuestionId) {
+
+		// create sql statement
+		// first select is for setting the limit based on the last displayed
+		// element (first we order and then we limit)
+		String sSqlMessage = "SELECT * FROM (SELECT * FROM " + TableType.posts;
+
+		// if UserReputationAlgorithm is set
+		// join with users table
+		if (eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm) {
+			sSqlMessage += " JOIN " + TableType.users + " u ON "
+					+ Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID;
+		}
+		sSqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
+		for (int i = 0; i < oWords.length; i++) {
+			sSqlMessage += " AND (" + Post.KEY_TITLE + " LIKE '%" + oWords[i]
+					+ "%'";
+			sSqlMessage += " OR " + Post.KEY_BODY + " LIKE '%" + oWords[i]
+					+ "%')";
+		}
+
+		for (String sTag : oTags) {
+			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%<" + sTag + ">%'";
+		}
+
+		// add order by statement
+		switch (eSearchResultSortingAlgorithm) {
+		case QuestionScoreAlgorithm:
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC)";
+			break;
+		case CreationDateAlgorithm:
+			sSqlMessage += " ORDER BY " + Post.KEY_CREATION_DATE + " DESC)";
+			break;
+		case AnswerCountAlgotithm:
+			sSqlMessage += " ORDER BY " + Post.KEY_ANSWER_COUNT + " DESC)";
+			break;
+		case UserReputationAlgorithm:
+			sSqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC)";
+			break;
+		default:
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC)";
+			break;
+		}// end of the first select
+
+		// start condition for the second select
+		// add condition for limiting based on the type of search if we are not
+		// on the first page
+		if (!lastSortingElement.isEmpty() && lastSortingElement != null) {
+			switch (eSearchResultSortingAlgorithm) {
+			case QuestionScoreAlgorithm:
+				sSqlMessage += " WHERE " + Post.KEY_SCORE + " <= "
+						+ lastSortingElement;
+				break;
+			case CreationDateAlgorithm:
+				sSqlMessage += " WHERE " + Post.KEY_CREATION_DATE + " <= '"
+						+ lastSortingElement + "'";
+				break;
+			case AnswerCountAlgotithm:
+				sSqlMessage += " WHERE " + Post.KEY_ANSWER_COUNT + " <= "
+						+ lastSortingElement;
+				break;
+			case UserReputationAlgorithm:
+				sSqlMessage += " WHERE " + User.KEY_REPUTATION + " <= "
+						+ lastSortingElement;
+				break;
+			default:
+				sSqlMessage += " WHERE " + Post.KEY_SCORE + " <= "
+						+ lastSortingElement;
+				break;
+			}
+
+			if (lastQuestionId.length > 0) {
+				for (int i = 0; i < lastQuestionId.length; i++) {
+					sSqlMessage += " AND id <>" + lastQuestionId[i]; 
+				}
+			}
+		}
+
+		// add search result limit
+		sSqlMessage += " LIMIT 10";
+
+		// execute sql statement
+		Cursor oCursor = this.getCursor(sSqlMessage);
+
+		// convert result to an array list of Posts
+		ArrayList<Post> oQuestions = this.getPostsFromCursor(oCursor);
+
+		return oQuestions;
+	}
+
+	/**
+	 * Get questions where - the given words are contained in either the title
+	 * or the body
+	 * 
+	 * @param oWords
+	 *            the words that have to be contained in a question's title or
+	 *            body to be returned by this method
+	 * @param eSearchResultSortingAlgorithm
+	 *            chosen search result algorithm
+	 * @return questions
+	 */
+	public ArrayList<Post> getQuestionsByFreeText(String[] oWords,
+			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
+		return this.getQuestionsByFreeTextAndTags(oWords,
+				new ArrayList<String>(), eSearchResultSortingAlgorithm);
 	}
 
 	/**
@@ -858,7 +980,8 @@ public class DatabaseAdapter {
 	}
 
 	// for columnValues: key = columnName and values = columnValue
-	public boolean insertSql(String tableName, HashMap<String, String> columnValues) {
+	public boolean insertSql(String tableName,
+			HashMap<String, String> columnValues) {
 		String sqlMessage, values;
 		int id;
 
@@ -944,7 +1067,7 @@ public class DatabaseAdapter {
 		}
 
 		Cursor oCursor = this.getCursor(sSqlMessage);
-		
+
 		ArrayList<String> oTags = new ArrayList<String>();
 		while (oCursor.moveToNext()) {
 			oTags.add(oCursor.getString(0));
@@ -970,45 +1093,50 @@ public class DatabaseAdapter {
 		return tag;
 	}
 
-	
 	/**
 	 * Returns users
-	 * @param limit the maximum number of users that are returned
-	 * @param searchName if not empty only users that have the given are returned
-	 * @param lastUserReputation reputation of user who is currently last in list
-	 * @param lastUserName name of user who is currently last in list
+	 * 
+	 * @param limit
+	 *            the maximum number of users that are returned
+	 * @param searchName
+	 *            if not empty only users that have the given are returned
+	 * @param lastUserReputation
+	 *            reputation of user who is currently last in list
+	 * @param lastUserName
+	 *            name of user who is currently last in list
 	 * @return users
 	 */
-	public ArrayList<User> getUsersOrderedByReputation(int limit, String searchName, int lastUserReputation, String lastUserName){
-
+	public ArrayList<User> getUsersOrderedByReputation(int limit,
+			String searchName, int lastUserReputation, String lastUserName) {
 
 		ArrayList<User> users = new ArrayList<User>();
 		String sqlMessage;
 
 		sqlMessage = "SELECT * FROM " + User.TABLE_NAME;
 
-		if(!searchName.isEmpty()){
-			sqlMessage += " WHERE " + User.KEY_DISPLAY_NAME + " = '" + searchName + "'";
-			
-			if(lastUserReputation > 0 && !lastUserName.equals("")){
-				sqlMessage += " AND " + User.KEY_REPUTATION + " <= " + lastUserReputation;
-				sqlMessage += " AND " + User.KEY_DISPLAY_NAME + " NOT LIKE '" + lastUserName + "'"; 
+		if (!searchName.isEmpty()) {
+			sqlMessage += " WHERE " + User.KEY_DISPLAY_NAME + " = '"
+					+ searchName + "'";
+
+			if (lastUserReputation > 0 && !lastUserName.equals("")) {
+				sqlMessage += " AND " + User.KEY_REPUTATION + " <= "
+						+ lastUserReputation;
+				sqlMessage += " AND " + User.KEY_DISPLAY_NAME + " NOT LIKE '"
+						+ lastUserName + "'";
 			}
-		}
-		else
-		{
-			if(lastUserReputation > 0 && !lastUserName.equals("")){
-				sqlMessage += " WHERE " + User.KEY_REPUTATION + " <= " + lastUserReputation;
-				sqlMessage += " AND " + User.KEY_DISPLAY_NAME + " NOT LIKE '" + lastUserName + "'"; 
+		} else {
+			if (lastUserReputation > 0 && !lastUserName.equals("")) {
+				sqlMessage += " WHERE " + User.KEY_REPUTATION + " <= "
+						+ lastUserReputation;
+				sqlMessage += " AND " + User.KEY_DISPLAY_NAME + " NOT LIKE '"
+						+ lastUserName + "'";
 			}
 		}
 		sqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC";
 		sqlMessage += " LIMIT " + limit;
-		
 
 		Cursor cursor = this.getCursor(sqlMessage);
 		users = getUsersFromCursor(cursor);
 		return users;
 	}
 }
-
