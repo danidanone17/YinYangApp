@@ -1,6 +1,5 @@
 package com.yinyang.so.databaseentities;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -8,9 +7,7 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Post extends DatabaseType implements Parcelable{
-	private int mData;
-	
+public class Post extends DatabaseType implements Parcelable{	
 	public static final String TABLE_NAME = "posts";
 
 	public static final String KEY_ID = "id";
@@ -54,11 +51,12 @@ public class Post extends DatabaseType implements Parcelable{
 	private int answerCount;
 	private int commentCount;
 	private int favoriteCount;
+	private int heat;
 	
 	// Parcelling part
     public Post(Parcel in){
     	super(null);
-        String[] data = new String[20];
+        String[] data = new String[21];
 
         in.readStringArray(data);
         this.id = Integer.parseInt(data[0]);
@@ -81,6 +79,7 @@ public class Post extends DatabaseType implements Parcelable{
     	this.answerCount = Integer.parseInt(data[17]);
     	this.commentCount = Integer.parseInt(data[18]);
     	this.favoriteCount = Integer.parseInt(data[19]);
+    	this.heat = Integer.parseInt(data[20]);
   
     }
 
@@ -111,7 +110,8 @@ public class Post extends DatabaseType implements Parcelable{
             	this.tags,
             	Integer.toString(this.answerCount),
             	Integer.toString(this.commentCount),
-            	Integer.toString(this.favoriteCount)});
+            	Integer.toString(this.favoriteCount),
+            	Integer.toString(this.heat)});
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Post createFromParcel(Parcel in) {
@@ -344,5 +344,13 @@ public class Post extends DatabaseType implements Parcelable{
 
 	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
+	}
+	
+	public int getHeat() {
+		return heat;
+	}
+	
+	public void setHeat(int heat) {
+		this.heat = heat;
 	}
 }
