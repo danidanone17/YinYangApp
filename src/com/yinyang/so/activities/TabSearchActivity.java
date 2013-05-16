@@ -2,10 +2,8 @@ package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -375,7 +373,6 @@ public class TabSearchActivity extends ShowSettingsActivity {
 	 */
 	@Override
 	protected void updateSettings(boolean isHeatMap) {
-		Log.e("", "isHeatMap" + isHeatMap);
 		heatMapping = isHeatMap;
 		// populate tag buttons around the tag button in the middle
 		this.populateCenterSurroundingButtons(centerTag);

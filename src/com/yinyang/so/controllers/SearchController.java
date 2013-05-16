@@ -1,7 +1,6 @@
 package com.yinyang.so.controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
