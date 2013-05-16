@@ -1108,7 +1108,6 @@ public class DatabaseAdapter {
 	 */
 	public ArrayList<User> getUsersOrderedByReputation(int limit,
 			String searchName, int lastUserReputation, String lastUserName) {
-
 		ArrayList<User> users = new ArrayList<User>();
 		String sqlMessage;
 
@@ -1138,5 +1137,30 @@ public class DatabaseAdapter {
 		Cursor cursor = this.getCursor(sqlMessage);
 		users = getUsersFromCursor(cursor);
 		return users;
+	}
+	
+	/**
+	 * Gets maximum score of all posts
+	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
+	 * @param oTags tags the returned questions should be related to
+	 * @return maximum score of all posts
+	 */
+	public int getMaxPostScoreForFreeTextAndTagSearch(String[] words, ArrayList<String> tags){
+		String sqlMessage = "select max(" + Post.KEY_SCORE + ") from " + Post.TABLE_NAME;
+		sqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
+		for (int i = 0; i < words.length; i++) {
+			sqlMessage += " AND (" + Post.KEY_TITLE + " LIKE '%" + words[i]
+					+ "%'";
+			sqlMessage += " OR " + Post.KEY_BODY + " LIKE '%" + words[i]
+					+ "%')";
+		}
+
+		for (String tag : tags) {
+			sqlMessage += " AND " + Post.KEY_TAGS + " LIKE '<%" + tag + "%>'";
+		}
+		
+		Cursor cursor = this.getCursor(sqlMessage);
+		cursor.moveToFirst();
+		return cursor.getInt(0);
 	}
 }

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
@@ -36,6 +37,7 @@ public class SearchResultActivity extends Activity {
 	private int unSelectedButtonTextColor = Color.DKGRAY;
 	private int unSelectedButtonBackgroundColor = Color.GRAY;
 	private Button[] sortButtons = new Button[4];
+	private boolean heatMapActive = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +210,12 @@ public class SearchResultActivity extends Activity {
 			Post o = posts.get(position);
 
 			if (o != null) {
+				// set background color if heat map is activated
+				if(heatMapActive){
+					RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.listItemLayout);
+					relativeLayout.setBackgroundColor(getColorByHeat(o.getHeat()));
+				}
+				
 				// set answer count
 				TextView tt = (TextView) v.findViewById(R.id.a_c);
 				if (tt != null) {
@@ -263,6 +271,28 @@ public class SearchResultActivity extends Activity {
 				oTags.add(sTag.replace("<", ""));
 			}
 			return oTags;
+		}
+		
+		/**
+		 * Returns color determined by the given heat
+		 * @param heat determines the returned color
+		 * @return color determined by the given heat
+		 */
+		public int getColorByHeat(int heat){
+			switch (heat){
+			case 1:
+				return 0xA0FF0000;
+			case 2:
+				return 0xA0FF4500;
+			case 3:
+				return 0xA0FFEA00;
+			case 4:
+				return 0xA0ADFF2F;
+			case 5:
+				return 0xA000FF08;
+			default: 
+				return 0xA0FF0000;
+			}	
 		}
 	}
 
