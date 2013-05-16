@@ -37,7 +37,7 @@ public class SearchResultActivity extends Activity {
 	private int unSelectedButtonTextColor = Color.DKGRAY;
 	private int unSelectedButtonBackgroundColor = Color.GRAY;
 	private Button[] sortButtons = new Button[4];
-	private boolean heatMapActive = true;
+	private boolean heatMapActive = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
