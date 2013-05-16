@@ -108,7 +108,7 @@ public class User extends DatabaseType {
 		this.age = age;
 	}
 	public String getAboutMe() {
-		return aboutMe;
+		return formatText(aboutMe);
 	}
 	public void setAboutMe(String aboutMe) {
 		this.aboutMe = aboutMe;
@@ -131,7 +131,10 @@ public class User extends DatabaseType {
 	public void setDownVotes(int downVotes) {
 		this.downVotes = downVotes;
 	}
-
+	public String formatText(String sUnformatted) {
+		return aboutMe.replace("\\n", " ");		
+	}
+	
 	@Override
 	public String toString() {
 		return this.id+" "+this.displayName+" "+this.location;
