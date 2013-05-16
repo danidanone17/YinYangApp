@@ -74,8 +74,11 @@
     <string name="no_answer">There exists no accepted answers yet.</string>
     
     <!-- SearchResultActivity--> 
-
     <string name="title_activity_searchResult">Search Results :</string>
+    <string name="button_sort_by_user_reputation">User reput.</string>
+    <string name="button_sort_by_answer_count">Answer count</string>
+    <string name="button_sort_by_creation_date">Creation date</string>
+    <string name="button_sort_by_question_score">Question score</string>
 
   
     <!-- TabSearchActivity -->

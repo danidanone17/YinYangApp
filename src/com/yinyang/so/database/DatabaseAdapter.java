@@ -597,42 +597,41 @@ public class DatabaseAdapter {
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
 
 		// create sql statement
-		String sSqlMessage = "SELECT * FROM " + TableType.posts;
-
+		String sSqlMessage = "SELECT p.* FROM " + TableType.posts + " p ";
+		
 		// if UserReputationAlgorithm is set
 		// join with users table
-		if (eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm) {
-			sSqlMessage += " JOIN " + TableType.users + " u ON "
-					+ Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID;
+		if(eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm){
+			sSqlMessage += " JOIN " + TableType.users + " u ON " + "p." + Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID; 
 		}
-		sSqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
+		sSqlMessage += " WHERE " + "p." + Post.KEY_POST_TYPE_ID + " = '1'";
 		for (int i = 0; i < oWords.length; i++) {
-			sSqlMessage += " AND (" + Post.KEY_TITLE + " LIKE '%" + oWords[i]
+			sSqlMessage += " AND (" + "p." + Post.KEY_TITLE + " LIKE '%" + oWords[i]
 					+ "%'";
-			sSqlMessage += " OR " + Post.KEY_BODY + " LIKE '%" + oWords[i]
+			sSqlMessage += " OR " + "p." + Post.KEY_BODY + " LIKE '%" + oWords[i]
 					+ "%')";
 		}
 
 		for (String sTag : oTags) {
-			sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%<" + sTag + ">%'";
+			sSqlMessage += " AND " + "p." + Post.KEY_TAGS + " LIKE '%" + sTag + "%'";
 		}
 
 		// add order by statement
-		switch (eSearchResultSortingAlgorithm) {
-		case QuestionScoreAlgorithm:
-			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
+		switch(eSearchResultSortingAlgorithm){
+		case QuestionScoreAlgorithm: 
+			sSqlMessage += " ORDER BY " + "p." + Post.KEY_SCORE + " DESC";
 			break;
 		case CreationDateAlgorithm:
-			sSqlMessage += " ORDER BY " + Post.KEY_CREATION_DATE + " DESC";
+			sSqlMessage += " ORDER BY " + "p."+ Post.KEY_CREATION_DATE + " DESC";
 			break;
 		case AnswerCountAlgotithm:
-			sSqlMessage += " ORDER BY " + Post.KEY_ANSWER_COUNT + " DESC";
+			sSqlMessage += " ORDER BY " + "p." + Post.KEY_ANSWER_COUNT + " DESC";
 			break;
 		case UserReputationAlgorithm:
 			sSqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC";
 			break;
 		default:
-			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
+			sSqlMessage += " ORDER BY " + "p." + Post.KEY_SCORE + " DESC";
 			break;
 		}
 

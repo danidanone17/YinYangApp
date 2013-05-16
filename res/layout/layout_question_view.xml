@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!-- Horizontal - Question View - Vote buttons - Contents of Question - User info -->
-    
+<!-- Horizontal - Question View - Vote buttons - Contents of Question - User info -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
-<TextView
+    <TextView
         android:id="@+id/question_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:textStyle="bold" />
-        
-        
-    
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -76,22 +74,19 @@
                 android:layout_weight="0.9"
                 android:textSize="14.5sp" />
 
-            
-                <com.yinyang.so.extras.PredicateLayout
-        			android:layout_width="fill_parent"
-    				android:layout_height="0dp"
-    				android:id="@+id/question_tag_buttons"
-    				android:layout_weight="0.1"
+            <com.yinyang.so.extras.PredicateLayout
+                android:id="@+id/question_tag_buttons"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
                 android:orientation="horizontal"
                 android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                >
-    			</com.yinyang.so.extras.PredicateLayout>
-            
+                android:paddingRight="0dp" >
+            </com.yinyang.so.extras.PredicateLayout>
         </LinearLayout>
 
         <!-- Posting date and posting user information -->
-        
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -110,7 +105,7 @@
                 android:textSize="10dp" />
 
             <ImageButton
-                android:id="@+id/question_user_image"                
+                android:id="@+id/question_user_image"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.7"
@@ -134,12 +129,12 @@
         </LinearLayout>
     </LinearLayout>
 
-<TextView
- android:id="@+id/nr_of_answers"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="@string/nr_of_answers"
- android:textSize="16dp"
- android:textStyle="bold" />
+    <TextView
+        android:id="@+id/nr_of_answers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nr_of_answers"
+        android:textSize="16dp"
+        android:textStyle="bold" />
 
 </LinearLayout>
