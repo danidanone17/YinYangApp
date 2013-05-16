@@ -150,6 +150,7 @@ public class SearchController {
 		// pass posts sorted by answer count to search result activity
 		oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
 		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT", (ArrayList<? extends Parcelable>) oPosts);
+		oIntent.putExtra("TEXT_SEARCH", textSearch);		
 		
 		// pass posts sorted by user reputation to search result activity
 		oPosts = freeTextAndTagSearch(textSearch, selectedTags, SearchResultSortingAlgorithm.UserReputationAlgorithm);

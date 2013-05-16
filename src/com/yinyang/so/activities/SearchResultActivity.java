@@ -51,6 +51,7 @@ public class SearchResultActivity extends Activity {
 		// get posts to display
 		mIntent = getIntent();
 		getPostByOrder("POSTS_QUESTION_SCORE");
+		
 		setTitle(getTitle() + " " + mIntent.getStringExtra("TEXT_SEARCH"));
 	}
 

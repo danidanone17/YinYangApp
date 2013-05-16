@@ -47,6 +47,8 @@ public class TabSearchActivity extends Activity {
 		oSearchController = new SearchController(this);
 		ArrayList<String> oTags = new ArrayList<String>();
 		
+		setTitle(getTitle() + " " + this.getIntent().getStringExtra("TEXT_SEARCH"));
+		
 		// if there is a value passed to this class with intent, use
 		// that as the center tag, otherwise get the three first tags alphabetically
 		if (inputTag != null) {
