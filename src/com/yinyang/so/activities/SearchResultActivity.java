@@ -98,12 +98,10 @@ public class SearchResultActivity extends Activity {
 	private void setButtonColors(int selectedButton) {
 		for (int i = 0; i < sortButtons.length; i++) {
 			if (selectedButton == i){
-				Log.e("", "if-loop: "+i);
 				sortButtons[i].setTextColor(selectedButtonTextColor);
 				sortButtons[i].setBackgroundColor(selectedButtonBackgroundColor);
 			}
 			else {
-				Log.e("", "else-loop:" +i);
 				sortButtons[i].setTextColor(unSelectedButtonTextColor);
 				sortButtons[i].setBackgroundColor(unSelectedButtonBackgroundColor);
 			}
@@ -174,7 +172,6 @@ public class SearchResultActivity extends Activity {
 				TextView title = (TextView) v.findViewById(R.id.title);
 				if (title != null) {
 					title.setText(o.getTitle());
-					Log.e("TEST", "ID: " + o.getId());
 					title.setId(o.getId());
 
 					title.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +181,6 @@ public class SearchResultActivity extends Activity {
 							Intent oIntent = new Intent(
 									SearchResultActivity.this,
 									QuestionActivity.class);
-							Log.e("", "id onClick: " + title.getId());
 							oIntent.putExtra(
 									com.yinyang.so.activities.QuestionActivity.EXTRA_QUESTIONID,
 									title.getId());
