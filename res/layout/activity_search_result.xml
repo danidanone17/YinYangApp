@@ -8,41 +8,50 @@
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
         android:orientation="horizontal" >
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button_sort_by_user_reputation"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="sortByUserReputation"
-            android:text="@string/button_sort_by_user_reputation" />
+            android:text="@string/button_sort_by_user_reputation"
+            android:textColor="@android:color/background_light" />
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button_sort_by_question_score"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="sortByQuestionScore"
-            android:text="@string/button_sort_by_question_score" />
+            android:text="@string/button_sort_by_question_score"
+            android:textColor="@android:color/background_light" />
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button_sort_by_creation_date"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="sortByCreationDate"
-            android:text="@string/button_sort_by_creation_date" />
+            android:text="@string/button_sort_by_creation_date"
+            android:textColor="@android:color/background_light" />
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button_sort_by_answer_count"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="sortByAnswerCount"
-            android:text="@string/button_sort_by_answer_count" />
+            android:text="@string/button_sort_by_answer_count"
+            android:textColor="@android:color/background_light" />
     </LinearLayout>
-    
+
     <ListView
         android:id="@+id/activity_search_result"
         android:layout_width="match_parent"
