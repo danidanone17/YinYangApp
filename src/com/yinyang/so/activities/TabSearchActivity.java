@@ -2,10 +2,10 @@ package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
-import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -27,8 +27,7 @@ import com.yinyang.so.extras.PredicateLayout;
  * selection
  */
 public class TabSearchActivity extends ShowSettingsActivity {
-	
-	
+
 	// necessary for putting tags from the outside
 	public final static String EXTRA_TAGSTRING = "com.example.YingYangApp.TAGSTRING";
 
@@ -46,19 +45,21 @@ public class TabSearchActivity extends ShowSettingsActivity {
 	 * Search controller
 	 */
 	private SearchController oSearchController;
-	
-	//Tells whether heat mapping shall be used
-	private boolean heatMapping;
 
+	// Current centerTag
+	private String centerTag;
+
+	// Tells whether heat mapping shall be used
+	private boolean heatMapping;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tab_search);
-		//Get user set settings
-		getSettings();
+		// Get user set settings and current heat mapping toggle
+		heatMapping = getSettings();
 
-		String inputTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
+		centerTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
 		oSearchController = new SearchController(this);
 		ArrayList<String> oTags = new ArrayList<String>();
 
@@ -68,11 +69,12 @@ public class TabSearchActivity extends ShowSettingsActivity {
 		// if there is a value passed to this class with intent, use
 		// that as the center tag, otherwise get the three first tags
 		// alphabetically
-		if (inputTag != null) {
-			oTags.addAll(oSearchController.getNextAndPreviousTags(inputTag));
-			oTags.add(1, inputTag);
+		if (centerTag != null) {
+			oTags.addAll(oSearchController.getNextAndPreviousTags(centerTag));
+			oTags.add(1, centerTag);
 		} else {
 			oTags = oSearchController.getThreeTagsInAlphabeticalOrder();
+			centerTag = oTags.get(1);
 		}
 
 		// get center tag button and replace its text
@@ -88,8 +90,8 @@ public class TabSearchActivity extends ShowSettingsActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//Create the menu from the extended Activity
-		//use menu.add() to add more items to menu
+		// Create the menu from the extended Activity
+		// use menu.add() to add more items to menu
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -106,16 +108,16 @@ public class TabSearchActivity extends ShowSettingsActivity {
 	public void moveToCenter(View view) {
 		// get text of pressed button
 		Button oButton = (Button) view;
-		String sTag = (String) oButton.getText();
+		centerTag = (String) oButton.getText();
 
 		// get center tag button
 		Button oCenterButton = (Button) this.findViewById(R.id.button_center);
 
 		// replace text of center tag button
-		this.replaceTagButtonText(oCenterButton, sTag);
+		this.replaceTagButtonText(oCenterButton, centerTag);
 
 		// populate tag buttons around the tag button in the middle
-		this.populateCenterSurroundingButtons(sTag);
+		this.populateCenterSurroundingButtons(centerTag);
 	}
 
 	/**
@@ -240,15 +242,15 @@ public class TabSearchActivity extends ShowSettingsActivity {
 		EditText editView = (EditText) this.findViewById(R.id.edit_tag_search);
 
 		// get tag by name
-		String sNewCenterTag = oSearchController.getTagByName(editView
-				.getText().toString());
+		centerTag = oSearchController.getTagByName(editView.getText()
+				.toString());
 
 		// get center tag button and replace its text
 		Button oCenterButton = (Button) this.findViewById(R.id.button_center);
-		this.replaceTagButtonText(oCenterButton, sNewCenterTag);
+		this.replaceTagButtonText(oCenterButton, centerTag);
 
 		// populate buttons around center button
-		this.populateCenterSurroundingButtons(sNewCenterTag);
+		this.populateCenterSurroundingButtons(centerTag);
 	}
 
 	/**
@@ -282,10 +284,13 @@ public class TabSearchActivity extends ShowSettingsActivity {
 			} else {
 				color = 0xA0FF0000;
 			}
-
-			button.getBackground().setColorFilter(color,
-					PorterDuff.Mode.MULTIPLY);
+			
+			button.getBackground().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+		} else {
+			button.getBackground().setColorFilter(null);
 		}
+
+		;
 	}
 
 	/**
@@ -304,42 +309,35 @@ public class TabSearchActivity extends ShowSettingsActivity {
 	 *            the new tag button in the middle
 	 */
 	private void populateCenterSurroundingButtons(String sNewCenterTag) {
-		Button oNorthWestButton = (Button) this
-				.findViewById(R.id.button_northwest);
+		Button oNorthWestButton = (Button) this.findViewById(R.id.button_northwest);
 		this.replaceTagButtonText(oNorthWestButton, "");
-		Button oNorthEastButton = (Button) this
-				.findViewById(R.id.button_northeast);
+		Button oNorthEastButton = (Button) this.findViewById(R.id.button_northeast);
 		this.replaceTagButtonText(oNorthEastButton, "");
-		Button oSouthWestButton = (Button) this
-				.findViewById(R.id.button_southwest);
+		Button oSouthWestButton = (Button) this.findViewById(R.id.button_southwest);
 		this.replaceTagButtonText(oSouthWestButton, "");
-		Button oSouthEastButton = (Button) this
-				.findViewById(R.id.button_southeast);
+		Button oSouthEastButton = (Button) this.findViewById(R.id.button_southeast);
 		this.replaceTagButtonText(oSouthEastButton, "");
 
 		Button oWestButton = (Button) this.findViewById(R.id.button_west);
 		this.replaceTagButtonText(oWestButton, "");
 		Button oEastButton = (Button) this.findViewById(R.id.button_east);
 		this.replaceTagButtonText(oEastButton, "");
-
 		// if the center tag is not empty
 		if (!"".equals(sNewCenterTag)) {
 			// populate top related tags
-			ArrayList<KeyValuePair> topRelatedTags = oSearchController
-					.getTopRelatedTags(sNewCenterTag);
-
+			ArrayList<KeyValuePair> topRelatedTags = oSearchController.getTopRelatedTags(sNewCenterTag);
 			int tagsValue = 0;
 			for (KeyValuePair kvp : topRelatedTags) {
 				tagsValue += kvp.getValue();
 			}
-
+		
 			if (topRelatedTags.size() > 0) {
 				this.populateButton(oNorthWestButton, topRelatedTags.get(0),
 						tagsValue);
 			} else {
 				this.hideButton(oNorthWestButton);
 			}
-
+		
 			if (topRelatedTags.size() > 1) {
 				this.populateButton(oNorthEastButton, topRelatedTags.get(1),
 						tagsValue);
@@ -361,19 +359,27 @@ public class TabSearchActivity extends ShowSettingsActivity {
 				this.hideButton(oSouthEastButton);
 			}
 
-			// populate neighbour tags
+			// populate neighbor tags
 			ArrayList<String> oNeighbourTags = oSearchController
 					.getNextAndPreviousTags(sNewCenterTag);
 			this.replaceTagButtonText(oEastButton, oNeighbourTags.get(0));
 			this.replaceTagButtonText(oWestButton, oNeighbourTags.get(1));
 		}
 	}
-	
+
+	/**
+	 * Called in extended activity when the heat map is toggled, inputs the new
+	 * current toggle Updates the surrounding tags
+	 * 
+	 * @param heatMap
+	 */
 	@Override
 	protected void updateSettings(boolean isHeatMap) {
+		Log.e("", "isHeatMap" + isHeatMap);
 		heatMapping = isHeatMap;
-		
-		
+		// populate tag buttons around the tag button in the middle
+		this.populateCenterSurroundingButtons(centerTag);
+
 	}
 
 }

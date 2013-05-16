@@ -216,7 +216,7 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	
 	/**
 	 * Called in extended activity when the heat map is toggled, inputs the new current toggle
-	 * 
+	 * Updates the list view
 	 * @param heatMap
 	 */
 	@Override
