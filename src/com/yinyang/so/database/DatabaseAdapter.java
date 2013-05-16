@@ -1,7 +1,10 @@
 package com.yinyang.so.database;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -598,34 +601,38 @@ public class DatabaseAdapter {
 
 		// create sql statement
 		String sSqlMessage = "SELECT p.* FROM " + TableType.posts + " p ";
-		
+
 		// if UserReputationAlgorithm is set
 		// join with users table
-		if(eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm){
-			sSqlMessage += " JOIN " + TableType.users + " u ON " + "p." + Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID; 
+		if (eSearchResultSortingAlgorithm == SearchResultSortingAlgorithm.UserReputationAlgorithm) {
+			sSqlMessage += " JOIN " + TableType.users + " u ON " + "p."
+					+ Post.KEY_OWNER_USER_ID + " = u." + User.KEY_ID;
 		}
 		sSqlMessage += " WHERE " + "p." + Post.KEY_POST_TYPE_ID + " = '1'";
 		for (int i = 0; i < oWords.length; i++) {
-			sSqlMessage += " AND (" + "p." + Post.KEY_TITLE + " LIKE '%" + oWords[i]
-					+ "%'";
-			sSqlMessage += " OR " + "p." + Post.KEY_BODY + " LIKE '%" + oWords[i]
-					+ "%')";
+			sSqlMessage += " AND (" + "p." + Post.KEY_TITLE + " LIKE '%"
+					+ oWords[i] + "%'";
+			sSqlMessage += " OR " + "p." + Post.KEY_BODY + " LIKE '%"
+					+ oWords[i] + "%')";
 		}
 
 		for (String sTag : oTags) {
-			sSqlMessage += " AND " + "p." + Post.KEY_TAGS + " LIKE '%" + sTag + "%'";
+			sSqlMessage += " AND " + "p." + Post.KEY_TAGS + " LIKE '%" + sTag
+					+ "%'";
 		}
 
 		// add order by statement
-		switch(eSearchResultSortingAlgorithm){
-		case QuestionScoreAlgorithm: 
+		switch (eSearchResultSortingAlgorithm) {
+		case QuestionScoreAlgorithm:
 			sSqlMessage += " ORDER BY " + "p." + Post.KEY_SCORE + " DESC";
 			break;
 		case CreationDateAlgorithm:
-			sSqlMessage += " ORDER BY " + "p."+ Post.KEY_CREATION_DATE + " DESC";
+			sSqlMessage += " ORDER BY " + "p." + Post.KEY_CREATION_DATE
+					+ " DESC";
 			break;
 		case AnswerCountAlgotithm:
-			sSqlMessage += " ORDER BY " + "p." + Post.KEY_ANSWER_COUNT + " DESC";
+			sSqlMessage += " ORDER BY " + "p." + Post.KEY_ANSWER_COUNT
+					+ " DESC";
 			break;
 		case UserReputationAlgorithm:
 			sSqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC";
@@ -672,7 +679,7 @@ public class DatabaseAdapter {
 	public ArrayList<Post> getQuestionsByFreeTextAndTagsWithLimits(
 			String[] oWords, ArrayList<String> oTags,
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
-			String lastSortingElement, int[] lastQuestionId) {
+			String lastSortingElement, int[] lastQuestionIds) {
 
 		// create sql statement
 		// first select is for setting the limit based on the last displayed
@@ -743,9 +750,9 @@ public class DatabaseAdapter {
 				break;
 			}
 
-			if (lastQuestionId.length > 0) {
-				for (int i = 0; i < lastQuestionId.length; i++) {
-					sSqlMessage += " AND id <>" + lastQuestionId[i]; 
+			if (lastQuestionIds.length > 0) {
+				for (int i = 0; i < lastQuestionIds.length; i++) {
+					sSqlMessage += " AND id <>" + lastQuestionIds[i];
 				}
 			}
 		}
@@ -760,6 +767,255 @@ public class DatabaseAdapter {
 		ArrayList<Post> oQuestions = this.getPostsFromCursor(oCursor);
 
 		return oQuestions;
+	}
+
+	/**
+	 * get the last (minimum) value of the sorting element from a list of posts
+	 * 
+	 * @param displayedPosts
+	 * @param eSearchResultSortingAlgorithm
+	 * @return
+	 */
+	public String getLastSortingElement(ArrayList<Post> displayedPosts,
+			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
+		String lastSortingElement = null;
+
+		switch (eSearchResultSortingAlgorithm) {
+
+		// get the last minimum score our of the currently displayed posts
+		// usage of common min algorithm
+		case QuestionScoreAlgorithm:
+			int minScore = displayedPosts.get(0).getScore();
+			for (int i = 1; i < displayedPosts.size(); i++) {
+				if (minScore > displayedPosts.get(i).getScore()) {
+					minScore = displayedPosts.get(i).getScore();
+				}
+			}
+
+			lastSortingElement = "" + minScore;
+			break;
+
+		// get the last minimum creation date out of the currently displayed
+		// posts
+		// usage of common min algorithm with parsing the String creationDate
+		case CreationDateAlgorithm:
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date minDate = sdf.parse(displayedPosts.get(0)
+						.getCreationDate());
+				for (int i = 1; i < displayedPosts.size(); i++) {
+					if (minDate.compareTo(sdf.parse(displayedPosts.get(i)
+							.getCreationDate())) > 0) {
+						minDate = sdf.parse(displayedPosts.get(i)
+								.getCreationDate());
+					}
+				}
+
+				lastSortingElement = "" + minDate;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			break;
+
+		// get the last minimum answer count of the currently displayed posts
+		// usage of common min algorithm
+		case AnswerCountAlgotithm:
+			int minAnswerCount = displayedPosts.get(0).getAnswerCount();
+
+			for (int i = 1; i < displayedPosts.size(); i++) {
+				if (minAnswerCount > displayedPosts.get(i).getAnswerCount()) {
+					minAnswerCount = displayedPosts.get(i).getAnswerCount();
+				}
+			}
+
+			lastSortingElement = "" + minAnswerCount;
+			break;
+
+		// get last lowest user reputation of the displayed posts
+		// usage of common min algorithm
+		case UserReputationAlgorithm:
+			int minUserReputation = this.getUser(
+					displayedPosts.get(0).getOwnerUserId()).getReputation();
+
+			for (int i = 1; i < displayedPosts.size(); i++) {
+				if (minUserReputation > this.getUser(
+						displayedPosts.get(i).getOwnerUserId()).getReputation()) {
+					minUserReputation = this.getUser(
+							displayedPosts.get(i).getOwnerUserId())
+							.getReputation();
+				}
+			}
+
+			lastSortingElement = "" + minUserReputation;
+			break;
+		default:
+			lastSortingElement = null;
+			break;
+		}
+
+		return lastSortingElement;
+	}
+	
+	/**
+	 * get the first (maximum) value of the sorting element from a list of posts
+	 * 
+	 * @param displayedPosts
+	 * @param eSearchResultSortingAlgorithm
+	 * @return
+	 */
+	public String getFirstSortingElement(ArrayList<Post> displayedPosts,
+			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
+		String lastSortingElement = null;
+
+		switch (eSearchResultSortingAlgorithm) {
+
+		// get the first maximum score our of the currently displayed posts
+		// usage of common max algorithm
+		case QuestionScoreAlgorithm:
+			int maxScore = displayedPosts.get(0).getScore();
+			for (int i = 1; i < displayedPosts.size(); i++) {
+				if (maxScore < displayedPosts.get(i).getScore()) {
+					maxScore = displayedPosts.get(i).getScore();
+				}
+			}
+
+			lastSortingElement = "" + maxScore;
+			break;
+
+		// get the first, maximum creation date out of the currently displayed
+		// posts
+		// usage of common max algorithm with parsing the String creationDate
+		case CreationDateAlgorithm:
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date maxDate = sdf.parse(displayedPosts.get(0)
+						.getCreationDate());
+				for (int i = 1; i < displayedPosts.size(); i++) {
+					if (maxDate.compareTo(sdf.parse(displayedPosts.get(i)
+							.getCreationDate())) < 0) {
+						maxDate = sdf.parse(displayedPosts.get(i)
+								.getCreationDate());
+					}
+				}
+
+				lastSortingElement = "" + maxDate;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			break;
+
+		// get the first, maximum answer count of the currently displayed posts
+		// usage of common max algorithm
+		case AnswerCountAlgotithm:
+			int maxAnswerCount = displayedPosts.get(0).getAnswerCount();
+
+			for (int i = 1; i < displayedPosts.size(); i++) {
+				if (maxAnswerCount < displayedPosts.get(i).getAnswerCount()) {
+					maxAnswerCount = displayedPosts.get(i).getAnswerCount();
+				}
+			}
+
+			lastSortingElement = "" + maxAnswerCount;
+			break;
+
+		// get first, highest user reputation of the displayed posts
+		// usage of common max algorithm
+		case UserReputationAlgorithm:
+			int maxUserReputation = this.getUser(
+					displayedPosts.get(0).getOwnerUserId()).getReputation();
+
+			for (int i = 1; i < displayedPosts.size(); i++) {
+				if (maxUserReputation < this.getUser(
+						displayedPosts.get(i).getOwnerUserId()).getReputation()) {
+					maxUserReputation = this.getUser(
+							displayedPosts.get(i).getOwnerUserId())
+							.getReputation();
+				}
+			}
+
+			lastSortingElement = "" + maxUserReputation;
+			break;
+		default:
+			lastSortingElement = null;
+			break;
+		}
+
+		return lastSortingElement;
+	}
+
+	/**
+	 * after the minimum or maximum value of the sorting element is found, the ids of the
+	 * displayed posts containing that value are returned
+	 * @param displayedPosts
+	 * @param eSearchResultSortingAlgorithm
+	 * @int minOrMax is 0 for min and 1 for max
+	 * @return
+	 */
+	public int[] getQuestionsWithMinOrMaxSortingElementIds(
+			ArrayList<Post> displayedPosts,
+			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
+			int minOrMax) {
+		
+		String lastOrFirstSortingElement;
+		
+		if(minOrMax == 0){
+			// call the getLastSortingElement to get the minimum value of the sorting element in the displayedPosts list
+			lastOrFirstSortingElement = this.getLastSortingElement(displayedPosts, eSearchResultSortingAlgorithm);
+		}
+		else{
+			// call the getFirstSortingElement to get the maximum value of the sorting element in the displayedPosts list
+			lastOrFirstSortingElement = this.getFirstSortingElement(displayedPosts, eSearchResultSortingAlgorithm);
+		}
+		
+		int[] postIds = {};
+		// used for constructing the postIds vector
+		int k = 0;
+
+		// append to postIds the post ids of the posts that have the sorting
+		// element equal to the lastSortingElement
+		switch (eSearchResultSortingAlgorithm) {
+		case QuestionScoreAlgorithm:
+			for (int i = 0; i < displayedPosts.size(); i++) {
+				if (displayedPosts.get(i).getScore() == Integer
+						.parseInt(lastOrFirstSortingElement)) {
+					postIds[k] = displayedPosts.get(i).getId();
+				}
+			}
+			break;
+		case CreationDateAlgorithm:
+			for (int i = 0; i < displayedPosts.size(); i++) {
+				if (displayedPosts.get(i).getCreationDate()
+						.equals(lastOrFirstSortingElement)) {
+					postIds[k] = displayedPosts.get(i).getId();
+				}
+			}
+			break;
+		case AnswerCountAlgotithm:
+			for (int i = 0; i < displayedPosts.size(); i++) {
+				if (displayedPosts.get(i).getAnswerCount() == Integer
+						.parseInt(lastOrFirstSortingElement)) {
+					postIds[k] = displayedPosts.get(i).getId();
+				}
+			}
+			break;
+		case UserReputationAlgorithm:
+			for (int i = 0; i < displayedPosts.size(); i++) {
+				if (this.getUser(displayedPosts.get(i).getOwnerUserId())
+						.getReputation() == Integer
+						.parseInt(lastOrFirstSortingElement)) {
+					postIds[k] = displayedPosts.get(i).getId();
+				}
+			}
+			break;
+		default:
+			break;
+		}
+
+		return postIds;
 	}
 
 	/**
