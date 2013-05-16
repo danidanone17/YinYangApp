@@ -1,14 +1,17 @@
 package com.yinyang.so.activities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.database.KeyValuePair;
 import com.yinyang.so.extras.PredicateLayout;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -214,6 +217,43 @@ public class TabSearchActivity extends Activity {
 		// populate buttons around center button
 		this.populateCenterSurroundingButtons(sNewCenterTag);
 	}
+
+	/**
+	 * Populates a button and gives it color using relevance
+	 * @param button
+	 * @param tagRelevance
+	 * @param totalRelevance
+	 */
+	private void populateButton(Button button, KeyValuePair tagRelevance, int totalRelevance) {
+		button.setVisibility(View.VISIBLE);
+		this.replaceTagButtonText(button, tagRelevance.getKey());
+		int color = 0;
+		double relevanceScore = 0.0;
+		
+		// set relevance score to 0.3 (yellow) if no relevance score in database
+		if (totalRelevance < 1) {
+			relevanceScore = 0.3;
+		// otherwise set it to tag's appearance with mother tag divided by all four tags' appearance
+		} else {
+			relevanceScore = (double)  tagRelevance.getValue() / (double) totalRelevance;
+		}
+		if (relevanceScore > 0.3) {
+			color = 0xA000FF08;
+		} else if (relevanceScore <= 0.3 && relevanceScore > 0.1) {
+			color = 0xA0FFEA00;
+		} else {
+			color = 0xA0FF0000;
+		}
+		button.getBackground().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+	}
+	
+	/**
+	 * Hide a button from view
+	 * @param button
+	 */
+	private void hideButton(Button button) {
+		button.setVisibility(View.INVISIBLE);
+	}
 	
 	/**
 	 * Populates tag buttons around the center tag button
@@ -233,24 +273,39 @@ public class TabSearchActivity extends Activity {
 		this.replaceTagButtonText(oWestButton, "");
 		Button oEastButton = (Button)this.findViewById(R.id.button_east);
 		this.replaceTagButtonText(oEastButton, "");
-		
+
+		// if the center tag is not empty
 		if(!"".equals(sNewCenterTag)){
 			// populate top related tags
-			ArrayList<String> oTopRelatedTags = oSearchController.getTopRelatedTags(sNewCenterTag);	
-			if(oTopRelatedTags.size() > 0){
-				this.replaceTagButtonText(oNorthWestButton, oTopRelatedTags.get(0));
+			ArrayList<KeyValuePair> topRelatedTags = oSearchController.getTopRelatedTags(sNewCenterTag);
+			
+			int tagsValue = 0;
+			for (KeyValuePair kvp : topRelatedTags) {
+				tagsValue += kvp.getValue();
 			}
 			
-			if(oTopRelatedTags.size() > 1){
-				this.replaceTagButtonText(oNorthEastButton, oTopRelatedTags.get(1));
+			if(topRelatedTags.size() > 0){
+				this.populateButton(oNorthWestButton, topRelatedTags.get(0), tagsValue);
+			} else {
+				this.hideButton(oNorthWestButton);
 			}
 			
-			if(oTopRelatedTags.size() > 2){
-				this.replaceTagButtonText(oSouthWestButton, oTopRelatedTags.get(2));
+			if(topRelatedTags.size() > 1){
+				this.populateButton(oNorthEastButton, topRelatedTags.get(1), tagsValue);
+			} else {
+				this.hideButton(oNorthEastButton);
 			}
 			
-			if(oTopRelatedTags.size() > 3){
-				this.replaceTagButtonText(oSouthEastButton, oTopRelatedTags.get(3));
+			if(topRelatedTags.size() > 2){
+				this.populateButton(oSouthWestButton, topRelatedTags.get(2), tagsValue);
+			} else {
+				this.hideButton(oSouthWestButton);
+			}
+			
+			if(topRelatedTags.size() > 3){
+				this.populateButton(oSouthEastButton, topRelatedTags.get(3), tagsValue);
+			} else {
+				this.hideButton(oSouthEastButton);
 			}	
 			
 			// populate neighbour tags
