@@ -137,8 +137,8 @@ public class QuestionActivity extends Activity implements OnClickListener {
 			tagButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(QuestionActivity.this, TabSearchActivity.class);
-				intent.putExtra(TabSearchActivity.EXTRA_TAGSTRING, tagString);
+				Intent intent = new Intent(QuestionActivity.this, TagSearchActivity.class);
+				intent.putExtra(TagSearchActivity.EXTRA_TAGSTRING, tagString);
 				startActivity(intent);
 			}
 			});

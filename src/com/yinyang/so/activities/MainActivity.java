@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void tagSearch(View _) {
-		Intent intent = new Intent(this, TabSearchActivity.class);
+		Intent intent = new Intent(this, TagSearchActivity.class);
 		startActivity(intent);
 	}
 

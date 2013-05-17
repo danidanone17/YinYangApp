@@ -9,3 +9,4 @@
 /tests/gen
 /tests/project.properties
 /tests/proguard-project.txt
+/tests/.classpath

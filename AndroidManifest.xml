@@ -39,7 +39,7 @@
                 android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
-            android:name="com.yinyang.so.activities.TabSearchActivity"
+            android:name="com.yinyang.so.activities.TagSearchActivity"
             android:label="@string/title_activity_tab_search"
             android:parentActivityName="com.yinyang.so.activities.MainActivity" >
             <meta-data

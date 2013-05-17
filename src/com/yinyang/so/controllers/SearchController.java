@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.widget.Toast;
 
 import com.yinyang.so.activities.SearchResultActivity;
 import com.yinyang.so.database.DatabaseAdapter;
@@ -135,8 +136,10 @@ public class SearchController {
 		if (!"".equals(sFreeText)) {
 			return dbAdapter.getQuestionsByFreeTextAndTags(
 					sFreeText.split(" "), oTags, eSearchResultSortingAlgorithm);
-		} else {
+		} else if (oTags.size() > 0) {
 			return dbAdapter.getPostsByTags(oTags);
+		} else {
+			return new ArrayList<Post>();
 		}
 	}
 

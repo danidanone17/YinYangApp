@@ -6,7 +6,7 @@
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".TabSearchActivity"
+    tools:context=".TagSearchActivity"
     android:orientation="vertical"
     android:id="@+id/layout_main" >
     

@@ -24,7 +24,7 @@ import com.yinyang.so.extras.PredicateLayout;
  * Extends ShowSettingsActivity to show menu with settings and handle menu
  * selection
  */
-public class TabSearchActivity extends ShowSettingsActivity {
+public class TagSearchActivity extends ShowSettingsActivity {
 
 	// necessary for putting tags from the outside
 	public final static String EXTRA_TAGSTRING = "com.example.YingYangApp.TAGSTRING";
@@ -60,9 +60,6 @@ public class TabSearchActivity extends ShowSettingsActivity {
 		centerTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
 		oSearchController = new SearchController(this);
 		ArrayList<String> oTags = new ArrayList<String>();
-
-		setTitle(getTitle() + " "
-				+ this.getIntent().getStringExtra("TEXT_SEARCH"));
 
 		// if there is a value passed to this class with intent, use
 		// that as the center tag, otherwise get the three first tags
@@ -225,8 +222,13 @@ public class TabSearchActivity extends ShowSettingsActivity {
 		EditText editView = (EditText) this.findViewById(R.id.edit_search);
 		String textSearch = editView.getText().toString();
 
-		// perform free text and tag search
-		oSearchController.performFreeTextAndTagSearch(textSearch, selectedTags);
+		// perform free text and tag search, if text is given, otherwise give error msg
+		if (textSearch.isEmpty()) {
+			Toast.makeText(this.getApplicationContext(), R.string.error_no_search_parameters, 
+					Toast.LENGTH_SHORT).show();
+		} else {
+			oSearchController.performFreeTextAndTagSearch(textSearch, selectedTags);	
+		}
 	}
 
 	/**
