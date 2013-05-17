@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.yinyang.so.database.DatabaseAdapter;
+import com.yinyang.so.database.KeyValuePair;
 import com.yinyang.so.database.MeanOfSearch;
 import com.yinyang.so.database.SearchEntity;
 import com.yinyang.so.database.TableType;
@@ -487,9 +488,10 @@ public class DatabaseAdapterValidation extends
 		String referenceTag = "browser";
 		String[] expectedResult = { "javascript", "c++", "safari", "webkit" };
 
-		ArrayList<String> resultedTags = db.getTopRelatedTags(referenceTag);
+		ArrayList<KeyValuePair> resultedTags = db.getTopRelatedTags(referenceTag);
 
-		for (String resultedTag : resultedTags) {
+		for (KeyValuePair resultedString : resultedTags) {
+			String resultedTag = resultedString.getKey();
 			foundTag = false;
 			for (int i = 0; i < expectedResult.length; i++) {
 				if (expectedResult[i].equals(resultedTag)) {
