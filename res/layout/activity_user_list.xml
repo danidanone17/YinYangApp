@@ -57,6 +57,7 @@
 	    android:id="@+id/user_list"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+	    android:descendantFocusability="beforeDescendants"
 	    android:layout_below="@id/header"
 	    android:layout_above="@id/footer" /> 
     
