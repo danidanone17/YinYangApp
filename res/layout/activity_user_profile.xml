@@ -101,13 +101,6 @@
 
         <!-- Links to the other user related pages -->
 
-        <Button
-            android:id="@+id/questions_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="questionsView"
-            android:text="@string/button_questions"
-            android:textSize="12sp" />
     </LinearLayout>
 
     <!-- Right panel. Contains user details + user description -->
