@@ -51,7 +51,7 @@
 
     <!-- FreeTextSearchActivity -->
     <string name="title_activity_free_text_search">Search for posts</string>
-    <string name="string_search">Search text</string>
+    <string name="string_search">Search for posts</string>
     <string name="search_command">Search</string>
     <string name="FreeTextSearch">Free text search</string>
     <string name="title_activity_tab_search">Tag Search</string>
@@ -78,7 +78,7 @@
     <string name="button_sort_by_question_score">Question score</string>
 
     <!-- TabSearchActivity -->
-    <string name="tag_search">Search tag</string>
+    <string name="tag_search">Search for tag</string>
     <string name="error_no_search_parameters">Please enter search text</string>
 
     <!-- UserListActivity -->
