@@ -171,9 +171,9 @@ public class UserListActivity extends Activity {
 	    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	        @Override
 	        public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-	        	User user = users.get(position);
+	        	int userId = users.get(position).getId();
 	        	Intent intent = new Intent(UserListActivity.this, UserProfileActivity.class);
-				intent.putExtra(UserProfileActivity.EXTRA_USERID, user.getId());
+				intent.putExtra(UserProfileActivity.EXTRA_USERID, userId);
 				startActivity(intent);
 	        }
 			});
