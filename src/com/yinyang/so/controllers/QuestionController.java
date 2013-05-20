@@ -124,7 +124,11 @@ public class QuestionController {
 		question = dbAdapter.getPost(questionId);
 		questionScore = question.getScore();
 		// get question author
-		questionAuthor = dbAdapter.getUser(question.getOwnerUserId());
+		//0 is returned when nothing can be parsed
+		if(question.getOwnerUserId() == 0)
+			questionAuthor =  dbAdapter.getUser(13);
+		else
+			questionAuthor = dbAdapter.getUser(question.getOwnerUserId());
 		// get answers
 		answers = dbAdapter.getAnswers(question.getId());
 		// get authors to answers
