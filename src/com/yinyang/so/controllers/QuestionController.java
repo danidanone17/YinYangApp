@@ -40,6 +40,16 @@ public class QuestionController {
 		dbAdapter = new DatabaseAdapter(con);
 		dbAdapter.createDatabase();
 		this.fetchData(questionId);
+		
+		if(question == null) {
+			throw new NullPointerException("'Post question' is null upon creation of QuestionController");
+		}
+		if(questionAuthor == null) {
+			throw new NullPointerException("'DB-error: User questionAuthor' is null upon creation of QuestionController");
+		}
+		if(answerAuthors == null) {
+			throw new NullPointerException("'List<User> answerAuthors' is null upon creation of QuestionController");			
+		}
 	}
 
 	/**
@@ -124,11 +134,7 @@ public class QuestionController {
 		question = dbAdapter.getPost(questionId);
 		questionScore = question.getScore();
 		// get question author
-		//0 is returned when nothing can be parsed
-		if(question.getOwnerUserId() == 0)
-			questionAuthor =  dbAdapter.getUser(13);
-		else
-			questionAuthor = dbAdapter.getUser(question.getOwnerUserId());
+		questionAuthor = dbAdapter.getUser(question.getOwnerUserId());
 		// get answers
 		answers = dbAdapter.getAnswers(question.getId());
 		// get authors to answers
