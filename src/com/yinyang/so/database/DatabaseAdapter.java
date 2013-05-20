@@ -667,20 +667,25 @@ public class DatabaseAdapter {
 	 *            tags the returned questions should be related to
 	 * @param eSearchResultSortingAlgorithm
 	 *            chosen search result algorithm
-	 * @param lastSortingElement
-	 *            depending on the type of sort, this string contains the value
-	 *            contained in the sort parameter of the last displayed element
-	 *            If we display the first page the value is "" or null
-	 * @lastQuestionIds list of the last displayed elements which have the same
-	 *                  value of the sort element
+	 * @param displayedPosts 
+	 * 			  the posts currently displayed, null if none
+	 * @param nextOrPrev 
+	 * 			  0 for next and 1 for previous, -1 if none
 	 * @return questions
 	 * 
 	 */
 	public ArrayList<Post> getQuestionsByFreeTextAndTagsWithLimits(
 			String[] oWords, ArrayList<String> oTags,
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
-			String lastSortingElement, int[] lastQuestionIds) {
-
+			ArrayList<Post> displayedPosts, int nextOrPrev) {
+		
+		String lastSortingElement = null;
+		ArrayList<Integer> lastQuestionIds = new ArrayList<Integer>();
+		if(displayedPosts!=null){
+			lastSortingElement = this.getLastSortingElement(displayedPosts, eSearchResultSortingAlgorithm);
+			lastQuestionIds = this.getQuestionsWithMinOrMaxSortingElementIds(displayedPosts, eSearchResultSortingAlgorithm, nextOrPrev);
+		}
+		
 		// create sql statement
 		// first select is for setting the limit based on the last displayed
 		// element (first we order and then we limit)
@@ -726,33 +731,69 @@ public class DatabaseAdapter {
 		// start condition for the second select
 		// add condition for limiting based on the type of search if we are not
 		// on the first page
-		if (!lastSortingElement.isEmpty() && lastSortingElement != null) {
+		if (lastSortingElement != null) {
 			switch (eSearchResultSortingAlgorithm) {
 			case QuestionScoreAlgorithm:
-				sSqlMessage += " WHERE " + Post.KEY_SCORE + " <= "
-						+ lastSortingElement;
+				sSqlMessage += " WHERE " + Post.KEY_SCORE;
+				
+				if (nextOrPrev == 0){
+					sSqlMessage += " <= ";
+				}
+				if (nextOrPrev == 1){
+					sSqlMessage += " >= ";
+				}
+				
+				sSqlMessage += lastSortingElement;
 				break;
 			case CreationDateAlgorithm:
-				sSqlMessage += " WHERE " + Post.KEY_CREATION_DATE + " <= '"
-						+ lastSortingElement + "'";
+				sSqlMessage += " WHERE " + Post.KEY_CREATION_DATE;
+				if (nextOrPrev == 0){
+					sSqlMessage += " <= ";
+				}
+				if (nextOrPrev == 1){
+					sSqlMessage += " >= ";
+				}
+				
+				sSqlMessage += lastSortingElement;
 				break;
 			case AnswerCountAlgotithm:
-				sSqlMessage += " WHERE " + Post.KEY_ANSWER_COUNT + " <= "
-						+ lastSortingElement;
+				sSqlMessage += " WHERE " + Post.KEY_ANSWER_COUNT;
+				if (nextOrPrev == 0){
+					sSqlMessage += " <= ";
+				}
+				if (nextOrPrev == 1){
+					sSqlMessage += " >= ";
+				}
+				
+				sSqlMessage += lastSortingElement;
 				break;
 			case UserReputationAlgorithm:
-				sSqlMessage += " WHERE " + User.KEY_REPUTATION + " <= "
-						+ lastSortingElement;
+				sSqlMessage += " WHERE " + User.KEY_REPUTATION;
+				if (nextOrPrev == 0){
+					sSqlMessage += " <= ";
+				}
+				if (nextOrPrev == 1){
+					sSqlMessage += " >= ";
+				}
+				
+				sSqlMessage += lastSortingElement;
 				break;
 			default:
-				sSqlMessage += " WHERE " + Post.KEY_SCORE + " <= "
-						+ lastSortingElement;
+				sSqlMessage += " WHERE " + Post.KEY_SCORE;
+				if (nextOrPrev == 0){
+					sSqlMessage += " <= ";
+				}
+				if (nextOrPrev == 1){
+					sSqlMessage += " >= ";
+				}
+				
+				sSqlMessage += lastSortingElement;
 				break;
 			}
 
-			if (lastQuestionIds.length > 0) {
-				for (int i = 0; i < lastQuestionIds.length; i++) {
-					sSqlMessage += " AND id <>" + lastQuestionIds[i];
+			if (lastQuestionIds != null) {
+				for (int i = 0; i < lastQuestionIds.size(); i++) {
+					sSqlMessage += " AND id <>" + lastQuestionIds.get(i);
 				}
 			}
 		}
@@ -955,7 +996,7 @@ public class DatabaseAdapter {
 	 * @int minOrMax is 0 for min and 1 for max
 	 * @return
 	 */
-	public int[] getQuestionsWithMinOrMaxSortingElementIds(
+	public ArrayList<Integer> getQuestionsWithMinOrMaxSortingElementIds(
 			ArrayList<Post> displayedPosts,
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
 			int minOrMax) {
@@ -971,7 +1012,7 @@ public class DatabaseAdapter {
 			lastOrFirstSortingElement = this.getFirstSortingElement(displayedPosts, eSearchResultSortingAlgorithm);
 		}
 		
-		int[] postIds = {};
+		ArrayList<Integer> postIds = new ArrayList<Integer>();
 		// used for constructing the postIds vector
 		int k = 0;
 
@@ -982,7 +1023,7 @@ public class DatabaseAdapter {
 			for (int i = 0; i < displayedPosts.size(); i++) {
 				if (displayedPosts.get(i).getScore() == Integer
 						.parseInt(lastOrFirstSortingElement)) {
-					postIds[k] = displayedPosts.get(i).getId();
+					postIds.add(displayedPosts.get(i).getId());
 				}
 			}
 			break;
@@ -990,7 +1031,7 @@ public class DatabaseAdapter {
 			for (int i = 0; i < displayedPosts.size(); i++) {
 				if (displayedPosts.get(i).getCreationDate()
 						.equals(lastOrFirstSortingElement)) {
-					postIds[k] = displayedPosts.get(i).getId();
+					postIds.add(displayedPosts.get(i).getId());
 				}
 			}
 			break;
@@ -998,7 +1039,7 @@ public class DatabaseAdapter {
 			for (int i = 0; i < displayedPosts.size(); i++) {
 				if (displayedPosts.get(i).getAnswerCount() == Integer
 						.parseInt(lastOrFirstSortingElement)) {
-					postIds[k] = displayedPosts.get(i).getId();
+					postIds.add(displayedPosts.get(i).getId());
 				}
 			}
 			break;
@@ -1007,7 +1048,7 @@ public class DatabaseAdapter {
 				if (this.getUser(displayedPosts.get(i).getOwnerUserId())
 						.getReputation() == Integer
 						.parseInt(lastOrFirstSortingElement)) {
-					postIds[k] = displayedPosts.get(i).getId();
+					postIds.add(displayedPosts.get(i).getId());
 				}
 			}
 			break;

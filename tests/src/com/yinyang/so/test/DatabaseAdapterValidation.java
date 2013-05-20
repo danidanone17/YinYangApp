@@ -503,18 +503,15 @@ public class DatabaseAdapterValidation extends
 	/**
 	 * test public ArrayList<Post> getQuestionsByFreeTextAndTagsWithLimits(
 	 * String[] oWords, ArrayList<String> oTags, SearchResultSortingAlgorithm
-	 * eSearchResultSortingAlgorithm, String lastSortingElement) when oWords and
-	 * oTags are not empty, eSearchResultSortingAlgorithm is
-	 * QuestionScoreAlgorithm, lastSortingElement is empty
-	 * lastQuestionId = -1
+	 * eSearchResultSortingAlgorithm, String lastSortingElement) test to get the
+	 * first 10 result of a search by score
 	 */
-	public void testGetQuestionByFreeTextAndTagsWithLimits1() {
+	public void testGetQuestionByFreeTextAndTagsWithLimitsNext1() {
 		boolean foundPostId;
 		String[] oWords = { "string" };
 		ArrayList<String> oTags = new ArrayList<String>();
 		oTags.add("java");
-		String lastSortingElement = "";
-		int [] lastQuestionIds = {};
+		int[] lastQuestionIds = {};
 
 		int[] expectedPostIds = { 8416664, 8421824, 8470563, 8421007, 8471603,
 				8414452, 8417595, 8417809, 8469847, 8415628 };
@@ -522,7 +519,7 @@ public class DatabaseAdapterValidation extends
 		ArrayList<Post> resultedPosts = db
 				.getQuestionsByFreeTextAndTagsWithLimits(oWords, oTags,
 						SearchResultSortingAlgorithm.QuestionScoreAlgorithm,
-						lastSortingElement, lastQuestionIds);
+						null, -1);
 
 		for (Post post : resultedPosts) {
 			foundPostId = false;
@@ -538,18 +535,19 @@ public class DatabaseAdapterValidation extends
 	/**
 	 * test public ArrayList<Post> getQuestionsByFreeTextAndTagsWithLimits(
 	 * String[] oWords, ArrayList<String> oTags, SearchResultSortingAlgorithm
-	 * eSearchResultSortingAlgorithm, String lastSortingElement) when oWords and
-	 * oTags are not empty, eSearchResultSortingAlgorithm is
-	 * QuestionScoreAlgorithm, lastSortingElement is not empty
-	 * and lastQuestionId is not empty
+	 * eSearchResultSortingAlgorithm, String lastSortingElement) for next
+	 * functionality to go to the second 10 results of a search by count
 	 */
 	public void testGetQuestionByFreeTextAndTagsWithLimits2() {
 		boolean foundPostId;
 		String[] oWords = { "string" };
 		ArrayList<String> oTags = new ArrayList<String>();
 		oTags.add("java");
-		String lastSortingElement = "5";
-		int [] lastQuestionIds = {8472188, 8469847, 8421824, 8415864, 8414571};
+
+		ArrayList<Post> displayedPosts = db
+				.getQuestionsByFreeTextAndTagsWithLimits(oWords, oTags,
+						SearchResultSortingAlgorithm.AnswerCountAlgotithm,
+						null, -1);
 
 		int[] expectedPostIds = { 8473148, 8415836, 8416302, 8416664, 8418236,
 				8418628, 8419295, 8419415, 8469265, 8470364 };
@@ -557,7 +555,7 @@ public class DatabaseAdapterValidation extends
 		ArrayList<Post> resultedPosts = db
 				.getQuestionsByFreeTextAndTagsWithLimits(oWords, oTags,
 						SearchResultSortingAlgorithm.AnswerCountAlgotithm,
-						lastSortingElement, lastQuestionIds);
+						displayedPosts, 0);
 
 		for (Post post : resultedPosts) {
 			foundPostId = false;
@@ -567,6 +565,54 @@ public class DatabaseAdapterValidation extends
 				}
 			}
 			assertEquals(true, foundPostId);
+		}
+	}
+
+	/**
+	 * test public ArrayList<Post> getQuestionsByFreeTextAndTagsWithLimits(
+	 * String[] oWords, ArrayList<String> oTags, SearchResultSortingAlgorithm
+	 * eSearchResultSortingAlgorithm, String lastSortingElement) for previous
+	 * functionality to go to the first 10 results of a search by user when the
+	 * displayed result consists of the second 10 results of the search
+	 */
+	public void testGetQuestionByFreeTextAndTagsWithLimits3() {
+		boolean foundPostId;
+		String[] oWords = { "string" };
+		ArrayList<String> oTags = new ArrayList<String>();
+		oTags.add("java");
+		
+		// get the first 10 results of the search
+		ArrayList<Post> expectedPosts = db.getQuestionsByFreeTextAndTagsWithLimits(
+				oWords,
+				oTags,
+				SearchResultSortingAlgorithm.UserReputationAlgorithm,
+				null, -1);
+		
+		//get the second 10 results based on the first 10 results
+		ArrayList<Post> displayedPosts = db
+				.getQuestionsByFreeTextAndTagsWithLimits(
+						oWords,
+						oTags,
+						SearchResultSortingAlgorithm.UserReputationAlgorithm,
+						expectedPosts, 0);
+
+		ArrayList<Post> resultedPosts = db
+				.getQuestionsByFreeTextAndTagsWithLimits(oWords, oTags,
+						SearchResultSortingAlgorithm.UserReputationAlgorithm,
+						displayedPosts, 1);
+
+		boolean bFound = false;
+		
+		for(int i = 0; i < expectedPosts.size(); i++){
+			bFound = false;
+			
+			for (int j = 0; j < resultedPosts.size(); j++) {
+				if(resultedPosts.get(j).getId() == expectedPosts.get(i).getId()){
+					bFound = true;
+				}
+			}
+			
+			assertTrue(bFound);
 		}
 	}
 }
