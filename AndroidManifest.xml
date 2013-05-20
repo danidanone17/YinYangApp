@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.yinyang.so.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +26,8 @@
         </activity>
         <activity
             android:name="com.yinyang.so.activities.UserProfileActivity"
-            android:label="@string/title_activity_user_profile" >
+            android:label="@string/title_activity_user_profile"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.activities.UserListActivity" />
@@ -33,7 +35,8 @@
         <activity
             android:name="com.yinyang.so.activities.FreeTextSearchActivity"
             android:label="@string/title_activity_free_text_search"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
@@ -41,27 +44,32 @@
         <activity
             android:name="com.yinyang.so.activities.TagSearchActivity"
             android:label="@string/title_activity_tab_search"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.TopRelatedTagsActivity"
-            android:label="@string/title_activity_top_related_tags" >
+            android:label="@string/title_activity_top_related_tags"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.yinyang.so.activities.QuestionActivity"
             android:label="@string/title_activity_question"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.MainActivity" />
+                android:value="com.yinyang.so.MainActivity"
+                 />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.SearchResultActivity"
             android:label="@string/title_activity_searchResult"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.activities.TabSearchActivity" />
@@ -69,7 +77,8 @@
         <activity
             android:name="com.yinyang.so.activities.UserListActivity"
             android:label="@string/title_activity_user_list"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity" >
+            android:parentActivityName="com.yinyang.so.activities.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
