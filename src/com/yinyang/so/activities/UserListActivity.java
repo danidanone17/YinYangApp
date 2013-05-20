@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -87,7 +88,7 @@ public class UserListActivity extends Activity {
 		    View v = inflater.inflate(R.layout.user_list_layout, parent, false);
 
 			
-			User o = users.get(position);
+			final User o = users.get(position);
 
 			if (o != null) {
 				// set name
@@ -95,19 +96,8 @@ public class UserListActivity extends Activity {
 				if (name != null) {
 					name.setText(o.getDisplayName());
 					name.setId(o.getId());
-					name.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							TextView name = (TextView)view;
-							Intent intent = new Intent(UserListActivity.this,UserProfileActivity.class);
-							intent.putExtra(UserProfileActivity.EXTRA_USERID, name.getId());
-							startActivity(intent);
-						}
-						});
 				}
-				
 		
-			
 				// set location
 				TextView location = (TextView) v.findViewById(R.id.location);
 				if (location != null) {
@@ -176,5 +166,16 @@ public class UserListActivity extends Activity {
 		// set post array adapter for list view
 		ListView listView = (ListView) findViewById(R.id.user_list);
 		listView.setAdapter(userArrayAdapter);
+		
+		// add onclick event to all list elements
+	    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	        @Override
+	        public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+	        	User user = users.get(position);
+	        	Intent intent = new Intent(UserListActivity.this, UserProfileActivity.class);
+				intent.putExtra(UserProfileActivity.EXTRA_USERID, user.getId());
+				startActivity(intent);
+	        }
+			});
 	}
 }
