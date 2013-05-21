@@ -601,9 +601,8 @@ public class DatabaseAdapter {
 	public ArrayList<Post> getQuestionsByFreeTextAndTags(String[] oWords,
 			ArrayList<String> oTags,
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
-		return this.getQuestionsByFreeTextAndTagsWithLimits(oWords,
-				new ArrayList<String>(), eSearchResultSortingAlgorithm, null,
-				-1);
+		return this.getQuestionsByFreeTextAndTagsWithLimits(oWords, oTags,
+				eSearchResultSortingAlgorithm, null, -1);
 	}
 
 	/**
@@ -632,12 +631,17 @@ public class DatabaseAdapter {
 			ArrayList<Post> displayedPosts, int nextOrPrev) {
 
 		String lastSortingElement = null;
-		ArrayList<Integer> lastQuestionIds = new ArrayList<Integer>();
-		if (displayedPosts != null) {
-			lastSortingElement = this.getLastSortingElement(displayedPosts,
-					eSearchResultSortingAlgorithm);
-			lastQuestionIds = this.getQuestionsWithMinOrMaxSortingElementIds(
-					displayedPosts, eSearchResultSortingAlgorithm, nextOrPrev);
+		int lastQuestionId = -1;
+		if (displayedPosts != null && displayedPosts.size() > 0) {
+			if (nextOrPrev == 0) {
+				lastSortingElement = this.getLastSortingElement(displayedPosts,
+						eSearchResultSortingAlgorithm);
+			} else {
+				lastSortingElement = this.getFirstSortingElement(
+						displayedPosts, eSearchResultSortingAlgorithm);
+			}
+			lastQuestionId = this.getQuestionsWithMinOrMaxSortingElementId(
+					displayedPosts, nextOrPrev);
 		}
 
 		// create sql statement
@@ -669,21 +673,23 @@ public class DatabaseAdapter {
 		// add order by statement
 		switch (eSearchResultSortingAlgorithm) {
 		case QuestionScoreAlgorithm:
-			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC)";
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
 			break;
 		case CreationDateAlgorithm:
-			sSqlMessage += " ORDER BY " + Post.KEY_CREATION_DATE + " DESC)";
+			sSqlMessage += " ORDER BY " + Post.KEY_CREATION_DATE + " DESC";
 			break;
 		case AnswerCountAlgotithm:
-			sSqlMessage += " ORDER BY " + Post.KEY_ANSWER_COUNT + " DESC)";
+			sSqlMessage += " ORDER BY " + Post.KEY_ANSWER_COUNT + " DESC";
 			break;
 		case UserReputationAlgorithm:
-			sSqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC)";
+			sSqlMessage += " ORDER BY " + User.KEY_REPUTATION + " DESC";
 			break;
 		default:
-			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC)";
+			sSqlMessage += " ORDER BY " + Post.KEY_SCORE + " DESC";
 			break;
 		}// end of the first select
+
+		sSqlMessage += ", " + Post.KEY_ID + " DESC)";
 
 		// start condition for the second select
 		// add condition for limiting based on the type of search if we are not
@@ -748,9 +754,13 @@ public class DatabaseAdapter {
 				break;
 			}
 
-			if (lastQuestionIds != null) {
-				for (int i = 0; i < lastQuestionIds.size(); i++) {
-					sSqlMessage += " AND id <>" + lastQuestionIds.get(i);
+			if (lastQuestionId != -1) {
+				if (nextOrPrev == 0) {
+					sSqlMessage += " AND " + Post.KEY_ID + " < "
+							+ lastQuestionId + " ";
+				} else {
+					sSqlMessage += " AND " + Post.KEY_ID + " > "
+							+ lastQuestionId + " ";
 				}
 			}
 		}
@@ -758,13 +768,17 @@ public class DatabaseAdapter {
 		// add search result limit
 		sSqlMessage += " LIMIT 10";
 
-		// execute sql statement
-		Cursor oCursor = this.getCursor(sSqlMessage);
+		try {
+			// execute sql statement
+			Cursor oCursor = this.getCursor(sSqlMessage);
 
-		// convert result to an array list of Posts
-		ArrayList<Post> oQuestions = this.getPostsFromCursor(oCursor);
+			// convert result to an array list of Posts
+			ArrayList<Post> oQuestions = this.getPostsFromCursor(oCursor);
 
-		return oQuestions;
+			return oQuestions;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
@@ -946,83 +960,28 @@ public class DatabaseAdapter {
 	}
 
 	/**
-	 * after the minimum or maximum value of the sorting element is found, the
-	 * ids of the displayed posts containing that value are returned
+	 * get the id of the first or last element of the displayed elements
 	 * 
 	 * @param displayedPosts
-	 * @param eSearchResultSortingAlgorithm
 	 * @int minOrMax is 0 for min and 1 for max
 	 * @return
 	 */
-	public ArrayList<Integer> getQuestionsWithMinOrMaxSortingElementIds(
-			ArrayList<Post> displayedPosts,
-			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
-			int minOrMax) {
+	public int getQuestionsWithMinOrMaxSortingElementId(
+			ArrayList<Post> displayedPosts, int minOrMax) {
 
-		String lastOrFirstSortingElement;
+		int postId = 0;
 
+		// for next, we get the last element
 		if (minOrMax == 0) {
-			// call the getLastSortingElement to get the minimum value of the
-			// sorting element in the displayedPosts list
-			lastOrFirstSortingElement = this.getLastSortingElement(
-					displayedPosts, eSearchResultSortingAlgorithm);
-		} else {
-			// call the getFirstSortingElement to get the maximum value of the
-			// sorting element in the displayedPosts list
-			lastOrFirstSortingElement = this.getFirstSortingElement(
-					displayedPosts, eSearchResultSortingAlgorithm);
+			postId = displayedPosts.get(displayedPosts.size() - 1).getId();
 		}
 
-		ArrayList<Integer> postIds = new ArrayList<Integer>();
-		// used for constructing the postIds vector
-		int k = 0;
-
-		// append to postIds the post ids of the posts that have the sorting
-		// element equal to the lastSortingElement
-		switch (eSearchResultSortingAlgorithm) {
-		case QuestionScoreAlgorithm:
-			for (int i = 0; i < displayedPosts.size(); i++) {
-				if (displayedPosts.get(i).getScore() == Integer
-						.parseInt(lastOrFirstSortingElement)) {
-					postIds.add(displayedPosts.get(i).getId());
-				}
-			}
-			break;
-		case CreationDateAlgorithm:
-			try {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				for (int i = 0; i < displayedPosts.size(); i++) {
-					if (displayedPosts.get(i).getCreationDate()
-							.equals(lastOrFirstSortingElement)) {
-						postIds.add(displayedPosts.get(i).getId());
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case AnswerCountAlgotithm:
-			for (int i = 0; i < displayedPosts.size(); i++) {
-				if (displayedPosts.get(i).getAnswerCount() == Integer
-						.parseInt(lastOrFirstSortingElement)) {
-					postIds.add(displayedPosts.get(i).getId());
-				}
-			}
-			break;
-		case UserReputationAlgorithm:
-			for (int i = 0; i < displayedPosts.size(); i++) {
-				if (this.getUser(displayedPosts.get(i).getOwnerUserId())
-						.getReputation() == Integer
-						.parseInt(lastOrFirstSortingElement)) {
-					postIds.add(displayedPosts.get(i).getId());
-				}
-			}
-			break;
-		default:
-			break;
+		// for previous, we get the first element
+		if (minOrMax == 1) {
+			postId = displayedPosts.get(0).getId();
 		}
 
-		return postIds;
+		return postId;
 	}
 
 	/**
