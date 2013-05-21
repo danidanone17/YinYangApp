@@ -33,13 +33,11 @@ import com.yinyang.so.extras.PredicateLayout;
  * Show the search result in a list with the possibilities to sort by user
  * reputation, question score, creation date of post and by number of answers
  * 
- * Implements OnSharedPreferenceChangeListener to listen for changes in heat
- * mapping choice
- * 
- * Extends ShowSettingsActivity to show menu with settings and handle menu
- * selection
+ * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings and handle menu
+ * selection. Listens to changes made in the settings and calls updateSettings().
  */
-public class SearchResultActivity extends ShowSettingsActivity{	
+public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivity{
+
 	public static final String KEY_FREE_TEXT = "FREE_TEXT";
 	public static final String KEY_TAGS = "TAGS";
 	public static final String KEY_POSTS_QUESTION_SCORE = "POSTS_QUESTION_SCORE";

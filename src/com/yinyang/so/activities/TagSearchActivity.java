@@ -21,10 +21,10 @@ import com.yinyang.so.extras.PredicateLayout;
  * Implements OnSharedPreferenceChangeListener to listen for changes in heat
  * mapping choice
  * 
- * Extends ShowSettingsActivity to show menu with settings and handle menu
+ * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings and handle menu
  * selection
  */
-public class TagSearchActivity extends ShowSettingsActivity {
+public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 
 	// necessary for putting tags from the outside
 	public final static String EXTRA_TAGSTRING = "com.example.YingYangApp.TAGSTRING";
@@ -53,7 +53,7 @@ public class TagSearchActivity extends ShowSettingsActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tab_search);
+		setContentView(R.layout.activity_tag_search);
 		// Get user set settings and current heat mapping toggle
 		heatMapping = getSettings();
 

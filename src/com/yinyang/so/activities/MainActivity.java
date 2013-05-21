@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 
 	public void showQuestionView2(View _) {
 		Intent intent = new Intent(this, QuestionActivity.class);
-		intent.putExtra(QuestionActivity.EXTRA_QUESTIONID, 8471528);
+		intent.putExtra(QuestionActivity.EXTRA_QUESTIONID, 1);
 		startActivity(intent);
 	}
 
@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
 	

@@ -10,36 +10,38 @@
     android:orientation="vertical"
     android:id="@+id/main_layout">
     
-    <LinearLayout 
+    <RelativeLayout 
         	android:id="@+id/header"
 	        android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="center_horizontal"
 	    	android:layout_marginTop="10dp"
-	    	android:layout_marginBottom="10dp">
+	    	android:layout_marginBottom="5dp">
                 
 		    <EditText 
 		        android:id="@+id/edit_user_search"
-		        android:layout_width="200dp"
+		        android:layout_width="fill_parent"
+		        android:layout_toLeftOf="@id/button_tag_search"
 		        android:layout_height="wrap_content"
 		        android:hint="@string/user_search"
 		        android:singleLine="true"/>
 		    
 		    <Button
 	            android:id="@+id/button_tag_search"
+	            android:layout_alignParentRight="true"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:onClick="performUserSearch"
 	            android:text="@string/search_command"
 	            android:textSize="20sp" 
-	            android:layout_gravity="center_horizontal"/>
-    </LinearLayout>
+	            />
+    </RelativeLayout>
         
     <LinearLayout 
        	android:id="@+id/footer"
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_marginTop="10dp"
+    	android:layout_marginTop="5dp"
     	android:layout_marginBottom="10dp"
     	android:layout_alignParentBottom="true">
 	    
@@ -59,6 +61,7 @@
 	    android:layout_height="wrap_content"
 	    android:descendantFocusability="beforeDescendants"
 	    android:layout_below="@id/header"
-	    android:layout_above="@id/footer" /> 
+	    android:layout_above="@id/footer" 
+	    android:background="@drawable/customborder"/> 
     
 </RelativeLayout>
