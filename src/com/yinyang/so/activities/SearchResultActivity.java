@@ -6,6 +6,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -260,6 +263,8 @@ public class SearchResultActivity extends ShowSettingsActivity{
 			this.posts = posts;
 		}
 
+		@SuppressWarnings("deprecation")
+		@SuppressLint("NewApi")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -271,10 +276,22 @@ public class SearchResultActivity extends ShowSettingsActivity{
 			if (o != null) {
 				// set background color if heat map is activated
 				if (heatMapActive) {
+					// create a gradient background for list elements
+					GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM,
+							new int[] { getColorByHeat(o.getHeat()), android.R.drawable.editbox_background,
+							android.R.drawable.editbox_background, android.R.drawable.editbox_background});
+					g.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+					// limit the gradient to the upper part of the list element
+					
+					// put the gradient into respective layout
 					RelativeLayout relativeLayout = (RelativeLayout) v
 							.findViewById(R.id.listItemLayout);
-					relativeLayout.setBackgroundColor(getColorByHeat(o
-							.getHeat()));
+					if (android.os.Build.VERSION.SDK_INT >= 16) {
+						relativeLayout.setBackground(g);
+					}
+					else {
+						relativeLayout.setBackgroundDrawable(g); 
+					}
 				}
 
 				// set answer count
