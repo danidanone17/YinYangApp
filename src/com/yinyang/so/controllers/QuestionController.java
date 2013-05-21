@@ -40,6 +40,11 @@ public class QuestionController {
 		dbAdapter = new DatabaseAdapter(con);
 		dbAdapter.createDatabase();
 		this.fetchData(questionId);
+
+		//Fix for incomplete DB, i.e. missing 'Question ID'-fields.
+		if(questionAuthor == null) {
+			throw new NullPointerException("'DB-error: User questionAuthor' is null upon creation of QuestionController");
+		}
 	}
 
 	/**

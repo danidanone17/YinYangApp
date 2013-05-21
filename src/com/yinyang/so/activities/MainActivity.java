@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 
 	public void showQuestionView2(View _) {
 		Intent intent = new Intent(this, QuestionActivity.class);
-		intent.putExtra(QuestionActivity.EXTRA_QUESTIONID, 8471528);
+		intent.putExtra(QuestionActivity.EXTRA_QUESTIONID, 1);
 		startActivity(intent);
 	}
 
