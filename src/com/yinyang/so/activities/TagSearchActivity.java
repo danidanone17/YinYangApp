@@ -53,7 +53,7 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tab_search);
+		setContentView(R.layout.activity_tag_search);
 		// Get user set settings and current heat mapping toggle
 		heatMapping = getSettings();
 
