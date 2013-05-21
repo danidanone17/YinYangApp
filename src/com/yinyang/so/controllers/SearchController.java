@@ -133,11 +133,9 @@ public class SearchController {
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
 		dbAdapter.open();
 
-		if (!"".equals(sFreeText)) {
+		if (!"".equals(sFreeText) || oTags.size() > 0) {
 			return dbAdapter.getQuestionsByFreeTextAndTags(
 					sFreeText.split(" "), oTags, eSearchResultSortingAlgorithm);
-		} else if (oTags.size() > 0) {
-			return dbAdapter.getPostsByTags(oTags);
 		} else {
 			return new ArrayList<Post>();
 		}
@@ -160,27 +158,29 @@ public class SearchController {
 		// pass posts sorted by question score to search result activity
 		ArrayList<Post> postsFound = augmentPostsByHeat(freeTextSearch(
 				textSearch, SearchResultSortingAlgorithm.QuestionScoreAlgorithm));
-		oIntent.putParcelableArrayListExtra("POSTS_QUESTION_SCORE",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_QUESTION_SCORE,
 				(ArrayList<? extends Parcelable>) postsFound);
 
 		// pass posts sorted by creation date to search result activity
 		postsFound = augmentPostsByHeat(freeTextSearch(textSearch,
 				SearchResultSortingAlgorithm.CreationDateAlgorithm));
-		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_CREATION_DATE,
 				(ArrayList<? extends Parcelable>) postsFound);
 
 		// pass posts sorted by answer count to search result activity
 		postsFound = augmentPostsByHeat(freeTextSearch(textSearch,
 				SearchResultSortingAlgorithm.AnswerCountAlgotithm));
-		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_ANSWER_COUNT,
 				(ArrayList<? extends Parcelable>) postsFound);
-		oIntent.putExtra("TEXT_SEARCH", textSearch);
 
 		// pass posts sorted by answer count to search result activity
 		postsFound = augmentPostsByHeat(freeTextSearch(textSearch,
 				SearchResultSortingAlgorithm.UserReputationAlgorithm));
-		oIntent.putParcelableArrayListExtra("POSTS_USER_REPUTATION",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_USER_REPUTATION,
 				(ArrayList<? extends Parcelable>) postsFound);
+		
+		// pass free text
+		oIntent.putExtra(SearchResultActivity.KEY_FREE_TEXT, textSearch);
 
 		con.startActivity(oIntent);
 	}
@@ -206,29 +206,34 @@ public class SearchController {
 		ArrayList<Post> oPosts = augmentPostsByHeat(freeTextAndTagSearch(
 				textSearch, selectedTags,
 				SearchResultSortingAlgorithm.QuestionScoreAlgorithm));
-		oIntent.putParcelableArrayListExtra("POSTS_QUESTION_SCORE",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_QUESTION_SCORE,
 				(ArrayList<? extends Parcelable>) oPosts);
 
 		// pass posts sorted by creation date to search result activity
 		oPosts = augmentPostsByHeat(freeTextAndTagSearch(textSearch,
 				selectedTags,
 				SearchResultSortingAlgorithm.CreationDateAlgorithm));
-		oIntent.putParcelableArrayListExtra("POSTS_CREATION_DATE",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_CREATION_DATE,
 				(ArrayList<? extends Parcelable>) oPosts);
 
 		// pass posts sorted by answer count to search result activity
 		oPosts = augmentPostsByHeat(freeTextAndTagSearch(textSearch,
 				selectedTags, SearchResultSortingAlgorithm.AnswerCountAlgotithm));
-		oIntent.putParcelableArrayListExtra("POSTS_ANSWER_COUNT",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_ANSWER_COUNT,
 				(ArrayList<? extends Parcelable>) oPosts);
-		oIntent.putExtra("TEXT_SEARCH", textSearch);
 
 		// pass posts sorted by user reputation to search result activity
 		oPosts = augmentPostsByHeat(freeTextAndTagSearch(textSearch,
 				selectedTags,
 				SearchResultSortingAlgorithm.UserReputationAlgorithm));
-		oIntent.putParcelableArrayListExtra("POSTS_USER_REPUTATION",
+		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_USER_REPUTATION,
 				(ArrayList<? extends Parcelable>) oPosts);
+		
+		// pass free text
+		oIntent.putExtra(SearchResultActivity.KEY_FREE_TEXT, textSearch);
+		
+		// pass tags
+		oIntent.putStringArrayListExtra(SearchResultActivity.KEY_TAGS, selectedTags);
 
 		con.startActivity(oIntent);
 	}

@@ -20,6 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
+import com.yinyang.so.controllers.SearchController;
+import com.yinyang.so.controllers.SearchResultController;
+import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.extras.PredicateLayout;
 
@@ -33,12 +36,22 @@ import com.yinyang.so.extras.PredicateLayout;
  * Extends ShowSettingsActivity to show menu with settings and handle menu
  * selection
  */
-public class SearchResultActivity extends ShowSettingsActivity{
-	// implements OnSharedPreferenceChangeListener
-//	public static final String KEY_PREF_HEAT_MAPPING = "pref_heat_mapping";
+public class SearchResultActivity extends ShowSettingsActivity{	
+	public static final String KEY_FREE_TEXT = "FREE_TEXT";
+	public static final String KEY_TAGS = "TAGS";
+	public static final String KEY_POSTS_QUESTION_SCORE = "POSTS_QUESTION_SCORE";
+	public static final String KEY_POSTS_CREATION_DATE = "POSTS_CREATION_DATE";
+	public static final String KEY_POSTS_ANSWER_COUNT = "POSTS_ANSWER_COUNT";
+	public static final String KEY_POSTS_USER_REPUTATION = "POSTS_USER_REPUTATION";
 	
 	private PostArrayAdapter postArrayAdapter;
+	
 	private ArrayList<Post> activePosts;
+	private ArrayList<Post> postsSortedByQuestionScore;
+	private ArrayList<Post> postsSortedByCreationDate;
+	private ArrayList<Post> postsSortedByAnswerCount;
+	private ArrayList<Post> postsSortedByUserReputation;
+	
 	private Intent mIntent;
 	private ListView mQuestionList;
 	private int selectedButtonTextColor = Color.GRAY;
@@ -47,6 +60,8 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	private int unSelectedButtonBackgroundColor = Color.GRAY;
 	private Button[] sortButtons = new Button[4];
 	private boolean heatMapActive;
+	private SearchResultSortingAlgorithm currSortingAlogorithm = SearchResultSortingAlgorithm.QuestionScoreAlgorithm;
+	private SearchResultController searchResultController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +70,28 @@ public class SearchResultActivity extends ShowSettingsActivity{
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		// initialize search controller
+		searchResultController = new SearchResultController(this);
 
 		//Init the sort buttons 
 		setupButtons();
 		//Setup the setting's listener and get the current toggle for heat mapping
 		heatMapActive = getSettings();
 		
-		
 		mQuestionList = (ListView) findViewById(R.id.activity_search_result);
 
 		// get posts to display
 		mIntent = getIntent();
-		getPostByOrder("POSTS_QUESTION_SCORE");
+		
+		postsSortedByQuestionScore = mIntent.getParcelableArrayListExtra(KEY_POSTS_QUESTION_SCORE);
+		postsSortedByCreationDate = mIntent.getParcelableArrayListExtra(KEY_POSTS_CREATION_DATE);
+		postsSortedByAnswerCount = mIntent.getParcelableArrayListExtra(KEY_POSTS_ANSWER_COUNT);
+		postsSortedByUserReputation = mIntent.getParcelableArrayListExtra(KEY_POSTS_USER_REPUTATION);
+		
+		initNewActivePosts(postsSortedByQuestionScore);
 
-		setTitle(getTitle() + " " + mIntent.getStringExtra("TEXT_SEARCH"));
+		setTitle(getTitle() + " " + mIntent.getStringExtra(KEY_FREE_TEXT));
 	}
 
 	/**
@@ -155,14 +178,13 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	}
 
 	/**
-	 * Fetch the the post ordering from the intent based on the inputed order
+	 * Initializes the new active posts
 	 * 
-	 * @param order
-	 *            - One of POSTS_USER_REPUTATION, POSTS_QUESTION_SCORE,
-	 *            POSTS_CREATION_DATE, POSTS_ANSWER_COUNT
+	 * @param activePosts
+	 *            new active posts
 	 */
-	private void getPostByOrder(String order) {
-		activePosts = mIntent.getParcelableArrayListExtra(order);
+	private void initNewActivePosts(ArrayList<Post> activePosts) {
+		this.activePosts = activePosts;
 		initPostArrayAdapter();
 	}
 
@@ -173,7 +195,8 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	 * @param view
 	 */
 	public void sortByUserReputation(View view) {
-		getPostByOrder("POSTS_USER_REPUTATION");
+		currSortingAlogorithm = SearchResultSortingAlgorithm.UserReputationAlgorithm;
+		initNewActivePosts(postsSortedByUserReputation);
 		setButtonColors(0);
 	}
 
@@ -184,7 +207,8 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	 * @param view
 	 */
 	public void sortByQuestionScore(View view) {
-		getPostByOrder("POSTS_QUESTION_SCORE");
+		currSortingAlogorithm = SearchResultSortingAlgorithm.QuestionScoreAlgorithm;
+		initNewActivePosts(postsSortedByQuestionScore);
 		setButtonColors(1);
 	}
 
@@ -195,7 +219,8 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	 * @param view
 	 */
 	public void sortByCreationDate(View view) {
-		getPostByOrder("POSTS_CREATION_DATE");
+		currSortingAlogorithm = SearchResultSortingAlgorithm.CreationDateAlgorithm;
+		initNewActivePosts(postsSortedByCreationDate);
 		setButtonColors(2);
 	}
 
@@ -206,7 +231,8 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	 * @param view
 	 */
 	public void sortByAnswerCount(View view) {
-		getPostByOrder("POSTS_ANSWER_COUNT");
+		currSortingAlogorithm = SearchResultSortingAlgorithm.AnswerCountAlgotithm;
+		initNewActivePosts(postsSortedByAnswerCount);
 		setButtonColors(3);
 	}
 	
@@ -330,6 +356,53 @@ public class SearchResultActivity extends ShowSettingsActivity{
 			default:
 				return 0xA0FF0000;
 			}
+		}
+	}
+	
+	/**
+	 * Handles event when show prev posts is clicked
+	 * @param view the view that triggered the event
+	 */
+	public void showPrevPosts(View view){
+		showPosts(1);
+	}
+	
+	/**
+	 * Handles event when show prev posts is clicked
+	 * @param view the view that triggered the event
+	 */
+	public void showNextPosts(View view){
+		showPosts(0);
+	}
+	
+	/**
+	 * Shows either next or previous posts
+	 * @param nextOrPrev 0 for next and 1 for previous posts
+	 */
+	private void showPosts(int nextOrPrev){
+		ArrayList<Post> posts = searchResultController.getQuestionsByFreeTextAndTagsWithLimits(mIntent.getStringExtra(KEY_FREE_TEXT), mIntent.getStringArrayListExtra(KEY_TAGS), currSortingAlogorithm, activePosts, 0);		
+		updateCorrespondingPostArray(posts);
+		initNewActivePosts(posts);
+	}
+	
+	/**
+	 * Updates corresponding post array with the given post array
+	 * @param posts post array to update corresponding post array with
+	 */
+	private void updateCorrespondingPostArray(ArrayList<Post> posts){
+		switch (currSortingAlogorithm){
+		case QuestionScoreAlgorithm:
+			postsSortedByQuestionScore = posts;
+			break;
+		case CreationDateAlgorithm:
+			postsSortedByCreationDate = posts;
+			break;
+		case AnswerCountAlgotithm:
+			postsSortedByAnswerCount = posts;
+			break;
+		case UserReputationAlgorithm:
+			postsSortedByUserReputation = posts;
+			break;
 		}
 	}
 }

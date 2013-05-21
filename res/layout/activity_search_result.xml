@@ -1,7 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".SearchResultActivity" 
     android:orientation="vertical" >
 
     <LinearLayout
@@ -9,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/darker_gray"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:id="@+id/header">
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
@@ -51,16 +53,40 @@
             android:text="@string/button_sort_by_answer_count"
             android:textColor="@android:color/background_light" />
     </LinearLayout>
+    
+    <LinearLayout 
+       	android:id="@+id/footer"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentBottom="true"
+    	android:orientation="horizontal">
+	    
+	    <Button
+            android:id="@+id/button_prev"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="showNextPosts"
+            android:text="@string/show_prev_posts"
+            android:textSize="12sp" />
+	    
+	    <Button
+            android:id="@+id/button_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="showNextPosts"
+            android:text="@string/show_next_posts"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/activity_search_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".SearchResultActivity" >
+        android:layout_below="@id/header"
+        android:layout_above="@id/footer"
+        android:layout_marginBottom="10dp" >
     </ListView>
 
-</LinearLayout>
+</RelativeLayout>

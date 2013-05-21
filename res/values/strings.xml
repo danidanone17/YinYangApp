@@ -76,6 +76,8 @@
     <string name="button_sort_by_answer_count">Answer count</string>
     <string name="button_sort_by_creation_date">Creation date</string>
     <string name="button_sort_by_question_score">Question score</string>
+    <string name="show_prev_posts">Show previous posts</string>
+    <string name="show_next_posts">Show next posts</string>
 
     <!-- TabSearchActivity -->
     <string name="tag_search">Search for tag</string>
