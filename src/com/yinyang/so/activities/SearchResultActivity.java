@@ -30,10 +30,10 @@ import com.yinyang.so.extras.PredicateLayout;
  * Implements OnSharedPreferenceChangeListener to listen for changes in heat
  * mapping choice
  * 
- * Extends ShowSettingsActivity to show menu with settings and handle menu
+ * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings and handle menu
  * selection
  */
-public class SearchResultActivity extends ShowSettingsActivity{
+public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivity{
 	// implements OnSharedPreferenceChangeListener
 //	public static final String KEY_PREF_HEAT_MAPPING = "pref_heat_mapping";
 	

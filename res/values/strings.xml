@@ -94,10 +94,10 @@
     <string name="pref_heat_mapping">Relevance by heat</string>
     <string name="pref_heat_mapping_summary">Colors show how hot the search result is.</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_toggle_heat">ToggleHeatActivity</string>
 
     <!-- Menus -->
     <string name="menu_action_search">Search</string>
-    <string name="action_settings">Settings</string>
+    <string name="menu_action_user_list">Users</string>
+    <string name="menu_action_settings">Settings</string>
 
 </resources>

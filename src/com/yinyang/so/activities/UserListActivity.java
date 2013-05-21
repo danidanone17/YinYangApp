@@ -7,7 +7,6 @@ import com.yinyang.so.controllers.UserController;
 import com.yinyang.so.databaseentities.User;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
@@ -21,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class UserListActivity extends Activity {
+public class UserListActivity extends ShowMenuActivity {
 	private UserController userController;
 	private ArrayList<User> users;
 	private UserArrayAdapter userArrayAdapter;
@@ -40,8 +39,7 @@ public class UserListActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//No menu used
-		return false;
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	/**
@@ -55,13 +53,6 @@ public class UserListActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
