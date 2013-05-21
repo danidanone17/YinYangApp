@@ -6,8 +6,10 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yinyang.so.R;
@@ -24,7 +26,7 @@ import com.yinyang.so.extras.PredicateLayout;
  * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings and handle menu
  * selection
  */
-public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
+public class TagSearchActivity extends NavigationActivity {
 
 	// necessary for putting tags from the outside
 	public final static String EXTRA_TAGSTRING = "com.example.YingYangApp.TAGSTRING";
@@ -53,9 +55,9 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tab_search);
+		setContentView(R.layout.activity_tag_search);
 		// Get user set settings and current heat mapping toggle
-		heatMapping = getSettings();
+		//heatMapping = getSettings();
 
 		centerTag = this.getIntent().getStringExtra(EXTRA_TAGSTRING);
 		oSearchController = new SearchController(this);
@@ -373,7 +375,7 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 	 * 
 	 * @param heatMap
 	 */
-	@Override
+	//@Override
 	protected void updateSettings(boolean isHeatMap) {
 		heatMapping = isHeatMap;
 		// populate tag buttons around the tag button in the middle

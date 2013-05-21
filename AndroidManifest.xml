@@ -80,6 +80,7 @@
         <activity
             android:name="com.yinyang.so.activities.NotImplementedActivity"
             android:label="@string/title_activity_not_implemented" >
+            
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yinyang.so.MainActivity" />
@@ -88,11 +89,13 @@
             android:name="com.yinyang.so.activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-        <activity
-            android:name="com.yinyang.so.activities.ShowMenuAndActOnSettingsChangedActivity" >
+        <activity android:name="com.yinyang.so.activities.ShowMenuAndActOnSettingsChangedActivity" >
+        </activity>
+        <activity android:name="com.yinyang.so.activities.ShowMenuActivity" >
         </activity>
         <activity
-            android:name="com.yinyang.so.activities.ShowMenuActivity" >
+            android:name="com.yinyang.so.activities.NavigationActivity"
+            android:label="@string/title_activity_navigation" >
         </activity>
     </application>
 
