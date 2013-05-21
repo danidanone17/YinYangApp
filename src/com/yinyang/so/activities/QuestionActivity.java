@@ -29,7 +29,7 @@ import com.yinyang.so.databaseentities.Post;
 import com.yinyang.so.extras.PredicateLayout;
 
 @SuppressLint("NewApi")
-public class QuestionActivity extends Activity implements OnClickListener {
+public class QuestionActivity extends ShowMenuActivity implements OnClickListener {
 
 	public final static String EXTRA_QUESTIONID = "com.example.YingYangApp.QUESTIONID";
 	private ListView listViewAnswers;
@@ -61,21 +61,13 @@ public class QuestionActivity extends Activity implements OnClickListener {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//No menu used
-		return false;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}

@@ -1,6 +1,5 @@
 package com.yinyang.so.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -14,7 +13,7 @@ import android.widget.Toast;
 import com.yinyang.so.R;
 import com.yinyang.so.controllers.UserProfileController;
 
-public class UserProfileActivity extends Activity {
+public class UserProfileActivity extends ShowMenuActivity {
 
 	public final static String EXTRA_USERID = "com.example.YingYangApp.USERID";
 	public final static String EXTRA_DB_HELPER = "com.example.YingYangApp.DBHELPER";
@@ -50,9 +49,9 @@ public class UserProfileActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//No menu used
-		return false;
+		return super.onCreateOptionsMenu(menu);
 	}
+	
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -62,14 +61,7 @@ public class UserProfileActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
+			NavUtils.navigateUpFromSameTask(this);			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

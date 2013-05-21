@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_goto_search"
+        android:orderInCategory="100"
+        android:showAsAction="collapseActionView"
+        android:title="@string/menu_action_search"/>
+    <item
+        android:id="@+id/menu_goto_user_list"
+        android:showAsAction="collapseActionView"
+        android:title="@string/menu_action_user_list"/>
+    
+       <item
+        android:id="@+id/menu_goto_settings"
+        android:orderInCategory="100"
+        android:showAsAction="collapseActionView"
+        android:title="@string/menu_action_settings"/>
+
+</menu>
