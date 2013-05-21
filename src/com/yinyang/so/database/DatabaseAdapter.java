@@ -501,8 +501,8 @@ public class DatabaseAdapter {
 	}
 
 	/**
-	 * Get the four top-related tags of a tag (US39)
-	 * Returns tag name and number of occurences in a HashMap
+	 * Get the four top-related tags of a tag (US39) Returns tag name and number
+	 * of occurences in a HashMap
 	 * 
 	 * @param refrerenceTag
 	 *            tag
@@ -525,9 +525,11 @@ public class DatabaseAdapter {
 
 			for (MapTags relatedMapTag : tagsDBType) {
 				if (referenceTag.equals(relatedMapTag.getTag2())) {
-					tagNamesOccurences.add(new KeyValuePair(relatedMapTag.getTag1(), relatedMapTag.getCountAppearance()));
+					tagNamesOccurences.add(new KeyValuePair(relatedMapTag
+							.getTag1(), relatedMapTag.getCountAppearance()));
 				} else {
-					tagNamesOccurences.add(new KeyValuePair(relatedMapTag.getTag2(), relatedMapTag.getCountAppearance()));
+					tagNamesOccurences.add(new KeyValuePair(relatedMapTag
+							.getTag2(), relatedMapTag.getCountAppearance()));
 				}
 			}
 			Log.v("DEBUG", "Tag_1.4.1");
@@ -598,9 +600,10 @@ public class DatabaseAdapter {
 	 */
 	public ArrayList<Post> getQuestionsByFreeTextAndTags(String[] oWords,
 			ArrayList<String> oTags,
-			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {		
+			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
 		return this.getQuestionsByFreeTextAndTagsWithLimits(oWords,
-					new ArrayList<String>(), eSearchResultSortingAlgorithm, null, -1);
+				new ArrayList<String>(), eSearchResultSortingAlgorithm, null,
+				-1);
 	}
 
 	/**
@@ -616,10 +619,10 @@ public class DatabaseAdapter {
 	 *            tags the returned questions should be related to
 	 * @param eSearchResultSortingAlgorithm
 	 *            chosen search result algorithm
-	 * @param displayedPosts 
-	 * 			  the posts currently displayed, null if none
-	 * @param nextOrPrev 
-	 * 			  0 for next and 1 for previous, -1 if none
+	 * @param displayedPosts
+	 *            the posts currently displayed, null if none
+	 * @param nextOrPrev
+	 *            0 for next and 1 for previous, -1 if none
 	 * @return questions
 	 * 
 	 */
@@ -627,14 +630,16 @@ public class DatabaseAdapter {
 			String[] oWords, ArrayList<String> oTags,
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
 			ArrayList<Post> displayedPosts, int nextOrPrev) {
-		
+
 		String lastSortingElement = null;
 		ArrayList<Integer> lastQuestionIds = new ArrayList<Integer>();
-		if(displayedPosts!=null){
-			lastSortingElement = this.getLastSortingElement(displayedPosts, eSearchResultSortingAlgorithm);
-			lastQuestionIds = this.getQuestionsWithMinOrMaxSortingElementIds(displayedPosts, eSearchResultSortingAlgorithm, nextOrPrev);
+		if (displayedPosts != null) {
+			lastSortingElement = this.getLastSortingElement(displayedPosts,
+					eSearchResultSortingAlgorithm);
+			lastQuestionIds = this.getQuestionsWithMinOrMaxSortingElementIds(
+					displayedPosts, eSearchResultSortingAlgorithm, nextOrPrev);
 		}
-		
+
 		// create sql statement
 		// first select is for setting the limit based on the last displayed
 		// element (first we order and then we limit)
@@ -654,9 +659,10 @@ public class DatabaseAdapter {
 					+ "%')";
 		}
 
-		if(oTags != null){
+		if (oTags != null) {
 			for (String sTag : oTags) {
-				sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%<" + sTag + ">%'";
+				sSqlMessage += " AND " + Post.KEY_TAGS + " LIKE '%<" + sTag
+						+ ">%'";
 			}
 		}
 
@@ -686,58 +692,58 @@ public class DatabaseAdapter {
 			switch (eSearchResultSortingAlgorithm) {
 			case QuestionScoreAlgorithm:
 				sSqlMessage += " WHERE " + Post.KEY_SCORE;
-				
-				if (nextOrPrev == 0){
+
+				if (nextOrPrev == 0) {
 					sSqlMessage += " <= ";
 				}
-				if (nextOrPrev == 1){
+				if (nextOrPrev == 1) {
 					sSqlMessage += " >= ";
 				}
-				
+
 				sSqlMessage += lastSortingElement;
 				break;
 			case CreationDateAlgorithm:
-                sSqlMessage += " WHERE " + Post.KEY_CREATION_DATE;
-                if (nextOrPrev == 0){
-                    sSqlMessage += " <= ";
-                }
-                if (nextOrPrev == 1){
-                    sSqlMessage += " >= ";
-                }
-               
-                sSqlMessage += "'" + lastSortingElement + "'";
-                break;
-			case AnswerCountAlgotithm:
-				sSqlMessage += " WHERE " + Post.KEY_ANSWER_COUNT;
-				if (nextOrPrev == 0){
+				sSqlMessage += " WHERE " + Post.KEY_CREATION_DATE;
+				if (nextOrPrev == 0) {
 					sSqlMessage += " <= ";
 				}
-				if (nextOrPrev == 1){
+				if (nextOrPrev == 1) {
 					sSqlMessage += " >= ";
 				}
-				
+
+				sSqlMessage += "'" + lastSortingElement + "'";
+				break;
+			case AnswerCountAlgotithm:
+				sSqlMessage += " WHERE " + Post.KEY_ANSWER_COUNT;
+				if (nextOrPrev == 0) {
+					sSqlMessage += " <= ";
+				}
+				if (nextOrPrev == 1) {
+					sSqlMessage += " >= ";
+				}
+
 				sSqlMessage += lastSortingElement;
 				break;
 			case UserReputationAlgorithm:
 				sSqlMessage += " WHERE " + User.KEY_REPUTATION;
-				if (nextOrPrev == 0){
+				if (nextOrPrev == 0) {
 					sSqlMessage += " <= ";
 				}
-				if (nextOrPrev == 1){
+				if (nextOrPrev == 1) {
 					sSqlMessage += " >= ";
 				}
-				
+
 				sSqlMessage += lastSortingElement;
 				break;
 			default:
 				sSqlMessage += " WHERE " + Post.KEY_SCORE;
-				if (nextOrPrev == 0){
+				if (nextOrPrev == 0) {
 					sSqlMessage += " <= ";
 				}
-				if (nextOrPrev == 1){
+				if (nextOrPrev == 1) {
 					sSqlMessage += " >= ";
 				}
-				
+
 				sSqlMessage += lastSortingElement;
 				break;
 			}
@@ -803,7 +809,7 @@ public class DatabaseAdapter {
 					}
 				}
 
-				lastSortingElement = "" + minDate;
+				lastSortingElement = sdf.format(minDate);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -849,7 +855,7 @@ public class DatabaseAdapter {
 
 		return lastSortingElement;
 	}
-	
+
 	/**
 	 * get the first (maximum) value of the sorting element from a list of posts
 	 * 
@@ -892,7 +898,7 @@ public class DatabaseAdapter {
 					}
 				}
 
-				lastSortingElement = "" + maxDate;
+				lastSortingElement = sdf.format(maxDate);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -940,8 +946,9 @@ public class DatabaseAdapter {
 	}
 
 	/**
-	 * after the minimum or maximum value of the sorting element is found, the ids of the
-	 * displayed posts containing that value are returned
+	 * after the minimum or maximum value of the sorting element is found, the
+	 * ids of the displayed posts containing that value are returned
+	 * 
 	 * @param displayedPosts
 	 * @param eSearchResultSortingAlgorithm
 	 * @int minOrMax is 0 for min and 1 for max
@@ -951,18 +958,21 @@ public class DatabaseAdapter {
 			ArrayList<Post> displayedPosts,
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
 			int minOrMax) {
-		
+
 		String lastOrFirstSortingElement;
-		
-		if(minOrMax == 0){
-			// call the getLastSortingElement to get the minimum value of the sorting element in the displayedPosts list
-			lastOrFirstSortingElement = this.getLastSortingElement(displayedPosts, eSearchResultSortingAlgorithm);
+
+		if (minOrMax == 0) {
+			// call the getLastSortingElement to get the minimum value of the
+			// sorting element in the displayedPosts list
+			lastOrFirstSortingElement = this.getLastSortingElement(
+					displayedPosts, eSearchResultSortingAlgorithm);
+		} else {
+			// call the getFirstSortingElement to get the maximum value of the
+			// sorting element in the displayedPosts list
+			lastOrFirstSortingElement = this.getFirstSortingElement(
+					displayedPosts, eSearchResultSortingAlgorithm);
 		}
-		else{
-			// call the getFirstSortingElement to get the maximum value of the sorting element in the displayedPosts list
-			lastOrFirstSortingElement = this.getFirstSortingElement(displayedPosts, eSearchResultSortingAlgorithm);
-		}
-		
+
 		ArrayList<Integer> postIds = new ArrayList<Integer>();
 		// used for constructing the postIds vector
 		int k = 0;
@@ -979,11 +989,16 @@ public class DatabaseAdapter {
 			}
 			break;
 		case CreationDateAlgorithm:
-			for (int i = 0; i < displayedPosts.size(); i++) {
-				if (displayedPosts.get(i).getCreationDate()
-						.equals(lastOrFirstSortingElement)) {
-					postIds.add(displayedPosts.get(i).getId());
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				for (int i = 0; i < displayedPosts.size(); i++) {
+					if (displayedPosts.get(i).getCreationDate()
+							.equals(lastOrFirstSortingElement)) {
+						postIds.add(displayedPosts.get(i).getId());
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			break;
 		case AnswerCountAlgotithm:
@@ -1024,7 +1039,8 @@ public class DatabaseAdapter {
 	public ArrayList<Post> getQuestionsByFreeText(String[] oWords,
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm) {
 		return this.getQuestionsByFreeTextAndTagsWithLimits(oWords,
-				new ArrayList<String>(), eSearchResultSortingAlgorithm, null, -1);
+				new ArrayList<String>(), eSearchResultSortingAlgorithm, null,
+				-1);
 	}
 
 	/**
@@ -1385,15 +1401,21 @@ public class DatabaseAdapter {
 		users = getUsersFromCursor(cursor);
 		return users;
 	}
-	
+
 	/**
 	 * Gets maximum score of all posts
-	 * @param oWords the words that have to be contained in a question's title or body to be returned by this method
-	 * @param oTags tags the returned questions should be related to
+	 * 
+	 * @param oWords
+	 *            the words that have to be contained in a question's title or
+	 *            body to be returned by this method
+	 * @param oTags
+	 *            tags the returned questions should be related to
 	 * @return maximum score of all posts
 	 */
-	public int getMaxPostScoreForFreeTextAndTagSearch(String[] words, ArrayList<String> tags){
-		String sqlMessage = "select max(" + Post.KEY_SCORE + ") from " + Post.TABLE_NAME;
+	public int getMaxPostScoreForFreeTextAndTagSearch(String[] words,
+			ArrayList<String> tags) {
+		String sqlMessage = "select max(" + Post.KEY_SCORE + ") from "
+				+ Post.TABLE_NAME;
 		sqlMessage += " WHERE " + Post.KEY_POST_TYPE_ID + " = '1'";
 		for (int i = 0; i < words.length; i++) {
 			sqlMessage += " AND (" + Post.KEY_TITLE + " LIKE '%" + words[i]
@@ -1405,7 +1427,7 @@ public class DatabaseAdapter {
 		for (String tag : tags) {
 			sqlMessage += " AND " + Post.KEY_TAGS + " LIKE '<%" + tag + "%>'";
 		}
-		
+
 		Cursor cursor = this.getCursor(sqlMessage);
 		cursor.moveToFirst();
 		return cursor.getInt(0);
