@@ -24,6 +24,7 @@ public class UserProfileController {
 	private String timeSinceCreated;
 	private String descriptionInHtml;
 	private User user;
+	private static final String EMPTY_FIELD = "(N/A)";
 
 	/**
 	 * Fetches information from the database about a specified user.
@@ -41,8 +42,10 @@ public class UserProfileController {
 		}
 
 		String desc = user.getAboutMe();
-		if (desc == "NULL")
-			desc = "";
+		if (desc.equals("NULL")) {
+			descriptionInHtml = EMPTY_FIELD;
+		}
+		
 		else
 			descriptionInHtml = updateHtmlDescription(desc);
 
@@ -114,7 +117,7 @@ public class UserProfileController {
 	public String getWebsite() {
 		String web = user.getWebsiteUrl();
 		if (web.equals("NULL"))
-			return "";
+			return EMPTY_FIELD;
 		else
 			return web;
 	}
@@ -126,8 +129,8 @@ public class UserProfileController {
 	 */
 	public String getLocation() {
 		String loc = user.getLocation();
-		if (loc == "NULL")
-			return "";
+		if (loc.equals("NULL"))
+			return EMPTY_FIELD;
 		else
 			return loc;
 	}
@@ -140,7 +143,7 @@ public class UserProfileController {
 	public String getAge() {
 		int age = user.getAge();
 		if (age == 0)
-			return "";
+			return EMPTY_FIELD;
 		else
 			return Integer.toString(age);
 	}
