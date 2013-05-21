@@ -19,35 +19,6 @@ public class SearchController {
 	private Context con;
 
 	/**
-	 * Red
-	 */
-	private int threshold1 = 0;
-
-	/**
-	 * Light red
-	 */
-	private int threshold2 = 0;
-
-	/**
-	 * Yellow
-	 */
-	private int threshold3 = 0;
-
-	/**
-	 * Light green
-	 */
-	private int threshold4 = 0;
-
-	/**
-	 * Green
-	 */
-	private int threshold5 = 0;
-
-	/**
-	 * True, if heat map is active
-	 */
-
-	/**
 	 * Communicates with the database through a DatabaseAdapter Fetches
 	 * information for the question model
 	 */
@@ -150,32 +121,31 @@ public class SearchController {
 	 *            text that has been search for
 	 */
 	public void performFreeTextSearch(String textSearch) {
-		intitializeThresholds(textSearch, new ArrayList<String>());
 
 		// invoke search result activity
 		Intent oIntent = new Intent(con, SearchResultActivity.class);
 
 		// pass posts sorted by question score to search result activity
-		ArrayList<Post> postsFound = augmentPostsByHeat(freeTextSearch(
-				textSearch, SearchResultSortingAlgorithm.QuestionScoreAlgorithm));
+		ArrayList<Post> postsFound = freeTextSearch(
+				textSearch, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_QUESTION_SCORE,
 				(ArrayList<? extends Parcelable>) postsFound);
 
 		// pass posts sorted by creation date to search result activity
-		postsFound = augmentPostsByHeat(freeTextSearch(textSearch,
-				SearchResultSortingAlgorithm.CreationDateAlgorithm));
+		postsFound = freeTextSearch(textSearch,
+				SearchResultSortingAlgorithm.CreationDateAlgorithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_CREATION_DATE,
 				(ArrayList<? extends Parcelable>) postsFound);
 
 		// pass posts sorted by answer count to search result activity
-		postsFound = augmentPostsByHeat(freeTextSearch(textSearch,
-				SearchResultSortingAlgorithm.AnswerCountAlgotithm));
+		postsFound = freeTextSearch(textSearch,
+				SearchResultSortingAlgorithm.AnswerCountAlgotithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_ANSWER_COUNT,
 				(ArrayList<? extends Parcelable>) postsFound);
 
 		// pass posts sorted by answer count to search result activity
-		postsFound = augmentPostsByHeat(freeTextSearch(textSearch,
-				SearchResultSortingAlgorithm.UserReputationAlgorithm));
+		postsFound = freeTextSearch(textSearch,
+				SearchResultSortingAlgorithm.UserReputationAlgorithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_USER_REPUTATION,
 				(ArrayList<? extends Parcelable>) postsFound);
 		
@@ -197,35 +167,34 @@ public class SearchController {
 	 */
 	public void performFreeTextAndTagSearch(String textSearch,
 			ArrayList<String> selectedTags) {
-		intitializeThresholds(textSearch, selectedTags);
 
 		// invoke search result activity
 		Intent oIntent = new Intent(con, SearchResultActivity.class);
 
 		// pass posts sorted by question score to search result activity
-		ArrayList<Post> oPosts = augmentPostsByHeat(freeTextAndTagSearch(
+		ArrayList<Post> oPosts = freeTextAndTagSearch(
 				textSearch, selectedTags,
-				SearchResultSortingAlgorithm.QuestionScoreAlgorithm));
+				SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_QUESTION_SCORE,
 				(ArrayList<? extends Parcelable>) oPosts);
 
 		// pass posts sorted by creation date to search result activity
-		oPosts = augmentPostsByHeat(freeTextAndTagSearch(textSearch,
+		oPosts = freeTextAndTagSearch(textSearch,
 				selectedTags,
-				SearchResultSortingAlgorithm.CreationDateAlgorithm));
+				SearchResultSortingAlgorithm.CreationDateAlgorithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_CREATION_DATE,
 				(ArrayList<? extends Parcelable>) oPosts);
 
 		// pass posts sorted by answer count to search result activity
-		oPosts = augmentPostsByHeat(freeTextAndTagSearch(textSearch,
-				selectedTags, SearchResultSortingAlgorithm.AnswerCountAlgotithm));
+		oPosts = freeTextAndTagSearch(textSearch,
+				selectedTags, SearchResultSortingAlgorithm.AnswerCountAlgotithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_ANSWER_COUNT,
 				(ArrayList<? extends Parcelable>) oPosts);
 
 		// pass posts sorted by user reputation to search result activity
-		oPosts = augmentPostsByHeat(freeTextAndTagSearch(textSearch,
+		oPosts = freeTextAndTagSearch(textSearch,
 				selectedTags,
-				SearchResultSortingAlgorithm.UserReputationAlgorithm));
+				SearchResultSortingAlgorithm.UserReputationAlgorithm);
 		oIntent.putParcelableArrayListExtra(SearchResultActivity.KEY_POSTS_USER_REPUTATION,
 				(ArrayList<? extends Parcelable>) oPosts);
 		
@@ -239,56 +208,6 @@ public class SearchController {
 	}
 
 	/**
-	 * Initializes thresholds
-	 * 
-	 * @param textSearch
-	 *            text that has been search for
-	 * @param selectedTags
-	 *            tags that the posts should be related to
-	 */
-	public void intitializeThresholds(String textSearch,
-			ArrayList<String> selectedTags) {
-		// initialize thresholds
-		threshold5 = getMaxPostScoreForFreeTextAndTagSearch(textSearch,
-				selectedTags);
-		threshold4 = (threshold5 / 5) * 4;
-		threshold3 = (threshold5 / 5) * 3;
-		threshold2 = (threshold5 / 5) * 2;
-		threshold1 = threshold5 / 5;
-	}
-
-	/**
-	 * Augment posts by heat
-	 * 
-	 * @param posts
-	 *            post to augment by heat
-	 * @return list of posts augmented by heat
-	 */
-	public ArrayList<Post> augmentPostsByHeat(ArrayList<Post> posts) {
-		ArrayList<Post> augmPosts = new ArrayList<Post>();
-
-		// set heat for posts
-		for (Post post : posts) {
-			int heat = 0;
-			if (post.getScore() < threshold1) {
-				heat = 1;
-			} else if (post.getScore() < threshold2) {
-				heat = 2;
-			} else if (post.getScore() < threshold3) {
-				heat = 3;
-			} else if (post.getScore() < threshold4) {
-				heat = 4;
-			} else {
-				heat = 5;
-			}
-			post.setHeat(heat);
-			augmPosts.add(post);
-		}
-		return augmPosts;
-
-	}
-
-	/**
 	 * Gets a user by id
 	 * 
 	 * @param id
@@ -298,21 +217,5 @@ public class SearchController {
 	public User getUser(int id) {
 		dbAdapter.open();
 		return dbAdapter.getUser(id);
-	}
-
-	/**
-	 * Gets maximum score of posts that fulfill the search criteria
-	 * 
-	 * @param sFreeText
-	 *            free text to search for in posts
-	 * @param eSearchResultSortingAlgorithm
-	 *            chosen search result algorithm
-	 * @return maximum score of all posts
-	 */
-	public int getMaxPostScoreForFreeTextAndTagSearch(String sFreeText,
-			ArrayList<String> oTags) {
-		dbAdapter.open();
-		return dbAdapter.getMaxPostScoreForFreeTextAndTagSearch(
-				sFreeText.split(" "), oTags);
 	}
 }

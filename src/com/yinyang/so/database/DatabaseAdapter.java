@@ -697,16 +697,16 @@ public class DatabaseAdapter {
 				sSqlMessage += lastSortingElement;
 				break;
 			case CreationDateAlgorithm:
-				sSqlMessage += " WHERE " + Post.KEY_CREATION_DATE;
-				if (nextOrPrev == 0){
-					sSqlMessage += " <= ";
-				}
-				if (nextOrPrev == 1){
-					sSqlMessage += " >= ";
-				}
-				
-				sSqlMessage += lastSortingElement;
-				break;
+                sSqlMessage += " WHERE " + Post.KEY_CREATION_DATE;
+                if (nextOrPrev == 0){
+                    sSqlMessage += " <= ";
+                }
+                if (nextOrPrev == 1){
+                    sSqlMessage += " >= ";
+                }
+               
+                sSqlMessage += "'" + lastSortingElement + "'";
+                break;
 			case AnswerCountAlgotithm:
 				sSqlMessage += " WHERE " + Post.KEY_ANSWER_COUNT;
 				if (nextOrPrev == 0){

@@ -54,7 +54,7 @@
     <string name="string_search">Search for posts</string>
     <string name="search_command">Search</string>
     <string name="FreeTextSearch">Free text search</string>
-    <string name="title_activity_tab_search">Tag Search</string>
+    <string name="title_activity_tab_search">Search for posts</string>
     <string name="TagSearch">Tag search</string>
     <string name="TestSearchTopTags">Test top related tags</string>
     <string name="title_activity_top_related_tags">TopRelatedTagsActivity</string>

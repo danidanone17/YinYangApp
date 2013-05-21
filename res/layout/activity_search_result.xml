@@ -66,7 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:onClick="showNextPosts"
+            android:onClick="showPrevPosts"
             android:text="@string/show_prev_posts"
             android:textSize="12sp" />
 	    

@@ -159,47 +159,6 @@ public class SearchControllerValidation extends InstrumentationTestCase {
 		Assert.assertEquals(true, bValid && bProperlySorted);	
 	}
 
-	public void testAugmentPostsByHeat(){
-		String sFreeText = "java";
-		
-		SearchController oSearchController = new SearchController(getInstrumentation().getTargetContext().getApplicationContext());
-		ArrayList<Post> oPosts = oSearchController.freeTextSearch(sFreeText, SearchResultSortingAlgorithm.QuestionScoreAlgorithm);
-		oSearchController.intitializeThresholds(sFreeText, new ArrayList<String>());
-		oPosts = oSearchController.augmentPostsByHeat(oPosts);
-		
-		boolean bProperlyHeated = isProperlyHeated(oPosts);
-		Assert.assertEquals(true, bProperlyHeated);
-	}
-	
-	/**
-	 * Checks whether the given posts are properly heated
-	 * @param oPosts list of posts
-	 * @return true if the given posts are properly heated
-	 */
-	private boolean isProperlyHeated(ArrayList<Post> oPosts){
-		int heat1 = 0, heat2 = 0, heat3 = 0, heat4 = 0, heat5 = 0;
-		for(Post oPost : oPosts){
-			switch (oPost.getHeat()){
-				case 1:
-					heat1++;
-					break;
-				case 2:
-					heat2++;
-					break;
-				case 3:
-					heat3++;
-					break;
-				case 4:
-					heat4++;
-					break;
-				case 5:
-					heat5++;	
-					break;
-			}
-		}
-		return (heat1 == 0 && heat2 == 0 && heat3 == 3 && heat4 == 4 && heat5 == 3);
-	}
-
 	/**
 	 * Checks whether the given list of posts is sorted by the question score
 	 * @param oPosts list of posts that has to be checked

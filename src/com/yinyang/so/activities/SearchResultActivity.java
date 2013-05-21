@@ -62,6 +62,9 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	private boolean heatMapActive;
 	private SearchResultSortingAlgorithm currSortingAlogorithm = SearchResultSortingAlgorithm.QuestionScoreAlgorithm;
 	private SearchResultController searchResultController;
+	
+	private String freeText;
+	private ArrayList<String> tags;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +87,17 @@ public class SearchResultActivity extends ShowSettingsActivity{
 		// get posts to display
 		mIntent = getIntent();
 		
+		freeText = mIntent.getStringExtra(KEY_FREE_TEXT);
+		tags = mIntent.getStringArrayListExtra(KEY_TAGS);
+		
 		postsSortedByQuestionScore = mIntent.getParcelableArrayListExtra(KEY_POSTS_QUESTION_SCORE);
+		postsSortedByQuestionScore = searchResultController.augmentPostsByHeat(freeText, tags, postsSortedByQuestionScore);
 		postsSortedByCreationDate = mIntent.getParcelableArrayListExtra(KEY_POSTS_CREATION_DATE);
+		postsSortedByCreationDate = searchResultController.augmentPostsByHeat(freeText, tags, postsSortedByCreationDate);		
 		postsSortedByAnswerCount = mIntent.getParcelableArrayListExtra(KEY_POSTS_ANSWER_COUNT);
+		postsSortedByAnswerCount = searchResultController.augmentPostsByHeat(freeText, tags, postsSortedByAnswerCount);		
 		postsSortedByUserReputation = mIntent.getParcelableArrayListExtra(KEY_POSTS_USER_REPUTATION);
+		postsSortedByUserReputation = searchResultController.augmentPostsByHeat(freeText, tags, postsSortedByUserReputation);		
 		
 		initNewActivePosts(postsSortedByQuestionScore);
 
@@ -380,7 +390,8 @@ public class SearchResultActivity extends ShowSettingsActivity{
 	 * @param nextOrPrev 0 for next and 1 for previous posts
 	 */
 	private void showPosts(int nextOrPrev){
-		ArrayList<Post> posts = searchResultController.getQuestionsByFreeTextAndTagsWithLimits(mIntent.getStringExtra(KEY_FREE_TEXT), mIntent.getStringArrayListExtra(KEY_TAGS), currSortingAlogorithm, activePosts, 0);		
+		ArrayList<Post> posts = searchResultController.getQuestionsByFreeTextAndTagsWithLimits(freeText, tags, currSortingAlogorithm, activePosts, nextOrPrev);		
+		posts = searchResultController.augmentPostsByHeat(freeText, tags, posts);
 		updateCorrespondingPostArray(posts);
 		initNewActivePosts(posts);
 	}
