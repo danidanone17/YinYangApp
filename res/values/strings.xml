@@ -102,4 +102,8 @@
     <string name="menu_action_user_list">Users</string>
     <string name="menu_action_settings">Settings</string>
 
+    <!-- Drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 </resources>

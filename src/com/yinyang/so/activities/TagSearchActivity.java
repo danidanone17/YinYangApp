@@ -2,12 +2,21 @@ package com.yinyang.so.activities;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yinyang.so.R;
@@ -21,8 +30,8 @@ import com.yinyang.so.extras.PredicateLayout;
  * Implements OnSharedPreferenceChangeListener to listen for changes in heat
  * mapping choice
  * 
- * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings and handle menu
- * selection
+ * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings
+ * and handle menu selection
  */
 public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 
@@ -50,10 +59,20 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 	// Tells whether heat mapping shall be used
 	private boolean heatMapping;
 
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private ActionBarDrawerToggle mDrawerToggle;
+
+	private CharSequence mDrawerTitle;
+	private CharSequence mTitle;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tag_search);
+
+		addDrawer(savedInstanceState);
+
 		// Get user set settings and current heat mapping toggle
 		heatMapping = getSettings();
 
@@ -83,11 +102,102 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 
 	}
 
+	private void addDrawer(Bundle savedInstanceState) {
+		// added
+		mTitle = mDrawerTitle = getTitle();
+		String[] mPlanetTitles = { "one", "two", "three" };
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+		// set a custom shadow that overlays the main content when the drawer
+		// opens
+		// mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+		// GravityCompat.START);
+		// set up the drawer's list view with items and click listener
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+				R.layout.drawer_list_item, mPlanetTitles));
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description for accessibility */
+		R.string.drawer_close /* "close drawer" description for accessibility */
+		) {
+			public void onDrawerClosed(View view) {
+				getActionBar().setTitle(mTitle);
+				invalidateOptionsMenu(); // creates call to
+											// onPrepareOptionsMenu()
+			}
+
+			public void onDrawerOpened(View drawerView) {
+				getActionBar().setTitle(mDrawerTitle);
+				invalidateOptionsMenu(); // creates call to
+											// onPrepareOptionsMenu()
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		if (savedInstanceState == null) {
+			selectItem(0);
+		}
+
+	}
+
+	/* The click listner for ListView in the navigation drawer */
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			selectItem(position);
+		}
+	}
+
+	private void selectItem(int position) {
+		// update selected item and title, then close the drawer
+		mDrawerList.setItemChecked(position, true);
+		Log.e("", "Position: " + position);
+		mDrawerLayout.closeDrawer(mDrawerList);
+		startActivity(new Intent(this, UserListActivity.class));
+	}
+
+	@Override
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getActionBar().setTitle(mTitle);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Create the menu from the extended Activity
 		// use menu.add() to add more items to menu
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	// Added
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -222,12 +332,15 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 		EditText editView = (EditText) this.findViewById(R.id.edit_search);
 		String textSearch = editView.getText().toString();
 
-		// perform free text and tag search, if text is given, otherwise give error msg
+		// perform free text and tag search, if text is given, otherwise give
+		// error msg
 		if (textSearch.isEmpty()) {
-			Toast.makeText(this.getApplicationContext(), R.string.error_no_search_parameters, 
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this.getApplicationContext(),
+					R.string.error_no_search_parameters, Toast.LENGTH_SHORT)
+					.show();
 		} else {
-			oSearchController.performFreeTextAndTagSearch(textSearch, selectedTags);	
+			oSearchController.performFreeTextAndTagSearch(textSearch,
+					selectedTags);
 		}
 	}
 
@@ -284,8 +397,9 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 			} else {
 				color = 0xA0FF0000;
 			}
-			
-			button.getBackground().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+
+			button.getBackground().setColorFilter(color,
+					PorterDuff.Mode.MULTIPLY);
 		} else {
 			button.getBackground().setColorFilter(null);
 		}
@@ -309,13 +423,17 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 	 *            the new tag button in the middle
 	 */
 	private void populateCenterSurroundingButtons(String sNewCenterTag) {
-		Button oNorthWestButton = (Button) this.findViewById(R.id.button_northwest);
+		Button oNorthWestButton = (Button) this
+				.findViewById(R.id.button_northwest);
 		this.replaceTagButtonText(oNorthWestButton, "");
-		Button oNorthEastButton = (Button) this.findViewById(R.id.button_northeast);
+		Button oNorthEastButton = (Button) this
+				.findViewById(R.id.button_northeast);
 		this.replaceTagButtonText(oNorthEastButton, "");
-		Button oSouthWestButton = (Button) this.findViewById(R.id.button_southwest);
+		Button oSouthWestButton = (Button) this
+				.findViewById(R.id.button_southwest);
 		this.replaceTagButtonText(oSouthWestButton, "");
-		Button oSouthEastButton = (Button) this.findViewById(R.id.button_southeast);
+		Button oSouthEastButton = (Button) this
+				.findViewById(R.id.button_southeast);
 		this.replaceTagButtonText(oSouthEastButton, "");
 
 		Button oWestButton = (Button) this.findViewById(R.id.button_west);
@@ -325,19 +443,20 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 		// if the center tag is not empty
 		if (!"".equals(sNewCenterTag)) {
 			// populate top related tags
-			ArrayList<KeyValuePair> topRelatedTags = oSearchController.getTopRelatedTags(sNewCenterTag);
+			ArrayList<KeyValuePair> topRelatedTags = oSearchController
+					.getTopRelatedTags(sNewCenterTag);
 			int tagsValue = 0;
 			for (KeyValuePair kvp : topRelatedTags) {
 				tagsValue += kvp.getValue();
 			}
-		
+
 			if (topRelatedTags.size() > 0) {
 				this.populateButton(oNorthWestButton, topRelatedTags.get(0),
 						tagsValue);
 			} else {
 				this.hideButton(oNorthWestButton);
 			}
-		
+
 			if (topRelatedTags.size() > 1) {
 				this.populateButton(oNorthEastButton, topRelatedTags.get(1),
 						tagsValue);
