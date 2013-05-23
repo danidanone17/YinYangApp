@@ -1,93 +1,108 @@
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".SearchResultActivity" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/header"
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/button_sort_by_user_reputation"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="sortByUserReputation"
-            android:text="@string/button_sort_by_user_reputation"
-            android:textColor="@android:color/background_light" />
-
-        <Button
-            android:id="@+id/button_sort_by_question_score"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="sortByQuestionScore"
-            android:text="@string/button_sort_by_question_score"
-            android:textColor="@android:color/background_light" />
-
-        <Button
-            android:id="@+id/button_sort_by_creation_date"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="sortByCreationDate"
-            android:text="@string/button_sort_by_creation_date"
-            android:textColor="@android:color/background_light" />
-
-        <Button
-            android:id="@+id/button_sort_by_answer_count"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="sortByAnswerCount"
-            android:text="@string/button_sort_by_answer_count"
-            android:textColor="@android:color/background_light" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/button_prev"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:onClick="showPrevPosts"
-            android:text="@string/show_prev_posts"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/button_next"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:onClick="showNextPosts"
-            android:text="@string/show_next_posts"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/activity_search_result"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/footer"
-        android:layout_below="@id/header"
-        android:layout_marginBottom="10dp" >
-    </ListView>
+        android:orientation="vertical"
+        tools:context=".SearchResultActivity" >
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/header"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button_sort_by_user_reputation"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sortByUserReputation"
+                android:text="@string/button_sort_by_user_reputation"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:id="@+id/button_sort_by_question_score"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sortByQuestionScore"
+                android:text="@string/button_sort_by_question_score"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:id="@+id/button_sort_by_creation_date"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sortByCreationDate"
+                android:text="@string/button_sort_by_creation_date"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:id="@+id/button_sort_by_answer_count"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sortByAnswerCount"
+                android:text="@string/button_sort_by_answer_count"
+                android:textColor="@android:color/background_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button_prev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:onClick="showPrevPosts"
+                android:text="@string/show_prev_posts"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/button_next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:onClick="showNextPosts"
+                android:text="@string/show_next_posts"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/activity_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/footer"
+            android:layout_below="@id/header"
+            android:layout_marginBottom="10dp" >
+        </ListView>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#111"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp" />
+
+</android.support.v4.widget.DrawerLayout>

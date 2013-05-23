@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import com.yinyang.so.extras.PredicateLayout;
  * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings and handle menu
  * selection. Listens to changes made in the settings and calls updateSettings().
  */
-public class SearchResultActivity extends Activity{
+public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivity{
 
 	public static final String KEY_FREE_TEXT = "FREE_TEXT";
 	public static final String KEY_TAGS = "TAGS";
@@ -69,6 +70,7 @@ public class SearchResultActivity extends Activity{
 		setContentView(R.layout.activity_search_result);
 		
 		//Set up navigation drawer with functionality
+		addDrawer();
 		
 		// initialize search controller
 		searchResultController = new SearchResultController(this);
@@ -76,7 +78,7 @@ public class SearchResultActivity extends Activity{
 		//Init the sort buttons 
 		setupButtons();
 		//Setup the setting's listener and get the current toggle for heat mapping
-	//	heatMapActive = getSettings();
+		heatMapActive = getSettings();
 		
 		mQuestionList = (ListView) findViewById(R.id.activity_search_result);
 
@@ -98,7 +100,6 @@ public class SearchResultActivity extends Activity{
 		initNewActivePosts(postsSortedByQuestionScore);
 
 		setTitle(getTitle() + " " + mIntent.getStringExtra(KEY_FREE_TEXT));
-		//addDrawer();
 	}
 
 
@@ -212,12 +213,12 @@ public class SearchResultActivity extends Activity{
 	 * Updates the list view
 	 * @param heatMap
 	 */
-/*	@Override
+	@Override
 	protected void updateSettings(boolean heatMap) {
 		heatMapActive = heatMap;
 		postArrayAdapter.notifyDataSetChanged();
 	}
-*/
+
 	/**
 	 * The adapter helps adding the posts to the list view.
 	 */
