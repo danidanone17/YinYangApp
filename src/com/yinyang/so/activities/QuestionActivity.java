@@ -125,12 +125,7 @@ public class QuestionActivity extends ShowMenuActivity implements OnClickListene
 			});
 			questionTagButtons.addView(tagButton);
 		}		
-		
-		// add number of answers
-		textViewTemp = (TextView) header.findViewById(R.id.nr_of_answers);
-		textViewTemp.setText(Integer.toString(qController.getNrOfAnswers()) + " "
-				+ R.string.nr_of_answers);
-		
+				
 		// set up list view + adapter
 		List<Post> answers = qController.getAnswers();
 		listViewAnswers = (ListView) findViewById(R.id.answers_list_view);
