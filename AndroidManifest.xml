@@ -50,8 +50,7 @@
         <activity
             android:name="com.yinyang.so.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:launchMode="singleTask" >
-            android:label="@string/title_activity_settings" >
+            android:launchMode="singleTask">
         </activity>
     </application>
 
