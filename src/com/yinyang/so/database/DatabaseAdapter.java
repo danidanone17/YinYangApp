@@ -1336,8 +1336,8 @@ public class DatabaseAdapter {
 		sqlMessage = "SELECT * FROM " + User.TABLE_NAME;
 
 		if (!searchName.isEmpty()) {
-			sqlMessage += " WHERE " + User.KEY_DISPLAY_NAME + " = '"
-					+ searchName + "'";
+			sqlMessage += " WHERE " + User.KEY_DISPLAY_NAME + " LIKE '%"
+					+ searchName + "%'";
 
 			if (lastUserReputation > 0 && !lastUserName.equals("")) {
 				sqlMessage += " AND " + User.KEY_REPUTATION + " <= "
