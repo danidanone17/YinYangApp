@@ -10,7 +10,7 @@ import com.yinyang.so.databaseentities.Post;
 
 public class SearchResultController {
 	private DatabaseAdapter dbAdapter;
-	
+
 	/**
 	 * Red
 	 */
@@ -35,7 +35,7 @@ public class SearchResultController {
 	 * Green
 	 */
 	private int threshold5 = 0;
-	
+
 	/**
 	 * Communicates with the database through a DatabaseAdapter Fetches
 	 * information for the question model
@@ -44,7 +44,7 @@ public class SearchResultController {
 		dbAdapter = new DatabaseAdapter(con);
 		dbAdapter.createDatabase();
 	}
-	
+
 	/**
 	 * Get questions where - the given words are contained in either the title
 	 * or the body and - there is a relation to all of the provided tags
@@ -57,10 +57,10 @@ public class SearchResultController {
 	 *            tags the returned questions should be related to
 	 * @param eSearchResultSortingAlgorithm
 	 *            chosen search result algorithm
-	 * @param displayedPosts 
-	 * 			  the posts currently displayed, null if none
-	 * @param nextOrPrev 
-	 * 			  0 for next and 1 for previous, -1 if none
+	 * @param displayedPosts
+	 *            the posts currently displayed, null if none
+	 * @param nextOrPrev
+	 *            0 for next and 1 for previous, -1 if none
 	 * @return questions
 	 * 
 	 */
@@ -69,11 +69,10 @@ public class SearchResultController {
 			SearchResultSortingAlgorithm eSearchResultSortingAlgorithm,
 			ArrayList<Post> displayedPosts, int nextOrPrev) {
 		dbAdapter.open();
-		return dbAdapter.getQuestionsByFreeTextAndTagsWithLimits(sFreeText.split(" "), oTags,
-				eSearchResultSortingAlgorithm, displayedPosts, nextOrPrev);
+		return dbAdapter.getQuestionsByFreeTextAndTagsWithLimits(
+				sFreeText.split(" "), oTags, eSearchResultSortingAlgorithm,
+				displayedPosts, nextOrPrev);
 	}
-	
-
 
 	/**
 	 * Initializes thresholds
@@ -108,29 +107,31 @@ public class SearchResultController {
 	public ArrayList<Post> augmentPostsByHeat(String textSearch,
 			ArrayList<String> selectedTags, ArrayList<Post> posts) {
 		ArrayList<Post> augmPosts = new ArrayList<Post>();
-		
+
 		intitializeThresholds(textSearch, selectedTags);
-		
-		// set heat for posts
-		for (Post post : posts) {
-			int heat = 0;
-			if (post.getScore() < threshold1) {
-				heat = 1;
-			} else if (post.getScore() < threshold2) {
-				heat = 2;
-			} else if (post.getScore() < threshold3) {
-				heat = 3;
-			} else if (post.getScore() < threshold4) {
-				heat = 4;
-			} else {
-				heat = 5;
+
+		if (posts != null) {
+			// set heat for posts
+			for (Post post : posts) {
+				int heat = 0;
+				if (post.getScore() < threshold1) {
+					heat = 1;
+				} else if (post.getScore() < threshold2) {
+					heat = 2;
+				} else if (post.getScore() < threshold3) {
+					heat = 3;
+				} else if (post.getScore() < threshold4) {
+					heat = 4;
+				} else {
+					heat = 5;
+				}
+				post.setHeat(heat);
+				augmPosts.add(post);
 			}
-			post.setHeat(heat);
-			augmPosts.add(post);
 		}
 		return augmPosts;
 	}
-	
+
 	/**
 	 * Gets maximum score of posts that fulfill the search criteria
 	 * 

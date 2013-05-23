@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -71,8 +72,12 @@ public class UserListActivity extends ShowMenuActivity {
 		
 				// set location
 				TextView location = (TextView) v.findViewById(R.id.location);
-				if (location != null) {
-					location.setText(o.getLocation());
+				if(location != null) {
+					if (!o.getLocation().equals("NULL")) {
+						location.setText(o.getLocation());
+					}
+					else
+						location.setText("N/A");
 				}
 				
 				// set reputation

@@ -108,8 +108,7 @@ public class ShowMenuActivity extends Activity {
 		switch (position) {
 		// Goto settings
 		case 0:
-			startActivity(new Intent(this, TagSearchActivity.class));
-			
+			startActivity(new Intent(this, TagSearchActivity.class));			
 			break;
 		case 1:
 			startActivity(new Intent(this, UserListActivity.class));

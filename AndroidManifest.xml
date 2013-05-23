@@ -14,9 +14,14 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.yinyang.so.activities.MainActivity"
+            android:name="com.yinyang.so.activities.TagSearchActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.yinyang.so.activities.UserProfileActivity"
@@ -24,19 +29,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.yinyang.so.activities.TagSearchActivity"
-            android:label="@string/title_activity_tab_search"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.yinyang.so.activities.QuestionActivity"
             android:label="@string/title_activity_question"
             android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.yinyang.so.activities.UserListActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.SearchResultActivity"
@@ -53,6 +51,7 @@
             android:name="com.yinyang.so.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:launchMode="singleTask" >
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 
