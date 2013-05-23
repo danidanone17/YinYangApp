@@ -22,77 +22,37 @@
             android:name="com.yinyang.so.activities.UserProfileActivity"
             android:label="@string/title_activity_user_profile"
             android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.activities.UserListActivity" />
-        </activity>
-        <activity
-            android:name="com.yinyang.so.activities.FreeTextSearchActivity"
-            android:label="@string/title_activity_free_text_search"
-            android:parentActivityName="com.yinyang.so.activities.TagSearchActivity"
-            android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.TagSearchActivity"
             android:label="@string/title_activity_tab_search"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.yinyang.so.activities.TopRelatedTagsActivity"
-            android:label="@string/title_activity_top_related_tags"
-            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.yinyang.so.activities.QuestionActivity"
             android:label="@string/title_activity_question"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity"
             android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.SearchResultActivity"
             android:label="@string/title_activity_searchResult"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity"
             android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.activities.TabSearchActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.UserListActivity"
             android:label="@string/title_activity_user_list"
-            android:parentActivityName="com.yinyang.so.activities.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.yinyang.so.activities.NotImplementedActivity"
-            android:label="@string/title_activity_not_implemented" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yinyang.so.MainActivity" />
         </activity>
         <activity
             android:name="com.yinyang.so.activities.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
-        <activity
-            android:name="com.yinyang.so.activities.ShowMenuAndActOnSettingsChangedActivity" >
-        </activity>
-        <activity
-            android:name="com.yinyang.so.activities.ShowMenuActivity" >
+            android:label="@string/title_activity_settings"
+            android:launchMode="singleTask" >
         </activity>
     </application>
 

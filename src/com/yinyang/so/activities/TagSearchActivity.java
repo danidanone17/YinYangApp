@@ -59,19 +59,13 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 	// Tells whether heat mapping shall be used
 	private boolean heatMapping;
 
-	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
-	private ActionBarDrawerToggle mDrawerToggle;
-
-	private CharSequence mDrawerTitle;
-	private CharSequence mTitle;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tag_search);
-
-		addDrawer(savedInstanceState);
+		
+		//Calls method in extended class
+		addDrawer(IN_SEARCH);
 
 		// Get user set settings and current heat mapping toggle
 		heatMapping = getSettings();
@@ -100,104 +94,6 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 		// populate buttons around center button
 		this.populateCenterSurroundingButtons(oTags.get(1));
 
-	}
-
-	private void addDrawer(Bundle savedInstanceState) {
-		// added
-		mTitle = mDrawerTitle = getTitle();
-		String[] mPlanetTitles = { "one", "two", "three" };
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-		// set a custom shadow that overlays the main content when the drawer
-		// opens
-		// mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-		// GravityCompat.START);
-		// set up the drawer's list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mPlanetTitles));
-		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-		// ActionBarDrawerToggle ties together the the proper interactions
-		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.drawer_open, /* "open drawer" description for accessibility */
-		R.string.drawer_close /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		if (savedInstanceState == null) {
-			selectItem(0);
-		}
-
-	}
-
-	/* The click listner for ListView in the navigation drawer */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			selectItem(position);
-		}
-	}
-
-	private void selectItem(int position) {
-		// update selected item and title, then close the drawer
-		mDrawerList.setItemChecked(position, true);
-		Log.e("", "Position: " + position);
-		mDrawerLayout.closeDrawer(mDrawerList);
-		startActivity(new Intent(this, UserListActivity.class));
-	}
-
-	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Create the menu from the extended Activity
-		// use menu.add() to add more items to menu
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	// Added
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**
