@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +25,24 @@ public class ShowMenuActivity extends Activity {
 	protected final int IN_USER_LIST = 1;
 	protected final int IN_SEARCH = 0;
 	protected final int NOT_IN_SEARCH_OR_USER_LIST = 100;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+	}
+	
+	@Override
+	protected void onPause(){
+		super.onPause();
+		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+	}
 	
 	// Have to set layout first
 	protected void addDrawer(){	
@@ -92,6 +109,7 @@ public class ShowMenuActivity extends Activity {
 		// Goto settings
 		case 0:
 			startActivity(new Intent(this, TagSearchActivity.class));
+			
 			break;
 		case 1:
 			startActivity(new Intent(this, UserListActivity.class));

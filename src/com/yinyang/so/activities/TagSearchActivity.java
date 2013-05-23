@@ -53,6 +53,7 @@ public class TagSearchActivity extends ShowMenuAndActOnSettingsChangedActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		setContentView(R.layout.activity_tag_search);
 		
 		//Calls method in extended class
