@@ -23,7 +23,6 @@ public class UserProfileActivity extends ShowMenuActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setupActionBar();
 		Intent intent = getIntent();
 		//Set the userId to -1 if EXTRA_USERID is not included in the intent
 		userId = intent.getIntExtra(EXTRA_USERID, -1);
@@ -38,35 +37,12 @@ public class UserProfileActivity extends ShowMenuActivity {
 		}
 		if (controller != null) {
 			setContentView(R.layout.activity_user_profile);
+			addDrawer();
 			updateView();
 		}	
 
 	}
-	@Override
-	protected void onResume(){
-		super.onResume();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return super.onCreateOptionsMenu(menu);
-	}
 	
-	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);			
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	private void updateView() {
 		setReputationText();
 		setUserNameText();

@@ -44,8 +44,9 @@ public class QuestionActivity extends ShowMenuActivity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question);
-		// Show the Up button in the action bar.
-		setupActionBar();
+		//Add navigation drawer with functionality
+		addDrawer();
+		
 		Intent intent = getIntent();
 		int questionId = intent.getIntExtra(EXTRA_QUESTIONID, -1);
 		
@@ -61,30 +62,6 @@ public class QuestionActivity extends ShowMenuActivity implements OnClickListene
 		}
 	}
 
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-	}
-	
-	/**
-	 * Sets up listeners for question and answer profile pictures
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	/**
 	 * Fills/completes TextViews of activity with dynamic content by the help of

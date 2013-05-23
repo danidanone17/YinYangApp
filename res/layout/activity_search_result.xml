@@ -1,21 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchResultActivity" 
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".SearchResultActivity" >
 
     <LinearLayout
+        android:id="@+id/header"
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/darker_gray"
-        android:orientation="horizontal" 
-        android:id="@+id/header">
+        android:orientation="horizontal" >
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/button_sort_by_user_reputation"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -24,8 +25,8 @@
             android:textColor="@android:color/background_light" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/button_sort_by_question_score"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -34,8 +35,8 @@
             android:textColor="@android:color/background_light" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/button_sort_by_creation_date"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,8 +45,8 @@
             android:textColor="@android:color/background_light" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/button_sort_by_answer_count"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -53,15 +54,15 @@
             android:text="@string/button_sort_by_answer_count"
             android:textColor="@android:color/background_light" />
     </LinearLayout>
-    
-    <LinearLayout 
-       	android:id="@+id/footer"
+
+    <LinearLayout
+        android:id="@+id/footer"
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentBottom="true"
-    	android:orientation="horizontal">
-	    
-	    <Button
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
             android:id="@+id/button_prev"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -69,8 +70,8 @@
             android:onClick="showPrevPosts"
             android:text="@string/show_prev_posts"
             android:textSize="12sp" />
-	    
-	    <Button
+
+        <Button
             android:id="@+id/button_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -84,8 +85,8 @@
         android:id="@+id/activity_search_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header"
         android:layout_above="@id/footer"
+        android:layout_below="@id/header"
         android:layout_marginBottom="10dp" >
     </ListView>
 

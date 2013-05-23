@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,19 +33,24 @@ public class ShowMenuActivity extends Activity {
 	}
 	
 	protected void addDrawer(int position) {
-		// added
+		Log.e("", "DRAWER_1");
 		String[] menuItems = { "Search", "Users", "Settings" };
+		Log.e("", "DRAWER_2");
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		Log.e("", "DRAWER_3");
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
+		Log.e("", "DRAWER_4");
+		
 		// set up the drawer's list view with items and click listener
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, menuItems));
+		Log.e("", "DRAWER_5");
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
+		Log.e("", "DRAWER_6");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		Log.e("", "DRAWER_7");
 		getActionBar().setHomeButtonEnabled(true);
-
+		Log.e("", "DRAWER_8");
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
@@ -60,12 +66,14 @@ public class ShowMenuActivity extends Activity {
 				public void onDrawerOpened(View drawerView) {
 					invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 				}
-			};
+		};
+		Log.e("", "DRAWER_9");
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		if (position != NOT_IN_SEARCH_OR_USER_LIST){
 			mDrawerList.setItemChecked(position, true);
 			selectedItem = position;
 		}
+		Log.e("", "DRAWER_10");
 		
 	}
 
@@ -78,13 +86,16 @@ public class ShowMenuActivity extends Activity {
 			if (position != selectedItem) {
 				selectItem(position);
 			}
-			mDrawerLayout.closeDrawer(mDrawerList);
-			mDrawerList.setItemChecked(selectedItem, true);
+			else{
+				mDrawerLayout.closeDrawer(mDrawerList);
+			}
 		}
 	}
 
 	private void selectItem(int position) {
 		mDrawerList.setItemChecked(position, true);
+		mDrawerLayout.closeDrawer(mDrawerList);
+		mDrawerList.setItemChecked(selectedItem, true);
 		switch (position) {
 		// Goto settings
 		case 0:

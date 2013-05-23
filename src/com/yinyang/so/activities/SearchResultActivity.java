@@ -3,17 +3,14 @@ package com.yinyang.so.activities;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yinyang.so.R;
-import com.yinyang.so.controllers.SearchController;
 import com.yinyang.so.controllers.SearchResultController;
 import com.yinyang.so.database.DatabaseAdapter.SearchResultSortingAlgorithm;
 import com.yinyang.so.databaseentities.Post;
@@ -36,7 +32,7 @@ import com.yinyang.so.extras.PredicateLayout;
  * Extends ShowMenuAndActOnSettingsChangedActivity to show menu with settings and handle menu
  * selection. Listens to changes made in the settings and calls updateSettings().
  */
-public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivity{
+public class SearchResultActivity extends Activity{
 
 	public static final String KEY_FREE_TEXT = "FREE_TEXT";
 	public static final String KEY_TAGS = "TAGS";
@@ -72,8 +68,7 @@ public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivit
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_result);
 		
-		// Show the Up button in the action bar.
-		setupActionBar();
+		//Set up navigation drawer with functionality
 		
 		// initialize search controller
 		searchResultController = new SearchResultController(this);
@@ -81,7 +76,7 @@ public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivit
 		//Init the sort buttons 
 		setupButtons();
 		//Setup the setting's listener and get the current toggle for heat mapping
-		heatMapActive = getSettings();
+	//	heatMapActive = getSettings();
 		
 		mQuestionList = (ListView) findViewById(R.id.activity_search_result);
 
@@ -103,45 +98,10 @@ public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivit
 		initNewActivePosts(postsSortedByQuestionScore);
 
 		setTitle(getTitle() + " " + mIntent.getStringExtra(KEY_FREE_TEXT));
+		//addDrawer();
 	}
 
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	@SuppressLint("NewApi")
-	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Create the menu from the extended ShoWSettingsActivity
-		// use menu.add() to add more items to menu
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// navigate up one level
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		// manage the settings menu in ShoWSettingsActivity
-		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * Get the user's preference of showing heat map
-	 */
-/*	private void getSettings() {
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		heatMapActive = sharedPref.getBoolean("pref_heat_mapping", true);
-		sharedPref.registerOnSharedPreferenceChangeListener(this);
-	}
-*/
 	/**
 	 * Connect the sorting selection button in the layout to sortButtons Set the
 	 * "sort by question score"-button as selected
@@ -252,12 +212,12 @@ public class SearchResultActivity extends ShowMenuAndActOnSettingsChangedActivit
 	 * Updates the list view
 	 * @param heatMap
 	 */
-	@Override
+/*	@Override
 	protected void updateSettings(boolean heatMap) {
 		heatMapActive = heatMap;
 		postArrayAdapter.notifyDataSetChanged();
 	}
-
+*/
 	/**
 	 * The adapter helps adding the posts to the list view.
 	 */
